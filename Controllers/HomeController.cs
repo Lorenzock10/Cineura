@@ -1,16 +1,23 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Cineura.Models;
+using Microsoft.SemanticKernel; 
 
 namespace Cineura.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly Kernel _kernel;
 
     public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
+    }
+
+    public HomeController(Kernel kernel)
+    {
+        _kernel = kernel;
     }
 
     public IActionResult Index()
