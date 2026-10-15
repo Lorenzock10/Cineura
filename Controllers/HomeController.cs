@@ -2,28 +2,47 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Cineura.Models;
 using Microsoft.SemanticKernel; 
+using Cineura.Services;
 
 namespace Cineura.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly Kernel _kernel;
+private readonly BuscadorIA _buscadorIA;
 
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
-    public HomeController(Kernel kernel)
-    {
-        _kernel = kernel;
-    }
+public HomeController(ILogger<HomeController> logger, BuscadorIA buscadorIA)
+{
+    _logger = logger;
+    _buscadorIA = buscadorIA;
+}
 
     public IActionResult Index()
     {
         return View();
     }
+
+    [HttpPost]
+public async Task<IActionResult> InterpretarBusqueda(string busqueda)
+{
+    if (string.IsNullOrWhiteSpace(busqueda))
+    {
+        return BadRequest("Escribí qué tipo de película querés ver.");
+    }
+
+    try
+    {
+        string resultado = await _buscadorIA.InterpretarBusquedaAsync(busqueda);
+
+        return Content(resultado, "application/json");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al interpretar la búsqueda con IA.");
+
+        return StatusCode(500, "No se pudo procesar la búsqueda.");
+    }
+}
 
     public IActionResult Privacy()
     {

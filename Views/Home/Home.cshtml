@@ -1,1 +1,64 @@
-<h1>Bienvenido a Cineura</h1>
+@{
+    ViewData["Title"] = "Cineura";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center fw-bold">Bienvenido a Cineura</h1>
+
+    <p class="text-center mt-3">
+        Encontrá tu próxima película con nuestro buscador inteligente.
+    </p>
+
+    <div class="card p-4 mt-4 mx-auto" style="max-width: 650px;">
+        <form id="formBusqueda">
+            <label for="busqueda" class="form-label fw-bold">
+                ¿Qué tipo de película querés ver?
+            </label>
+
+            <textarea
+                id="busqueda"
+                name="busqueda"
+                class="form-control"
+                rows="3"
+                placeholder="Ejemplo: Estoy feliz y quiero una comedia de menos de 2 horas"
+                required></textarea>
+
+            <button type="submit" class="btn btn-primary mt-3 w-100">
+                Buscar con IA
+            </button>
+        </form>
+
+        <div id="resultado" class="mt-4"></div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("formBusqueda").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const busqueda = document.getElementById("busqueda").value;
+        const resultado = document.getElementById("resultado");
+
+        resultado.textContent = "Interpretando tu búsqueda...";
+
+        try {
+            const respuesta = await fetch('@Url.Action("InterpretarBusqueda", "Home")', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({ busqueda: busqueda })
+            });
+
+            const texto = await respuesta.text();
+
+            if (!respuesta.ok) {
+                throw new Error(texto);
+            }
+
+            resultado.textContent = texto;
+        } catch (error) {
+            resultado.textContent = "No se pudo procesar la búsqueda. Revisá la conexión y la configuración de la IA.";
+        }
+    });
+</script>

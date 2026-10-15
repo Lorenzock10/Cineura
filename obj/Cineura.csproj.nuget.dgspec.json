@@ -61,6 +61,10 @@
             "Microsoft.Data.SqlClient": {
               "target": "Package",
               "version": "[7.1.1, )"
+            },
+            "Microsoft.SemanticKernel.Connectors.OpenAI": {
+              "target": "Package",
+              "version": "[1.81.0, )"
             }
           },
           "imports": [

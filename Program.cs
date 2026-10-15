@@ -1,4 +1,4 @@
-using Microsoft.SemanticKernel; // 👈 1. AGREGADO: Directiva de Semantic Kernel
+using Cineura.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,12 +7,8 @@ builder.Services.AddSession();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// 👈 2. AGREGADO: Registrar Semantic Kernel en los servicios de tu aplicación
-builder.Services.AddKernel()
-    .AddOpenAIChatCompletion(
-        modelId: "gpt-4o-mini", 
-        apiKey: "TU_API_KEY_AQUI" // Reemplaza con tu clave de OpenAI
-    );
+// Registrar el buscador inteligente de Cineura.
+builder.Services.AddScoped<BuscadorIA>();
 
 var app = builder.Build();
 
@@ -20,7 +16,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
