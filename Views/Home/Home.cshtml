@@ -1,3 +1,4 @@
+
 @{
     ViewData["Title"] = "Cineura";
 }
@@ -6,30 +7,29 @@
     <h1 class="text-center fw-bold">Bienvenido a Cineura</h1>
 
     <p class="text-center mt-3">
-        Encontrá tu próxima película con nuestro buscador inteligente.
+        Encontrá tu próxima película con Nova.
     </p>
 
-    <div class="card p-4 mt-4 mx-auto" style="max-width: 650px;">
+    <div class="card p-4 mt-4 mx-auto" style="max-width: 750px;">
         <form id="formBusqueda">
             <label for="busqueda" class="form-label fw-bold">
                 ¿Qué tipo de película querés ver?
             </label>
 
-            <textarea
-                id="busqueda"
-                name="busqueda"
-                class="form-control"
-                rows="3"
-                placeholder="Ejemplo: Estoy feliz y quiero una comedia de menos de 2 horas"
+            <textarea id="busqueda" name="busqueda"
+                class="form-control" rows="3"
+                placeholder="Ejemplo: Quiero una comedia de menos de 2 horas"
                 required></textarea>
 
             <button type="submit" class="btn btn-primary mt-3 w-100">
-                Buscar con IA
+                Buscar películas
             </button>
         </form>
 
         <div id="resultado" class="mt-4"></div>
     </div>
+
+    <div id="peliculas" class="row mt-4"></div>
 </div>
 
 <script>
@@ -38,11 +38,13 @@
 
         const busqueda = document.getElementById("busqueda").value;
         const resultado = document.getElementById("resultado");
+        const contenedor = document.getElementById("peliculas");
 
-        resultado.textContent = "Interpretando tu búsqueda...";
+        resultado.textContent = "Buscando películas...";
+        contenedor.replaceChildren();
 
         try {
-            const respuesta = await fetch('@Url.Action("InterpretarBusqueda", "Home")', {
+            const respuesta = await fetch('@Url.Action("BuscarPeliculas", "Home")', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
@@ -50,15 +52,59 @@
                 body: new URLSearchParams({ busqueda: busqueda })
             });
 
-            const texto = await respuesta.text();
-
             if (!respuesta.ok) {
-                throw new Error(texto);
+                throw new Error(await respuesta.text());
             }
 
-            resultado.textContent = texto;
+            const peliculas = await respuesta.json();
+
+            resultado.textContent = peliculas.length > 0
+                ? "Encontramos estas películas:"
+                : "No encontramos películas que coincidan. Probá con otro género o duración.";
+
+            peliculas.forEach(function (p) {
+                const columna = document.createElement("div");
+                columna.className = "col-md-4 mb-4";
+
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "card h-100";
+
+                if (p.posterUrl) {
+                    const imagen = document.createElement("img");
+                    imagen.src = p.posterUrl;
+                    imagen.alt = p.titulo;
+                    imagen.className = "card-img-top";
+                    imagen.style.height = "350px";
+                    imagen.style.objectFit = "cover";
+                    tarjeta.appendChild(imagen);
+                }
+
+                const cuerpo = document.createElement("div");
+                cuerpo.className = "card-body";
+
+                const titulo = document.createElement("h5");
+                titulo.className = "card-title";
+                titulo.textContent = p.titulo;
+                cuerpo.appendChild(titulo);
+
+                const datos = document.createElement("p");
+                datos.className = "text-muted";
+                datos.textContent = (p.anio || "") + " · " +
+                    (p.genero || "Género no disponible") + " · " +
+                    p.duracionMinutos + " min";
+                cuerpo.appendChild(datos);
+
+                const descripcion = document.createElement("p");
+                descripcion.className = "card-text";
+                descripcion.textContent = p.sinopsis || "Sin descripción disponible.";
+                cuerpo.appendChild(descripcion);
+
+                tarjeta.appendChild(cuerpo);
+                columna.appendChild(tarjeta);
+                contenedor.appendChild(columna);
+            });
         } catch (error) {
-            resultado.textContent = "No se pudo procesar la búsqueda. Revisá la conexión y la configuración de la IA.";
+            resultado.textContent = "Error: " + error.message;
         }
     });
 </script>

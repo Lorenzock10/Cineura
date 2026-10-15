@@ -32,4 +32,29 @@ public class BD{
             return db.QueryFirstOrDefault<Usuarios>(sql, new { usuario });
         }
     }
+
+
+    public List<Peliculas> ObtenerPeliculas()
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query = @"
+                SELECT
+                    IdPelicula,
+                    Titulo,
+                    Sinopsis,
+                    Genero,
+                    DuracionMinutos,
+                    Anio,
+                    Animo,
+                    PosterUrl
+                FROM Peliculas";
+
+            return connection.Query<Peliculas>(query).ToList();
+        }
+    }
+
+
+
+
 }
