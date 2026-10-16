@@ -1,48 +1,20 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Cineura | Buscador Inteligente";
-    var usuarioSesion = Context.Session.GetString("usuario");
-    var nombreSesion = Context.Session.GetString("nombre");
 }
 
 <div class="cineura-pagina">
     <div class="cineura-contenedor">
 
-        <!-- HEADER / NAVBAR TOP -->
-        <header class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom border-secondary">
-            <div class="cineura-brand">
-                <a href="@Url.Action("Index", "Home")" class="d-inline-block">
-                    <img src="~/imagenes/cineura.jpg" alt="Cineura" style="max-height: 95px; width: auto; object-fit: contain;" />
-                </a>
-            </div>
-
-            <!-- NAVEGACIÓN Y ACCESO A CUENTA -->
-            <div class="d-flex align-items-center gap-3">
-                @if (!string.IsNullOrEmpty(usuarioSesion))
-                {
-                    <span class="text-white fw-bold me-2 fs-5">👋 Hola, @nombreSesion</span>
-                    <a href="@Url.Action("CerrarSesion", "Home")" class="cineura-btn-header-login">
-                        Cerrar sesión
-                    </a>
-                }
-                else
-                {
-                    <a href="@Url.Action("Login", "Home")" class="cineura-btn-header-login">
-                        Iniciar sesión
-                    </a>
-                    <a href="@Url.Action("Registrarse", "Home")" class="cineura-btn-header-registro">
-                        Crear cuenta
-                    </a>
-                }
-            </div>
-        </header>
-
-        <!-- HERO / BUSCADOR IA -->
+        <!-- BUSCADOR IA -->
         <div class="cineura-hero text-center mb-5">
             <div class="cineura-badge-neural mb-3">
-                <span class="punto-verde">●</span> MOTOR NEURAL V4.2 ACTIVO &nbsp;•&nbsp; Calibrado a tu perfil cinematográfico
+                <span class="punto-verde">●</span>
+                MOTOR NEURAL V4.2 ACTIVO &nbsp;•&nbsp; Calibrado a tu perfil cinematográfico
             </div>
 
             <h1 class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
+
             <p class="cineura-subtitulo hero-subtitulo">
                 Describí una trama difusa, un dilema moral, una atmósfera particular o un género y dejá que la IA encuentre la opción ideal.
             </p>
@@ -63,7 +35,7 @@
                     </div>
                 </form>
 
-                <!-- ETIQUETAS RÁPIDAS (MOODS Y ESTÉTICAS) -->
+                <!-- MOODS -->
                 <div class="filtros-rapidos mt-3">
                     <div class="grupo-tags">
                         <span class="tag-label">MOODS:</span>
@@ -72,6 +44,7 @@
                         <button type="button" class="btn-tag" onclick="agregarTexto('Adrenalina Pura')">Adrenalina Pura</button>
                         <button type="button" class="btn-tag" onclick="agregarTexto('Existencialista')">Existencialista</button>
                     </div>
+
                     <div class="grupo-tags mt-2">
                         <span class="tag-label">ESTÉTICAS:</span>
                         <button type="button" class="btn-tag tag-destacado" onclick="agregarTexto('A24 Vibes')">✦ A24 Vibes</button>
@@ -83,9 +56,10 @@
             </div>
         </div>
 
-        <!-- ESTADO Y RESULTADO IA -->
+        <!-- MENSAJES DEL BUSCADOR -->
         <div id="resultado" class="cineura-estado text-center fs-5 my-4" role="status"></div>
 
+        <!-- RESULTADO DE LA RECOMENDACIÓN -->
         <div id="recomendacion" class="cineura-recomendacion mb-5">
             <div class="row g-0">
                 <div class="col-md-5" id="zonaPoster">
@@ -122,7 +96,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN DE PELÍCULAS EN TENDENCIA (GRILLA) -->
+        <!-- PELÍCULAS EN TENDENCIA -->
         <div class="seccion-tendencias mt-5 pt-4">
             <div class="d-flex justify-content-between align-items-end mb-4">
                 <div>
@@ -135,12 +109,17 @@
             </div>
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
-                <!-- Tarjeta 1 -->
+
+                <!-- DUNE: PART TWO -->
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-purple">#1 Tendencia Global</span>
-                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="Dune 2" />
+                            <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
+                                 class="card-poster-img"
+                                 alt="Póster de Dune: Part Two"
+                                 loading="lazy"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Dune+Part+Two';" />
                             <div class="card-score">★ 8.7</div>
                         </div>
                         <div class="card-info">
@@ -155,12 +134,16 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta 2 -->
+                <!-- POOR THINGS -->
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-cyan">#2 en Auge</span>
-                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="Poor Things" />
+                            <img src="https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg"
+                                 class="card-poster-img"
+                                 alt="Póster de Poor Things"
+                                 loading="lazy"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Poor+Things';" />
                             <div class="card-score">★ 8.4</div>
                         </div>
                         <div class="card-info">
@@ -175,12 +158,16 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta 3 -->
+                <!-- THE SUBSTANCE -->
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-gold">#3 Más Comentada</span>
-                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="The Substance" />
+                            <img src="https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg"
+                                 class="card-poster-img"
+                                 alt="Póster de The Substance"
+                                 loading="lazy"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=The+Substance';" />
                             <div class="card-score">★ 8.0</div>
                         </div>
                         <div class="card-info">
@@ -195,12 +182,16 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta 4 -->
+                <!-- ANATOMY OF A FALL -->
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-dark">#4 Palma de Oro</span>
-                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="Anatomy of a Fall" />
+                            <img src="https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg"
+                                 class="card-poster-img"
+                                 alt="Póster de Anatomy of a Fall"
+                                 loading="lazy"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Anatomy+of+a+Fall';" />
                             <div class="card-score">★ 8.1</div>
                         </div>
                         <div class="card-info">
@@ -214,6 +205,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -237,6 +229,7 @@
         } else {
             campoBusqueda.value += ", " + texto;
         }
+
         campoBusqueda.focus();
     }
 
@@ -244,9 +237,13 @@
         e.preventDefault();
 
         ultimaBusqueda = campoBusqueda.value.trim();
-        if (!ultimaBusqueda) return;
 
-        resultado.textContent = "✦ Buscando en tu base de datos...";
+        if (!ultimaBusqueda) {
+            resultado.textContent = "Escribí qué tipo de película querés ver.";
+            return;
+        }
+
+        resultado.textContent = "✦ Buscando recomendaciones...";
         recomendacion.style.display = "none";
         botonBuscar.disabled = true;
 
@@ -262,38 +259,54 @@
             });
 
             if (!respuesta.ok) {
-                throw new Error("El servidor respondió con código " + respuesta.status);
+                throw new Error("Error del servidor: " + respuesta.status);
             }
 
             const data = await respuesta.json();
-            ultimaLista = Array.isArray(data) ? data : [data];
 
-            if (ultimaLista.length === 0) {
-                resultado.textContent = "No encontramos películas en tu base de datos que coincidan. Probá describir tu búsqueda de otra manera.";
+            if (!data || (Array.isArray(data) && data.length === 0)) {
+                resultado.textContent =
+                    "No encontramos películas para esa búsqueda. Probá con otra descripción.";
                 return;
             }
 
+            ultimaLista = Array.isArray(data) ? data : [data];
             indiceActual = 0;
+
             mostrarPelicula(ultimaLista[indiceActual]);
 
-            resultado.textContent = "✦ Encontramos " + ultimaLista.length + (ultimaLista.length === 1 ? " película para vos:" : " películas para vos:");
+            resultado.textContent =
+                "✦ Encontramos " + ultimaLista.length +
+                (ultimaLista.length === 1
+                    ? " película para vos."
+                    : " películas para vos.");
+
             recomendacion.style.display = "block";
-            recomendacion.scrollIntoView({ behavior: "smooth", block: "start" });
+            recomendacion.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
         } catch (error) {
-            resultado.textContent = "Error al procesar la búsqueda: " + error.message;
+            console.error(error);
+            resultado.textContent =
+                "No pudimos obtener las recomendaciones. Revisá el servidor e intentá nuevamente.";
         } finally {
             botonBuscar.disabled = false;
         }
     });
 
     function mostrarPelicula(p) {
-        document.getElementById("tituloPelicula").textContent = p.titulo || "Sin título";
-        document.getElementById("descripcionPelicula").textContent = p.sinopsis || "Película encontrada en tu base de datos.";
+        if (!p) return;
 
-        document.getElementById("datosPelicula").textContent = [
-            p.duracionMinutos ? p.duracionMinutos + " min" : null
-        ].filter(Boolean).join(" · ") || "Información de la película";
+        document.getElementById("tituloPelicula").textContent =
+            p.titulo || "Sin título";
+
+        document.getElementById("descripcionPelicula").textContent =
+            p.sinopsis || "No hay una sinopsis disponible.";
+
+        document.getElementById("datosPelicula").textContent =
+            p.duracionMinutos ? p.duracionMinutos + " min" : "Información no disponible";
 
         const etiquetas = document.getElementById("etiquetasPelicula");
         etiquetas.replaceChildren();
@@ -306,7 +319,7 @@
         });
 
         document.getElementById("motivoPelicula").textContent =
-            "Elegimos esta película de tu base de datos porque coincide con tu búsqueda: \"" + ultimaBusqueda + "\".";
+            'Esta película coincide con tu búsqueda: "' + ultimaBusqueda + '".';
 
         const zonaPoster = document.getElementById("zonaPoster");
         zonaPoster.replaceChildren();
@@ -314,11 +327,13 @@
         if (p.posterUrl) {
             const imagen = document.createElement("img");
             imagen.src = p.posterUrl;
-            imagen.alt = p.titulo || "Poster";
+            imagen.alt = p.titulo || "Póster";
             imagen.className = "cineura-poster";
+
             imagen.onerror = function () {
                 mostrarPosterVacio(p.titulo);
             };
+
             zonaPoster.appendChild(imagen);
         } else {
             mostrarPosterVacio(p.titulo);
@@ -337,23 +352,29 @@
     function mostrarPosterVacio(titulo) {
         const zonaPoster = document.getElementById("zonaPoster");
         zonaPoster.replaceChildren();
+
         const espacio = document.createElement("div");
         espacio.className = "cineura-poster-vacio";
+
         const texto = document.createElement("span");
         texto.textContent = titulo || "✦ CINEURA";
+
         espacio.appendChild(texto);
         zonaPoster.appendChild(espacio);
     }
 
     document.getElementById("botonOtra").addEventListener("click", function () {
         if (ultimaLista.length <= 1) {
-            resultado.textContent = "Encontramos una sola película para esta búsqueda.";
+            resultado.textContent =
+                "No hay otra película para esta búsqueda. Probá con otra descripción.";
             return;
         }
 
         indiceActual = (indiceActual + 1) % ultimaLista.length;
         mostrarPelicula(ultimaLista[indiceActual]);
 
-        resultado.textContent = "Recomendación " + (indiceActual + 1) + " de " + ultimaLista.length;
+        resultado.textContent =
+            "Recomendación " + (indiceActual + 1) +
+            " de " + ultimaLista.length;
     });
 </script>

@@ -7,8 +7,7 @@ namespace Cineura.Models;
 public class BD{
     
   
-  private string _connectionString = @"Server=localhost;Database=Cineura;
-    Integrated Security=True;TrustServerCertificate=True;";
+  private string _connectionString = @"Server=localhost\SQLEXPRESS;Database=Cineura;Integrated Security=True;TrustServerCertificate=True;";
 
 
 

@@ -1,3 +1,4 @@
+
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -325,9 +326,14 @@ public class HomeController : Controller
             return View();
         }
 
-        HttpContext.Session.SetString("usuario", usuarioEncontrado.NombreUsuario);
-        HttpContext.Session.SetString("nombre", usuarioEncontrado.Nombre);
-        HttpContext.Session.SetString("apellido", usuarioEncontrado.Apellido);
+        HttpContext.Session.SetString(
+            "usuario", usuarioEncontrado.NombreUsuario);
+
+        HttpContext.Session.SetString(
+            "nombre", usuarioEncontrado.Nombre);
+
+        HttpContext.Session.SetString(
+            "apellido", usuarioEncontrado.Apellido);
 
         return RedirectToAction("Index");
     }
@@ -357,7 +363,8 @@ public class HomeController : Controller
 
         BD bd = new BD();
 
-        Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
+        Usuarios usuarioExistente =
+            bd.ObtenerUsuarioPorNombre(usuario);
 
         if (usuarioExistente != null)
         {
@@ -375,11 +382,9 @@ public class HomeController : Controller
 
         bd.AgregarUsuario(nuevoUsuario);
 
-        HttpContext.Session.SetString("usuario", nuevoUsuario.NombreUsuario);
-        HttpContext.Session.SetString("nombre", nuevoUsuario.Nombre);
-        HttpContext.Session.SetString("apellido", nuevoUsuario.Apellido);
-
-        return RedirectToAction("Index");
+        // Después del registro, ir a iniciar sesión.
+        // No iniciar la sesión automáticamente.
+        return RedirectToAction("Login");
     }
 
     public IActionResult CerrarSesion()

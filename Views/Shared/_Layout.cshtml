@@ -1,50 +1,235 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Cineura</title>
+
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Cineura.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Cineura</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Cineura - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <style>
+        body {
+            background-color: #111827;
+            color: #FFFFFF;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .cineura-header {
+            width: 100%;
+            background-color: #111827;
+            border-bottom: 1px solid #374151;
+            padding: 15px 30px;
+            box-sizing: border-box;
+        }
+
+        .cineura-header-contenido {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* LOGO MÁS GRANDE */
+        .cineura-logo img {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .cineura-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .cineura-menu a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .cineura-menu a:hover {
+            color: #FBBF24;
+        }
+
+        .cineura-sesion {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .cineura-saludo {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        /* INICIAR SESIÓN: TEXTO BLANCO */
+        .cineura-btn-header-login {
+            display: inline-block;
+            padding: 10px 18px;
+            border: 2px solid #FBBF24;
+            border-radius: 8px;
+            background-color: #FBBF24;
+            color: #FFFFFF !important;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .cineura-btn-header-login:hover {
+            background-color: transparent;
+            color: #FFFFFF !important;
+        }
+
+        /* CREAR CUENTA: TEXTO Y BORDE ROJOS */
+        .cineura-btn-header-registro {
+            display: inline-block;
+            padding: 10px 18px;
+            border: 2px solid #EF4444;
+            border-radius: 8px;
+            background-color: transparent;
+            color: #EF4444 !important;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .cineura-btn-header-registro:hover {
+            background-color: #EF4444;
+            color: #FFFFFF !important;
+        }
+
+        /* CERRAR SESIÓN: TEXTO Y BORDE ROJOS */
+        .cineura-btn-cerrar-sesion {
+            display: inline-block;
+            padding: 10px 18px;
+            border: 2px solid #EF4444;
+            border-radius: 8px;
+            background-color: transparent;
+            color: #EF4444 !important;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .cineura-btn-cerrar-sesion:hover {
+            background-color: #EF4444;
+            color: #FFFFFF !important;
+        }
+
+        .cineura-contenido {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .cineura-footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            color: #9CA3AF;
+            border-top: 1px solid #374151;
+        }
+
+        @@media (max-width: 768px) {
+            .cineura-header {
+                padding: 15px;
+            }
+
+            .cineura-header-contenido {
+                justify-content: center;
+            }
+
+            .cineura-logo img {
+                height: 75px;
+            }
+
+            .cineura-menu {
+                gap: 15px;
+            }
+
+            .cineura-sesion {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="cineura-header">
+        <div class="cineura-header-contenido">
+
+            <div class="cineura-logo">
+                <a href="@Url.Action("Index", "Home")">
+                    <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+                </a>
+            </div>
+
+            <nav class="cineura-menu">
+                <a href="@Url.Action("Index", "Home")">Home</a>
+                <a href="@Url.Action("Explorar", "Home")">Explorar</a>
+                <a href="@Url.Action("Watchlist", "Home")">Watchlist</a>
+                <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
+            </nav>
+
+            <div class="cineura-sesion">
+                @{
+                    var usuarioSesion = Context.Session.GetString("usuario");
+                    var nombreSesion = Context.Session.GetString("nombre");
+                }
+
+                @if (!string.IsNullOrEmpty(usuarioSesion))
+                {
+                    <span class="cineura-saludo">
+                        👋 Hola, @nombreSesion
+                    </span>
+
+                    <a href="@Url.Action("CerrarSesion", "Home")"
+                       class="cineura-btn-cerrar-sesion">
+                        Cerrar sesión
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Home")"
+                       class="cineura-btn-header-login">
+                        Iniciar sesión
+                    </a>
+
+                    <a href="@Url.Action("Registrarse", "Home")"
+                       class="cineura-btn-header-registro">
+                        Crear cuenta
+                    </a>
+                }
+            </div>
+
         </div>
+    </header>
+
+    <main role="main" class="cineura-contenido">
+        @RenderBody()
+    </main>
+
+    <footer class="cineura-footer">
+        &copy; 2026 - Cineura
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

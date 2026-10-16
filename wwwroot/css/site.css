@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 html {
@@ -43,7 +44,7 @@ body {
     text-align: start;
 }
 
-/* LOGO */
+/* LOGOS */
 
 .cineura-icono img {
     display: block;
@@ -83,6 +84,7 @@ body {
     max-width: 480px;
     margin: 0 auto;
 }
+
 .cineura-rojo {
     color: #ef4444;
 }
@@ -90,6 +92,7 @@ body {
 .cineura-amarillo {
     color: #fbbf24;
 }
+
 .cuenta-logo {
     display: flex;
     justify-content: center;
@@ -198,7 +201,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* PÁGINA PRINCIPAL */
+/* PÁGINA DE INICIO */
 
 .cineura-inicio {
     min-height: 75vh;
@@ -250,7 +253,7 @@ body {
     line-height: 1.7;
 }
 
-/* BOTONES GENERALES DE CINEURA */
+/* BOTONES GENERALES */
 
 .cineura-boton {
     display: block;
@@ -266,8 +269,6 @@ body {
     cursor: pointer;
 }
 
-/* INICIAR SESIÓN: AMARILLO */
-
 .cineura-boton.cineura-login {
     background-color: #fbbf24;
     color: #111827;
@@ -280,8 +281,6 @@ body {
     color: #111827;
 }
 
-/* CREAR CUENTA: BORDE ROJO */
-
 .cineura-boton.cineura-registro {
     background-color: transparent;
     color: #ef4444;
@@ -292,8 +291,6 @@ body {
     background-color: #ef4444;
     color: #ffffff;
 }
-
-/* TEXTO INFERIOR */
 
 .cineura-pie {
     margin-top: 28px;
@@ -467,28 +464,8 @@ body {
     margin-top: 20px;
 }
 
-/* ADAPTACIÓN A CELULARES */
+/* BOTONES DEL ENCABEZADO */
 
-@media (max-width: 767px) {
-    .cineura-detalle {
-        padding: 20px;
-    }
-
-    .cineura-tarjeta {
-        padding: 35px 22px;
-    }
-
-    .cuenta-panel {
-        padding: 22px;
-    }
-
-    .cineura-contenedor {
-        padding: 0 15px;
-    }
-}
-/* --- ESTILOS ADICIONALES CINEURA STYLE CINE-AI --- */
-
-/* BOTONES DE HEADER */
 .cineura-btn-header-login {
     color: #fbbf24;
     border: 1px solid #fbbf24;
@@ -521,7 +498,8 @@ body {
     color: #ffffff;
 }
 
-/* HERO SECTION */
+/* HERO */
+
 .cineura-badge-neural {
     font-size: 11px;
     letter-spacing: 1.5px;
@@ -551,7 +529,8 @@ body {
     font-size: 1rem;
 }
 
-/* BUSCADOR IA INTEGRADO */
+/* BUSCADOR IA */
+
 .cineura-buscador-box {
     max-width: 780px;
     margin: 25px auto 0;
@@ -583,7 +562,6 @@ body {
 }
 
 .cineura-boton-ia {
-    background: #8b5cf6;
     background: linear-gradient(135deg, #ef4444, #fbbf24);
     color: #ffffff;
     font-weight: 700;
@@ -601,6 +579,7 @@ body {
 }
 
 /* TAGS Y MOODS */
+
 .filtros-rapidos {
     text-align: left;
     font-size: 12px;
@@ -636,7 +615,8 @@ body {
     color: #fca5a5;
 }
 
-/* TARJETAS DE PELÍCULAS (GRILLA TENDENCIAS) */
+/* TARJETAS DE PELÍCULAS */
+
 .card-pelicula {
     background: #1f2937;
     border: 1px solid #374151;
@@ -676,10 +656,21 @@ body {
     color: #ffffff;
 }
 
-.badge-ranking-purple { background: #7c3aed; }
-.badge-ranking-cyan { background: #0891b2; }
-.badge-ranking-gold { background: #d97706; }
-.badge-ranking-dark { background: #374151; }
+.badge-ranking-purple {
+    background: #7c3aed;
+}
+
+.badge-ranking-cyan {
+    background: #0891b2;
+}
+
+.badge-ranking-gold {
+    background: #d97706;
+}
+
+.badge-ranking-dark {
+    background: #374151;
+}
 
 .card-score {
     position: absolute;
@@ -739,4 +730,66 @@ body {
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* CORRECCIÓN DEL TAMAÑO DE LOS LOGOS */
+
+/* Logo del encabezado de la página principal */
+.cineura-brand img {
+    width: 220px !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    height: auto !important;
+    object-fit: contain;
+}
+
+/* Logos de iniciar sesión y crear cuenta */
+.cuenta-logo img {
+    width: 160px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+}
+
+/* Logo de la pantalla inicial */
+.cineura-logo-mark {
+    width: 120px;
+    height: 120px;
+}
+
+.cineura-logo-mark img {
+    width: 90px;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Adaptación a celulares */
+@media (max-width: 767px) {
+    .cineura-detalle {
+        padding: 20px;
+    }
+
+    .cineura-tarjeta {
+        padding: 35px 22px;
+    }
+
+    .cuenta-panel {
+        padding: 22px;
+    }
+
+    .cineura-contenedor {
+        padding: 0 15px;
+    }
+
+    .cineura-brand img {
+        width: 170px !important;
+    }
+
+    .cuenta-logo img {
+        width: 140px !important;
+    }
+
+    .hero-titulo {
+        font-size: 2rem;
+    }
 }
