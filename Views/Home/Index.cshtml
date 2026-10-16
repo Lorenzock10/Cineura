@@ -10,21 +10,16 @@
         <!-- HEADER / NAVBAR TOP -->
         <header class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom border-secondary">
             <div class="cineura-brand">
-                <div class="cineura-brand-logo">
-                    <img src="~/imagenes/cineura.png" alt="Cineura" />
-                </div>
-                <div class="cineura-logo">
-                    <span class="cineura-rojo">CINE</span><span class="cineura-amarillo">URA</span>
-                </div>
+                <a href="@Url.Action("Index", "Home")" class="d-inline-block">
+                    <img src="~/imagenes/cineura.jpg" alt="Cineura" style="max-height: 95px; width: auto; object-fit: contain;" />
+                </a>
             </div>
 
             <!-- NAVEGACIÓN Y ACCESO A CUENTA -->
             <div class="d-flex align-items-center gap-3">
-                <span class="cineura-subtitulo d-none d-md-inline me-2">✦ Nova AI</span>
-
                 @if (!string.IsNullOrEmpty(usuarioSesion))
                 {
-                    <span class="text-white fw-bold me-2">👋 Hola, @nombreSesion</span>
+                    <span class="text-white fw-bold me-2 fs-5">👋 Hola, @nombreSesion</span>
                     <a href="@Url.Action("CerrarSesion", "Home")" class="cineura-btn-header-login">
                         Cerrar sesión
                     </a>
@@ -101,7 +96,7 @@
 
                 <div class="col-md-7">
                     <div class="cineura-detalle">
-                        <div class="cineura-subtitulo mb-2">✦ NOVA ELIGIÓ PARA VOS</div>
+                        <div class="cineura-subtitulo mb-2">✦ RECOMENDACIÓN PARA VOS</div>
                         <h2 id="tituloPelicula">Tu próxima película</h2>
                         <div id="etiquetasPelicula" class="my-3"></div>
                         <p id="datosPelicula" class="cineura-datos"></p>
@@ -110,7 +105,7 @@
                         <p id="descripcionPelicula" class="cineura-descripcion"></p>
 
                         <div class="cineura-motivo">
-                            <h3>¿Por qué Nova la eligió?</h3>
+                            <h3>¿Por qué la elegimos para vos?</h3>
                             <p id="motivoPelicula"></p>
                         </div>
 
@@ -145,7 +140,7 @@
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-purple">#1 Tendencia Global</span>
-                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="Dune 2" />
+                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="Dune 2" />
                             <div class="card-score">★ 8.7</div>
                         </div>
                         <div class="card-info">
@@ -165,7 +160,7 @@
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-cyan">#2 en Auge</span>
-                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="Poor Things" />
+                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="Poor Things" />
                             <div class="card-score">★ 8.4</div>
                         </div>
                         <div class="card-info">
@@ -185,7 +180,7 @@
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-gold">#3 Más Comentada</span>
-                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="The Substance" />
+                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="The Substance" />
                             <div class="card-score">★ 8.0</div>
                         </div>
                         <div class="card-info">
@@ -205,7 +200,7 @@
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
                             <span class="badge-ranking badge-ranking-dark">#4 Palma de Oro</span>
-                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="Anatomy of a Fall" />
+                            <img src="~/imagenes/logo_c.jpg" class="card-poster-img" alt="Anatomy of a Fall" />
                             <div class="card-score">★ 8.1</div>
                         </div>
                         <div class="card-info">
@@ -225,7 +220,6 @@
     </div>
 </div>
 
-<!-- JAVASCRIPT DE BÚSQUEDA INTEGRADO -->
 <script>
     let ultimaBusqueda = "";
     let ultimaLista = [];
@@ -252,7 +246,7 @@
         ultimaBusqueda = campoBusqueda.value.trim();
         if (!ultimaBusqueda) return;
 
-        resultado.textContent = "✦ Nova está buscando en tu base de datos...";
+        resultado.textContent = "✦ Buscando en tu base de datos...";
         recomendacion.style.display = "none";
         botonBuscar.disabled = true;
 
@@ -282,7 +276,7 @@
             indiceActual = 0;
             mostrarPelicula(ultimaLista[indiceActual]);
 
-            resultado.textContent = "✦ Nova encontró " + ultimaLista.length + (ultimaLista.length === 1 ? " película para vos:" : " películas para vos:");
+            resultado.textContent = "✦ Encontramos " + ultimaLista.length + (ultimaLista.length === 1 ? " película para vos:" : " películas para vos:");
             recomendacion.style.display = "block";
             recomendacion.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -312,7 +306,7 @@
         });
 
         document.getElementById("motivoPelicula").textContent =
-            "Nova eligió esta película de tu base de datos porque coincide con tu búsqueda: \"" + ultimaBusqueda + "\".";
+            "Elegimos esta película de tu base de datos porque coincide con tu búsqueda: \"" + ultimaBusqueda + "\".";
 
         const zonaPoster = document.getElementById("zonaPoster");
         zonaPoster.replaceChildren();
@@ -353,7 +347,7 @@
 
     document.getElementById("botonOtra").addEventListener("click", function () {
         if (ultimaLista.length <= 1) {
-            resultado.textContent = "Nova encontró una sola película para esta búsqueda.";
+            resultado.textContent = "Encontramos una sola película para esta búsqueda.";
             return;
         }
 
