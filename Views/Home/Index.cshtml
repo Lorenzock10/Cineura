@@ -1,34 +1,225 @@
 ﻿@{
-    ViewData["Title"] = "Bienvenido a Cineura";
+    ViewData["Title"] = "Cineura | Buscador Inteligente";
+    var usuarioSesion = Context.Session.GetString("usuario");
+    var nombreSesion = Context.Session.GetString("nombre");
 }
 
-<div class="cineura-inicio">
-    <div class="cineura-tarjeta">
-            <div class="cineura-icono">
-                <img src="~/imagenes/logo_c.jpg" alt="Cineura" />
+<div class="cineura-pagina">
+    <div class="cineura-contenedor">
+
+        <!-- HEADER / NAVBAR TOP -->
+        <header class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom border-secondary">
+            <div class="cineura-brand">
+                <div class="cineura-brand-logo">
+                    <img src="~/imagenes/cineura.png" alt="Cineura" />
+                </div>
+                <div class="cineura-logo">
+                    <span class="cineura-rojo">CINE</span><span class="cineura-amarillo">URA</span>
+                </div>
             </div>
-      <h1 class="cineura-titulo">
-    <span class="cineura-rojo">CINE</span><span class="cineura-amarillo">URA</span>
-</h1>
 
-        <p class="cineura-descripcion">
-            Descubrí tu próxima película favorita.
-            Encontrá historias que vayan con vos.
-        </p>
+            <!-- NAVEGACIÓN Y ACCESO A CUENTA -->
+            <div class="d-flex align-items-center gap-3">
+                <span class="cineura-subtitulo d-none d-md-inline me-2">✦ Nova AI</span>
 
-        <a href="@Url.Action("Login", "Home")"
-           class="cineura-boton cineura-login">
-            Iniciar sesión
-        </a>
+                @if (!string.IsNullOrEmpty(usuarioSesion))
+                {
+                    <span class="text-white fw-bold me-2">👋 Hola, @nombreSesion</span>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Home")" class="cineura-btn-header-login">
+                        Iniciar sesión
+                    </a>
+                    <a href="@Url.Action("Registrarse", "Home")" class="cineura-btn-header-registro">
+                        Crear cuenta
+                    </a>
+                }
+            </div>
+        </header>
 
-        <a href="@Url.Action("Registrarse", "Home")"
-           class="cineura-boton cineura-registro">
-            Crear una cuenta
-        </a>
+        <!-- HERO / BUSCADOR IA -->
+        <div class="cineura-hero text-center mb-5">
+            <div class="cineura-badge-neural mb-3">
+                <span class="punto-verde">●</span> MOTOR NEURAL V4.2 ACTIVO &nbsp;•&nbsp; Calibrado a tu perfil cinematográfico
+            </div>
 
-        <p class="cineura-pie">
-            Tu próximo descubrimiento empieza acá.
-        </p>
+            <h1 class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
+            <p class="cineura-subtitulo hero-subtitulo">
+                Describí una trama difusa, un dilema moral, una atmósfera particular o un género y dejá que la IA encuentre la opción ideal.
+            </p>
+
+            <div class="cineura-buscador-box">
+                <form id="formBusqueda" class="w-100">
+                    <div class="buscador-input-group">
+                        <textarea id="busqueda"
+                                  name="busqueda"
+                                  class="form-control cineura-input-hero"
+                                  rows="2"
+                                  placeholder="Ej: Un thriller psicológico oscuro con giros inesperados..."
+                                  required></textarea>
+
+                        <button type="submit" id="botonBuscar" class="cineura-boton-ia">
+                            ✦ Generar Recomendación
+                        </button>
+                    </div>
+                </form>
+
+                <!-- ETIQUETAS RÁPIDAS (MOODS Y ESTÉTICAS) -->
+                <div class="filtros-rapidos mt-3">
+                    <div class="grupo-tags">
+                        <span class="tag-label">MOODS:</span>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cerebral & Tenso')">• Cerebral & Tenso</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Melancolía Nórdica')">Melancolía Nórdica</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Adrenalina Pura')">Adrenalina Pura</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Existencialista')">Existencialista</button>
+                    </div>
+                    <div class="grupo-tags mt-2">
+                        <span class="tag-label">ESTÉTICAS:</span>
+                        <button type="button" class="btn-tag tag-destacado" onclick="agregarTexto('A24 Vibes')">✦ A24 Vibes</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cine de Autor')">Cine de Autor</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cyberpunk')">Cyberpunk</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Sci-Fi 70s')">Sci-Fi 70s</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ESTADO Y RESULTADO IA -->
+        <div id="resultado" class="cineura-estado text-center fs-5 my-4" role="status"></div>
+
+        <div id="recomendacion" class="cineura-recomendacion mb-5">
+            <div class="row g-0">
+                <div class="col-md-5" id="zonaPoster">
+                    <div class="cineura-poster-vacio">
+                        <span>✦ CINEURA</span>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="cineura-detalle">
+                        <div class="cineura-subtitulo mb-2">✦ NOVA ELIGIÓ PARA VOS</div>
+                        <h2 id="tituloPelicula">Tu próxima película</h2>
+                        <div id="etiquetasPelicula" class="my-3"></div>
+                        <p id="datosPelicula" class="cineura-datos"></p>
+
+                        <h3 class="mt-4 fs-5 text-white">Sinopsis</h3>
+                        <p id="descripcionPelicula" class="cineura-descripcion"></p>
+
+                        <div class="cineura-motivo">
+                            <h3>¿Por qué Nova la eligió?</h3>
+                            <p id="motivoPelicula"></p>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+                            <button type="button" id="botonDetalles" class="cineura-boton-ia py-2 px-4 w-auto">
+                                Ver detalles
+                            </button>
+                            <button type="button" id="botonOtra" class="cineura-boton-secundario">
+                                ↻ Otra recomendación
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE PELÍCULAS EN TENDENCIA (GRILLA) -->
+        <div class="seccion-tendencias mt-5 pt-4">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <div class="cineura-badge-neural d-inline-block mb-1">
+                        ● TRENDING NOW &nbsp;•&nbsp; ACTUALIZADO HOY
+                    </div>
+                    <h2 class="h3 fw-bold text-white mb-0">Películas en Tendencias Globales</h2>
+                    <p class="text-secondary small mb-0">Los estrenos más vistos y aclamados de la semana.</p>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+                <!-- Tarjeta 1 -->
+                <div class="col">
+                    <div class="card-pelicula">
+                        <div class="card-poster-wrap">
+                            <span class="badge-ranking badge-ranking-purple">#1 Tendencia Global</span>
+                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="Dune 2" />
+                            <div class="card-score">★ 8.7</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-meta">2024 • 2h 46m</div>
+                            <h4 class="card-titulo">Dune: Part Two</h4>
+                            <div class="card-tags">
+                                <span class="mini-tag">Sci-Fi Épico</span>
+                                <span class="mini-tag">Denis Villeneuve</span>
+                            </div>
+                            <p class="card-sinopsis">Paul Atreides se une a Chani y los Fremen mientras busca venganza contra los conspiradores.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="col">
+                    <div class="card-pelicula">
+                        <div class="card-poster-wrap">
+                            <span class="badge-ranking badge-ranking-cyan">#2 en Auge</span>
+                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="Poor Things" />
+                            <div class="card-score">★ 8.4</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-meta">2023 • 2h 21m</div>
+                            <h4 class="card-titulo">Poor Things</h4>
+                            <div class="card-tags">
+                                <span class="mini-tag">Fantasía Satírica</span>
+                                <span class="mini-tag">Yorgos Lanthimos</span>
+                            </div>
+                            <p class="card-sinopsis">La increíble evolución de Bella Baxter, una joven resucitada por un brillante y excéntrico científico.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="col">
+                    <div class="card-pelicula">
+                        <div class="card-poster-wrap">
+                            <span class="badge-ranking badge-ranking-gold">#3 Más Comentada</span>
+                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="The Substance" />
+                            <div class="card-score">★ 8.0</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-meta">2024 • 2h 21m</div>
+                            <h4 class="card-titulo">The Substance</h4>
+                            <div class="card-tags">
+                                <span class="mini-tag">Body Horror</span>
+                                <span class="mini-tag">Coralie Fargeat</span>
+                            </div>
+                            <p class="card-sinopsis">Una celebridad en declive utiliza una droga clandestina que genera una versión más joven de sí misma.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4 -->
+                <div class="col">
+                    <div class="card-pelicula">
+                        <div class="card-poster-wrap">
+                            <span class="badge-ranking badge-ranking-dark">#4 Palma de Oro</span>
+                            <img src="~/imagenes/cineura.png" class="card-poster-img" alt="Anatomy of a Fall" />
+                            <div class="card-score">★ 8.1</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-meta">2023 • 2h 31m</div>
+                            <h4 class="card-titulo">Anatomy of a Fall</h4>
+                            <div class="card-tags">
+                                <span class="mini-tag">Drama Judicial</span>
+                                <span class="mini-tag">Justine Triet</span>
+                            </div>
+                            <p class="card-sinopsis">Una escritora es acusada de asesinar a su esposo tras una misteriosa caída en su chalet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
+
+<!-- J

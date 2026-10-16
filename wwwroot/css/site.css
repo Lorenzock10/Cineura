@@ -486,3 +486,257 @@ body {
         padding: 0 15px;
     }
 }
+/* --- ESTILOS ADICIONALES CINEURA STYLE CINE-AI --- */
+
+/* BOTONES DE HEADER */
+.cineura-btn-header-login {
+    color: #fbbf24;
+    border: 1px solid #fbbf24;
+    padding: 7px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.cineura-btn-header-login:hover {
+    background: #fbbf24;
+    color: #111827;
+}
+
+.cineura-btn-header-registro {
+    background: #ef4444;
+    color: #ffffff;
+    padding: 7px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.cineura-btn-header-registro:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+/* HERO SECTION */
+.cineura-badge-neural {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: #9ca3af;
+    background: #1f2937;
+    border: 1px solid #374151;
+    padding: 5px 14px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.punto-verde {
+    color: #10b981;
+}
+
+.hero-titulo {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-top: 10px;
+}
+
+.hero-subtitulo {
+    max-width: 680px;
+    margin: 0 auto;
+    font-size: 1rem;
+}
+
+/* BUSCADOR IA INTEGRADO */
+.cineura-buscador-box {
+    max-width: 780px;
+    margin: 25px auto 0;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.buscador-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+@media (min-width: 768px) {
+    .buscador-input-group {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.cineura-input-hero {
+    background: #111827;
+    border: 1px solid #4b5563;
+    color: #ffffff;
+    border-radius: 10px;
+    resize: none;
+}
+
+.cineura-boton-ia {
+    background: #8b5cf6;
+    background: linear-gradient(135deg, #ef4444, #fbbf24);
+    color: #ffffff;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 22px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.cineura-boton-ia:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* TAGS Y MOODS */
+.filtros-rapidos {
+    text-align: left;
+    font-size: 12px;
+}
+
+.tag-label {
+    color: #6b7280;
+    font-weight: 700;
+    margin-right: 6px;
+    letter-spacing: 0.5px;
+}
+
+.btn-tag {
+    background: #111827;
+    color: #d1d5db;
+    border: 1px solid #374151;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-tag:hover {
+    border-color: #fbbf24;
+    color: #fbbf24;
+}
+
+.tag-destacado {
+    border-color: #ef4444;
+    color: #fca5a5;
+}
+
+/* TARJETAS DE PELÍCULAS (GRILLA TENDENCIAS) */
+.card-pelicula {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 14px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.card-pelicula:hover {
+    transform: translateY(-4px);
+    border-color: #fbbf24;
+}
+
+.card-poster-wrap {
+    position: relative;
+    height: 260px;
+    background: #111827;
+}
+
+.card-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge-ranking {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: #ffffff;
+}
+
+.badge-ranking-purple { background: #7c3aed; }
+.badge-ranking-cyan { background: #0891b2; }
+.badge-ranking-gold { background: #d97706; }
+.badge-ranking-dark { background: #374151; }
+
+.card-score {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(17, 24, 39, 0.85);
+    color: #fbbf24;
+    font-weight: 800;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+}
+
+.card-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-meta {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 4px;
+}
+
+.card-titulo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.card-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.mini-tag {
+    background: #111827;
+    color: #9ca3af;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #374151;
+}
+
+.card-sinopsis {
+    font-size: 12px;
+    color: #d1d5db;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

@@ -20,7 +20,7 @@ namespace Cineura.Services
 
             #pragma warning disable SKEXP0010
             builder.AddOpenAIChatCompletion(
-                modelId: "llama-3.3-70b-versatile",
+                modelId: "openai/gpt-oss-120b",
                 endpoint: new Uri("https://api.groq.com/openai/v1"),
                 apiKey: apiKey
             );
