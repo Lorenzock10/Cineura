@@ -1,47 +1,272 @@
 
 @{
-    ViewData["Title"] = "Cineura";
+    ViewData["Title"] = "Cineura | Nova AI";
 }
 
-<div class="container mt-5">
-    <h1 class="text-center fw-bold">Bienvenido a Cineura</h1>
+<style>
+    .cineura-pagina {
+        background: #111827;
+        color: white;
+        min-height: 85vh;
+        padding: 35px 0 60px;
+    }
 
-    <p class="text-center mt-3">
-        Encontrá tu próxima película con Nova.
-    </p>
+    .cineura-contenedor {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
 
-    <div class="card p-4 mt-4 mx-auto" style="max-width: 750px;">
-        <form id="formBusqueda">
-            <label for="busqueda" class="form-label fw-bold">
-                ¿Qué tipo de película querés ver?
-            </label>
+    .cineura-logo {
+        color: #FBBF24;
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
 
-            <textarea id="busqueda" name="busqueda"
-                class="form-control" rows="3"
-                placeholder="Ejemplo: Quiero una comedia de menos de 2 horas"
-                required></textarea>
+    .cineura-subtitulo {
+        color: #9CA3AF;
+    }
 
-            <button type="submit" class="btn btn-primary mt-3 w-100">
-                Buscar películas
-            </button>
-        </form>
+    .cineura-buscador {
+        background: #1F2937;
+        border: 1px solid #374151;
+        border-radius: 16px;
+        padding: 22px;
+    }
 
-        <div id="resultado" class="mt-4"></div>
+    .cineura-input {
+        background: #111827;
+        color: white;
+        border: 1px solid #4B5563;
+        border-radius: 10px;
+        padding: 14px;
+    }
+
+    .cineura-input:focus {
+        background: #111827;
+        color: white;
+        border-color: #FBBF24;
+        box-shadow: none;
+    }
+
+    .cineura-input::placeholder {
+        color: #9CA3AF;
+    }
+
+    .cineura-boton {
+        background: #EF4444;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 13px 22px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .cineura-boton:hover {
+        background: #DC2626;
+    }
+
+    .cineura-recomendacion {
+        display: none;
+        background: #1F2937;
+        border: 1px solid #374151;
+        border-radius: 18px;
+        overflow: hidden;
+        margin-top: 30px;
+    }
+
+    .cineura-poster {
+        width: 100%;
+        min-height: 400px;
+        height: 100%;
+        max-height: 540px;
+        object-fit: cover;
+        background: #273244;
+    }
+
+    .cineura-poster-vacio {
+        min-height: 400px;
+        height: 100%;
+        background: linear-gradient(145deg, #7F1D1D, #111827 70%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .cineura-poster-vacio span {
+        color: #FBBF24;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .cineura-detalle {
+        padding: 30px;
+    }
+
+    .cineura-etiqueta {
+        display: inline-block;
+        background: #3B2630;
+        color: #FCA5A5;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        margin: 0 5px 8px 0;
+    }
+
+    .cineura-datos,
+    .cineura-descripcion {
+        color: #D1D5DB;
+    }
+
+    .cineura-descripcion {
+        line-height: 1.8;
+        font-size: 16px;
+    }
+
+    .cineura-motivo {
+        background: #26303E;
+        border-left: 3px solid #FBBF24;
+        padding: 15px;
+        border-radius: 7px;
+        margin-top: 20px;
+    }
+
+    .cineura-motivo h3 {
+        color: #FBBF24;
+        font-size: 16px;
+    }
+
+    .cineura-motivo p {
+        color: #E5E7EB;
+        margin-bottom: 0;
+    }
+
+    .cineura-boton-secundario {
+        background: transparent;
+        color: white;
+        border: 1px solid #6B7280;
+        border-radius: 10px;
+        padding: 12px 18px;
+        cursor: pointer;
+    }
+
+    .cineura-estado {
+        color: #FBBF24;
+        margin-top: 20px;
+    }
+
+    @@media (max-width: 767px) {
+        .cineura-detalle {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="cineura-pagina">
+    <div class="cineura-contenedor">
+
+        <header class="d-flex justify-content-between align-items-center mb-5">
+            <div class="cineura-logo">✦ CINEURA</div>
+            <div class="cineura-subtitulo">✦ Nova AI</div>
+        </header>
+
+        <div class="mb-4">
+            <h1>Tu próxima película empieza acá.</h1>
+            <p class="cineura-subtitulo">
+                Contale a Nova qué tenés ganas de ver y encontrá una película para vos.
+            </p>
+        </div>
+
+        <div class="cineura-buscador">
+            <form id="formBusqueda">
+                <label for="busqueda" class="form-label">¿Qué querés ver hoy?</label>
+
+                <textarea id="busqueda"
+                          name="busqueda"
+                          class="form-control cineura-input mb-3"
+                          rows="3"
+                          placeholder="Ejemplo: quiero una película animada, divertida y de menos de 100 minutos."
+                          required></textarea>
+
+                <button type="submit" id="botonBuscar" class="cineura-boton">
+                    ✦ Encontrar mi película
+                </button>
+            </form>
+        </div>
+
+        <div id="resultado" class="cineura-estado" role="status"></div>
+
+        <div id="recomendacion" class="cineura-recomendacion">
+            <div class="row g-0">
+                <div class="col-md-5" id="zonaPoster">
+                    <div class="cineura-poster-vacio">
+                        <span>✦ CINEURA</span>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="cineura-detalle">
+                        <div class="cineura-subtitulo mb-2">✦ NOVA ELIGIÓ PARA VOS</div>
+
+                        <h2 id="tituloPelicula">Tu próxima película</h2>
+
+                        <div id="etiquetasPelicula" class="my-3"></div>
+
+                        <p id="datosPelicula" class="cineura-datos"></p>
+
+                        <h3 class="mt-4">Sinopsis</h3>
+                        <p id="descripcionPelicula" class="cineura-descripcion"></p>
+
+                        <div class="cineura-motivo">
+                            <h3>¿Por qué Nova la eligió?</h3>
+                            <p id="motivoPelicula"></p>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+                            <button type="button" id="botonDetalles" class="cineura-boton">
+                                Ver detalles
+                            </button>
+
+                            <button type="button" id="botonOtra" class="cineura-boton-secundario">
+                                ↻ Otra recomendación
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <div id="peliculas" class="row mt-4"></div>
 </div>
 
 <script>
-    document.getElementById("formBusqueda").addEventListener("submit", async function (e) {
+    let ultimaBusqueda = "";
+    let ultimaLista = [];
+    let indiceActual = 0;
+
+    const formulario = document.getElementById("formBusqueda");
+    const campoBusqueda = document.getElementById("busqueda");
+    const resultado = document.getElementById("resultado");
+    const recomendacion = document.getElementById("recomendacion");
+    const botonBuscar = document.getElementById("botonBuscar");
+
+    formulario.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const busqueda = document.getElementById("busqueda").value;
-        const resultado = document.getElementById("resultado");
-        const contenedor = document.getElementById("peliculas");
+        ultimaBusqueda = campoBusqueda.value.trim();
 
-        resultado.textContent = "Buscando películas...";
-        contenedor.replaceChildren();
+        if (!ultimaBusqueda) {
+            return;
+        }
+
+        resultado.textContent = "✦ Nova está buscando tu próxima película...";
+        recomendacion.style.display = "none";
+        botonBuscar.disabled = true;
 
         try {
             const respuesta = await fetch('@Url.Action("BuscarPeliculas", "Home")', {
@@ -49,62 +274,121 @@
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: new URLSearchParams({ busqueda: busqueda })
+                body: new URLSearchParams({
+                    busqueda: ultimaBusqueda
+                })
             });
 
             if (!respuesta.ok) {
-                throw new Error(await respuesta.text());
+                throw new Error("El servidor respondió con el error " + respuesta.status);
             }
 
-            const peliculas = await respuesta.json();
+            ultimaLista = await respuesta.json();
 
-            resultado.textContent = peliculas.length > 0
-                ? "Encontramos estas películas:"
-                : "No encontramos películas que coincidan. Probá con otro género o duración.";
+            if (!Array.isArray(ultimaLista) || ultimaLista.length === 0) {
+                resultado.textContent =
+                    "No encontramos películas que coincidan. Probá describir tus gustos de otra manera.";
+                return;
+            }
 
-            peliculas.forEach(function (p) {
-                const columna = document.createElement("div");
-                columna.className = "col-md-4 mb-4";
+            indiceActual = 0;
+            mostrarPelicula(ultimaLista[indiceActual]);
 
-                const tarjeta = document.createElement("div");
-                tarjeta.className = "card h-100";
+            resultado.textContent = "Nova encontró " + ultimaLista.length +
+                (ultimaLista.length === 1 ? " película para vos." : " películas para vos.");
 
-                if (p.posterUrl) {
-                    const imagen = document.createElement("img");
-                    imagen.src = p.posterUrl;
-                    imagen.alt = p.titulo;
-                    imagen.className = "card-img-top";
-                    imagen.style.height = "350px";
-                    imagen.style.objectFit = "cover";
-                    tarjeta.appendChild(imagen);
-                }
-
-                const cuerpo = document.createElement("div");
-                cuerpo.className = "card-body";
-
-                const titulo = document.createElement("h5");
-                titulo.className = "card-title";
-                titulo.textContent = p.titulo;
-                cuerpo.appendChild(titulo);
-
-                const datos = document.createElement("p");
-                datos.className = "text-muted";
-                datos.textContent = (p.anio || "") + " · " +
-                    (p.genero || "Género no disponible") + " · " +
-                    p.duracionMinutos + " min";
-                cuerpo.appendChild(datos);
-
-                const descripcion = document.createElement("p");
-                descripcion.className = "card-text";
-                descripcion.textContent = p.sinopsis || "Sin descripción disponible.";
-                cuerpo.appendChild(descripcion);
-
-                tarjeta.appendChild(cuerpo);
-                columna.appendChild(tarjeta);
-                contenedor.appendChild(columna);
+            recomendacion.style.display = "block";
+            recomendacion.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
             });
+
         } catch (error) {
-            resultado.textContent = "Error: " + error.message;
+            resultado.textContent = "Error al buscar: " + error.message;
+        } finally {
+            botonBuscar.disabled = false;
         }
+    });
+
+    function mostrarPelicula(p) {
+        document.getElementById("tituloPelicula").textContent =
+            p.titulo || "Película sin título";
+
+        document.getElementById("descripcionPelicula").textContent =
+            p.sinopsis || "Todavía no tenemos una sinopsis cargada para esta película.";
+
+        document.getElementById("datosPelicula").textContent =
+            [
+                p.anio,
+                p.duracionMinutos ? p.duracionMinutos + " min" : null
+            ].filter(Boolean).join(" · ") || "Información no disponible";
+
+        const etiquetas = document.getElementById("etiquetasPelicula");
+        etiquetas.replaceChildren();
+
+        [p.genero, p.animo].filter(Boolean).forEach(function (texto) {
+            const etiqueta = document.createElement("span");
+            etiqueta.className = "cineura-etiqueta";
+            etiqueta.textContent = texto;
+            etiquetas.appendChild(etiqueta);
+        });
+
+        document.getElementById("motivoPelicula").textContent =
+            "Nova eligió esta película porque coincide con tu búsqueda: " +
+            ultimaBusqueda + ".";
+
+        const zonaPoster = document.getElementById("zonaPoster");
+        zonaPoster.replaceChildren();
+
+        if (p.posterUrl) {
+            const imagen = document.createElement("img");
+            imagen.src = p.posterUrl;
+            imagen.alt = "Póster de " + (p.titulo || "la película");
+            imagen.className = "cineura-poster";
+
+            imagen.onerror = function () {
+                zonaPoster.replaceChildren();
+                mostrarPosterVacio(p.titulo);
+            };
+
+            zonaPoster.appendChild(imagen);
+        } else {
+            mostrarPosterVacio(p.titulo);
+        }
+
+        document.getElementById("botonDetalles").onclick = function () {
+            alert(
+                (p.titulo || "Película") + "\n\n" +
+                (p.sinopsis || "Sin sinopsis disponible.") + "\n\n" +
+                "Género: " + (p.genero || "No disponible") + "\n" +
+                "Duración: " + (p.duracionMinutos || "No disponible") + " minutos"
+            );
+        };
+    }
+
+    function mostrarPosterVacio(titulo) {
+        const zonaPoster = document.getElementById("zonaPoster");
+        const espacio = document.createElement("div");
+        espacio.className = "cineura-poster-vacio";
+
+        const texto = document.createElement("span");
+        texto.textContent = titulo || "✦ CINEURA";
+
+        espacio.appendChild(texto);
+        zonaPoster.appendChild(espacio);
+    }
+
+    document.getElementById("botonOtra").addEventListener("click", function () {
+        if (ultimaLista.length <= 1) {
+            resultado.textContent =
+                "Nova encontró una sola película para esta búsqueda. Probá describir tus gustos de otra manera.";
+            return;
+        }
+
+        indiceActual = (indiceActual + 1) % ultimaLista.length;
+        mostrarPelicula(ultimaLista[indiceActual]);
+
+        resultado.textContent =
+            "Recomendación " + (indiceActual + 1) + " de " + ultimaLista.length;
     });
 </script>
