@@ -1,432 +1,488 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+    font-family: "Manrope", "Segoe UI", sans-serif;
+}
+
+* {
+    font-family: "Manrope", "Segoe UI", sans-serif;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-.cineura-icono img{
-  text-align: center;
-  width: 60%;
-}
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin: 0;
-  background: #111827;
-  color: #f9fafb;
-  font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    background: #111827;
+    color: #f9fafb;
+    font-family: "Manrope", "Segoe UI", sans-serif;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
-.cineura-cuenta {
-  background: #111827;
-  color: #f9fafb;
-  min-height: 85vh;
-  padding: 45px 15px;
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
 }
 
-.cuenta-contenedor {
-  max-width: 480px;
-  margin: 0 auto;
-}
+/* LOGO */
 
-.cuenta-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 8px;
+.cineura-icono img {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
 }
 
 .cuenta-logo img,
 .cineura-logo-mark img,
 .cineura-brand-logo img {
-  display: block;
-  width: 86px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.25));
+    display: block;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.25));
 }
+
+/* ESTILOS COMPARTIDOS */
 
 .cuenta-subtitulo,
 .cineura-subtitulo,
 .cineura-descripcion,
 .cuenta-descripcion,
 .cineura-pie {
-  color: #9ca3af;
+    color: #9ca3af;
+}
+
+/* INICIAR SESIÓN Y CREAR CUENTA */
+
+.cineura-cuenta {
+    background: #111827;
+    color: #f9fafb;
+    min-height: 85vh;
+    padding: 45px 15px;
+}
+
+.cuenta-contenedor {
+    max-width: 480px;
+    margin: 0 auto;
+}
+.cineura-rojo {
+    color: #ef4444;
+}
+
+.cineura-amarillo {
+    color: #fbbf24;
+}
+.cuenta-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cuenta-logo img {
+    width: 86px;
 }
 
 .cuenta-subtitulo {
-  text-align: center;
-  margin-bottom: 28px;
+    text-align: center;
+    margin-bottom: 28px;
 }
 
 .cuenta-panel {
-  background: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 15px;
-  padding: 28px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 15px;
+    padding: 28px;
 }
 
 .cuenta-panel h1 {
-  font-size: 27px;
-  margin-bottom: 8px;
-  color: #ffffff;
+    font-size: 27px;
+    margin-bottom: 8px;
+    color: #ffffff;
 }
 
 .cuenta-descripcion {
-  margin-bottom: 25px;
+    margin-bottom: 25px;
 }
 
 .cuenta-label {
-  display: block;
-  margin-bottom: 7px;
-  font-weight: 600;
-  color: #f3f4f6;
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #f3f4f6;
 }
 
 .cuenta-input,
 .cineura-input {
-  background: #111827;
-  color: #ffffff;
-  border: 1px solid #4b5563;
-  border-radius: 8px;
-  padding: 11px 12px;
+    background: #111827;
+    color: #ffffff;
+    border: 1px solid #4b5563;
+    border-radius: 8px;
+    padding: 11px 12px;
 }
 
 .cuenta-input:focus,
 .cineura-input:focus {
-  background: #111827;
-  color: #ffffff;
-  border-color: #fbbf24;
-  box-shadow: none;
+    background: #111827;
+    color: #ffffff;
+    border-color: #fbbf24;
+    box-shadow: none;
 }
 
 .cuenta-input::placeholder,
 .cineura-input::placeholder {
-  color: #9ca3af;
+    color: #9ca3af;
 }
 
-.cuenta-boton,
-.cineura-boton {
-  display: block;
-  width: 100%;
-  background: #ef4444;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-weight: bold;
-  margin-top: 20px;
-  text-decoration: none;
-  text-align: center;
-  transition: 0.2s ease-in-out;
-  cursor: pointer;
+.cuenta-boton {
+    display: block;
+    width: 100%;
+    background: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: bold;
+    margin-top: 20px;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
 }
 
-.cuenta-boton:hover,
-.cineura-boton:hover {
-  background: #dc2626;
-  color: #ffffff;
+.cuenta-boton:hover {
+    background: #dc2626;
+    color: #ffffff;
 }
 
 .cuenta-enlace {
-  color: #fbbf24;
-  text-decoration: none;
+    color: #fbbf24;
+    text-decoration: none;
 }
 
 .cuenta-enlace:hover {
-  color: #fde68a;
-  text-decoration: underline;
+    color: #fde68a;
+    text-decoration: underline;
 }
 
 .cuenta-pie {
-  text-align: center;
-  color: #9ca3af;
-  margin-top: 22px;
+    text-align: center;
+    color: #9ca3af;
+    margin-top: 22px;
 }
 
 .cuenta-error {
-  background: #451a1a;
-  color: #fecaca;
-  border: 1px solid #7f1d1d;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 20px;
+    background: #451a1a;
+    color: #fecaca;
+    border: 1px solid #7f1d1d;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;
 }
 
+/* PÁGINA PRINCIPAL */
+
 .cineura-inicio {
-  min-height: 75vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 30px 15px;
-  background-color: #111827;
-  border-radius: 16px;
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 15px;
+    background-color: #111827;
+    border-radius: 16px;
 }
 
 .cineura-tarjeta {
-  width: 100%;
-  max-width: 440px;
-  padding: 45px 35px;
-  text-align: center;
-  background-color: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 20px;
-  color: #ffffff;
+    width: 100%;
+    max-width: 440px;
+    padding: 45px 35px;
+    text-align: center;
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 20px;
+    color: #ffffff;
 }
 
 .cineura-logo-mark {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(251, 191, 36, 0.12);
-  border: 1px solid rgba(251, 191, 36, 0.32);
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.32);
 }
 
 .cineura-logo-mark img {
-  width: 68px;
+    width: 68px;
 }
 
 .cineura-titulo {
-  font-size: 32px;
-  font-weight: bold;
-  color: #fbbf24;
-  margin-bottom: 12px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #fbbf24;
+    margin-bottom: 12px;
 }
 
 .cineura-descripcion {
-  font-size: 15px;
-  margin-bottom: 30px;
-  line-height: 1.7;
+    font-size: 15px;
+    margin-bottom: 30px;
+    line-height: 1.7;
 }
+
+/* BOTONES GENERALES DE CINEURA */
 
 .cineura-boton {
-  display: block;
-  width: 100%;
-  padding: 13px;
-  margin-top: 14px;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-  transition: 0.2s;
+    display: block;
+    width: 100%;
+    padding: 13px;
+    margin-top: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
 }
 
-.cineura-login {
-  background-color: #fbbf24;
-  color: #111827;
-  border: 2px solid #fbbf24;
+/* INICIAR SESIÓN: AMARILLO */
+
+.cineura-boton.cineura-login {
+    background-color: #fbbf24;
+    color: #111827;
+    border: 2px solid #fbbf24;
 }
 
-.cineura-login:hover {
-  background-color: #f59e0b;
-  border-color: #f59e0b;
-  color: #111827;
+.cineura-boton.cineura-login:hover {
+    background-color: #f59e0b;
+    border-color: #f59e0b;
+    color: #111827;
 }
 
-.cineura-registro {
-  background-color: transparent;
-  color: #ef4444;
-  border: 2px solid #ef4444;
+/* CREAR CUENTA: BORDE ROJO */
+
+.cineura-boton.cineura-registro {
+    background-color: transparent;
+    color: #ef4444;
+    border: 2px solid #ef4444;
 }
 
-.cineura-registro:hover {
-  background-color: #ef4444;
-  color: #ffffff;
+.cineura-boton.cineura-registro:hover {
+    background-color: #ef4444;
+    color: #ffffff;
 }
+
+/* TEXTO INFERIOR */
 
 .cineura-pie {
-  margin-top: 28px;
-  font-size: 12px;
-  color: #6b7280;
+    margin-top: 28px;
+    font-size: 12px;
+    color: #6b7280;
 }
 
+/* PÁGINA DEL BUSCADOR */
+
 .cineura-pagina {
-  background: #111827;
-  color: #ffffff;
-  min-height: 85vh;
-  padding: 35px 0 60px;
+    background: #111827;
+    color: #ffffff;
+    min-height: 85vh;
+    padding: 35px 0 60px;
 }
 
 .cineura-contenedor {
-  max-width: 1150px;
-  margin: 0 auto;
-  padding: 0 20px;
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .cineura-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .cineura-brand-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cineura-brand-logo img {
-  width: 52px;
-  height: auto;
+    width: 52px;
 }
 
 .cineura-logo {
-  color: #fbbf24;
-  font-size: 25px;
-  font-weight: 800;
-  letter-spacing: 2px;
+    color: #fbbf24;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
 .cineura-subtitulo {
-  color: #9ca3af;
+    color: #9ca3af;
 }
 
 .cineura-buscador {
-  background: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 16px;
-  padding: 22px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 16px;
+    padding: 22px;
 }
 
 .cineura-input {
-  background: #111827;
-  color: #ffffff;
-  border: 1px solid #4b5563;
-  border-radius: 10px;
-  padding: 14px;
+    background: #111827;
+    color: #ffffff;
+    border: 1px solid #4b5563;
+    border-radius: 10px;
+    padding: 14px;
 }
 
-.cineura-boton {
-  background: #ef4444;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  padding: 13px 22px;
-  font-weight: bold;
-  cursor: pointer;
+.cineura-buscador .cineura-boton {
+    background: #ef4444;
+    color: #ffffff;
+    border: 1px solid #ef4444;
+    border-radius: 10px;
+    padding: 13px 22px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.cineura-boton:hover {
-  background: #dc2626;
+.cineura-buscador .cineura-boton:hover {
+    background: #dc2626;
+    border-color: #dc2626;
 }
+
+/* RECOMENDACIONES */
 
 .cineura-recomendacion {
-  display: none;
-  background: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 18px;
-  overflow: hidden;
-  margin-top: 30px;
+    display: none;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-top: 30px;
 }
 
 .cineura-poster {
-  width: 100%;
-  min-height: 400px;
-  height: 100%;
-  max-height: 540px;
-  object-fit: cover;
-  background: #273244;
+    width: 100%;
+    min-height: 400px;
+    height: 100%;
+    max-height: 540px;
+    object-fit: cover;
+    background: #273244;
 }
 
 .cineura-poster-vacio {
-  min-height: 400px;
-  height: 100%;
-  background: linear-gradient(145deg, #7f1d1d, #111827 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 25px;
-  text-align: center;
+    min-height: 400px;
+    height: 100%;
+    background: linear-gradient(145deg, #7f1d1d, #111827 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    text-align: center;
 }
 
 .cineura-poster-vacio span {
-  color: #fbbf24;
-  font-size: 30px;
-  font-weight: 800;
+    color: #fbbf24;
+    font-size: 30px;
+    font-weight: 800;
 }
 
 .cineura-detalle {
-  padding: 30px;
+    padding: 30px;
 }
 
 .cineura-etiqueta {
-  display: inline-block;
-  background: #3b2630;
-  color: #fca5a5;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 0 5px 8px 0;
+    display: inline-block;
+    background: #3b2630;
+    color: #fca5a5;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 5px 8px 0;
 }
 
 .cineura-datos,
 .cineura-descripcion {
-  color: #d1d5db;
+    color: #d1d5db;
 }
 
 .cineura-descripcion {
-  line-height: 1.8;
-  font-size: 16px;
+    line-height: 1.8;
+    font-size: 16px;
 }
 
 .cineura-motivo {
-  background: #26303e;
-  border-left: 3px solid #fbbf24;
-  padding: 15px;
-  border-radius: 7px;
-  margin-top: 20px;
+    background: #26303e;
+    border-left: 3px solid #fbbf24;
+    padding: 15px;
+    border-radius: 7px;
+    margin-top: 20px;
 }
 
 .cineura-motivo h3 {
-  color: #fbbf24;
-  font-size: 16px;
+    color: #fbbf24;
+    font-size: 16px;
 }
 
 .cineura-motivo p {
-  color: #e5e7eb;
-  margin-bottom: 0;
+    color: #e5e7eb;
+    margin-bottom: 0;
 }
 
 .cineura-boton-secundario {
-  background: transparent;
-  color: #ffffff;
-  border: 1px solid #6b7280;
-  border-radius: 10px;
-  padding: 12px 18px;
-  cursor: pointer;
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #6b7280;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
 }
 
 .cineura-estado {
-  color: #fbbf24;
-  margin-top: 20px;
+    color: #fbbf24;
+    margin-top: 20px;
 }
 
+/* ADAPTACIÓN A CELULARES */
+
 @media (max-width: 767px) {
-  .cineura-detalle {
-    padding: 20px;
-  }
+    .cineura-detalle {
+        padding: 20px;
+    }
+
+    .cineura-tarjeta {
+        padding: 35px 22px;
+    }
+
+    .cuenta-panel {
+        padding: 22px;
+    }
+
+    .cineura-contenedor {
+        padding: 0 15px;
+    }
 }
