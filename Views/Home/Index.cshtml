@@ -25,6 +25,9 @@
                 @if (!string.IsNullOrEmpty(usuarioSesion))
                 {
                     <span class="text-white fw-bold me-2">👋 Hola, @nombreSesion</span>
+                    <a href="@Url.Action("CerrarSesion", "Home")" class="cineura-btn-header-login">
+                        Cerrar sesión
+                    </a>
                 }
                 else
                 {
@@ -212,7 +215,7 @@
                                 <span class="mini-tag">Drama Judicial</span>
                                 <span class="mini-tag">Justine Triet</span>
                             </div>
-                            <p class="card-sinopsis">Una escritora es acusada de asesinar a su esposo tras una misteriosa caída en su chalet.</p>
+                            <p class="card-sinopsis">Una escritora es acusada de asesinar a su esposo tras una misteriosa caída en su aislado chalet.</p>
                         </div>
                     </div>
                 </div>
@@ -222,4 +225,141 @@
     </div>
 </div>
 
-<!-- J
+<!-- JAVASCRIPT DE BÚSQUEDA INTEGRADO -->
+<script>
+    let ultimaBusqueda = "";
+    let ultimaLista = [];
+    let indiceActual = 0;
+
+    const formulario = document.getElementById("formBusqueda");
+    const campoBusqueda = document.getElementById("busqueda");
+    const resultado = document.getElementById("resultado");
+    const recomendacion = document.getElementById("recomendacion");
+    const botonBuscar = document.getElementById("botonBuscar");
+
+    function agregarTexto(texto) {
+        if (campoBusqueda.value.trim() === "") {
+            campoBusqueda.value = texto;
+        } else {
+            campoBusqueda.value += ", " + texto;
+        }
+        campoBusqueda.focus();
+    }
+
+    formulario.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        ultimaBusqueda = campoBusqueda.value.trim();
+        if (!ultimaBusqueda) return;
+
+        resultado.textContent = "✦ Nova está buscando en tu base de datos...";
+        recomendacion.style.display = "none";
+        botonBuscar.disabled = true;
+
+        try {
+            const respuesta = await fetch('@Url.Action("BuscarPeliculas", "Home")', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
+                    busqueda: ultimaBusqueda
+                })
+            });
+
+            if (!respuesta.ok) {
+                throw new Error("El servidor respondió con código " + respuesta.status);
+            }
+
+            const data = await respuesta.json();
+            ultimaLista = Array.isArray(data) ? data : [data];
+
+            if (ultimaLista.length === 0) {
+                resultado.textContent = "No encontramos películas en tu base de datos que coincidan. Probá describir tu búsqueda de otra manera.";
+                return;
+            }
+
+            indiceActual = 0;
+            mostrarPelicula(ultimaLista[indiceActual]);
+
+            resultado.textContent = "✦ Nova encontró " + ultimaLista.length + (ultimaLista.length === 1 ? " película para vos:" : " películas para vos:");
+            recomendacion.style.display = "block";
+            recomendacion.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        } catch (error) {
+            resultado.textContent = "Error al procesar la búsqueda: " + error.message;
+        } finally {
+            botonBuscar.disabled = false;
+        }
+    });
+
+    function mostrarPelicula(p) {
+        document.getElementById("tituloPelicula").textContent = p.titulo || "Sin título";
+        document.getElementById("descripcionPelicula").textContent = p.sinopsis || "Película encontrada en tu base de datos.";
+
+        document.getElementById("datosPelicula").textContent = [
+            p.duracionMinutos ? p.duracionMinutos + " min" : null
+        ].filter(Boolean).join(" · ") || "Información de la película";
+
+        const etiquetas = document.getElementById("etiquetasPelicula");
+        etiquetas.replaceChildren();
+
+        [p.genero, p.animo].filter(Boolean).forEach(function (texto) {
+            const etiqueta = document.createElement("span");
+            etiqueta.className = "cineura-etiqueta";
+            etiqueta.textContent = texto;
+            etiquetas.appendChild(etiqueta);
+        });
+
+        document.getElementById("motivoPelicula").textContent =
+            "Nova eligió esta película de tu base de datos porque coincide con tu búsqueda: \"" + ultimaBusqueda + "\".";
+
+        const zonaPoster = document.getElementById("zonaPoster");
+        zonaPoster.replaceChildren();
+
+        if (p.posterUrl) {
+            const imagen = document.createElement("img");
+            imagen.src = p.posterUrl;
+            imagen.alt = p.titulo || "Poster";
+            imagen.className = "cineura-poster";
+            imagen.onerror = function () {
+                mostrarPosterVacio(p.titulo);
+            };
+            zonaPoster.appendChild(imagen);
+        } else {
+            mostrarPosterVacio(p.titulo);
+        }
+
+        document.getElementById("botonDetalles").onclick = function () {
+            alert(
+                (p.titulo || "Película") + "\n\n" +
+                "Género: " + (p.genero || "No disponible") + "\n" +
+                "Ánimo: " + (p.animo || "No disponible") + "\n" +
+                "Duración: " + (p.duracionMinutos || "No disponible") + " minutos"
+            );
+        };
+    }
+
+    function mostrarPosterVacio(titulo) {
+        const zonaPoster = document.getElementById("zonaPoster");
+        zonaPoster.replaceChildren();
+        const espacio = document.createElement("div");
+        espacio.className = "cineura-poster-vacio";
+        const texto = document.createElement("span");
+        texto.textContent = titulo || "✦ CINEURA";
+        espacio.appendChild(texto);
+        zonaPoster.appendChild(espacio);
+    }
+
+    document.getElementById("botonOtra").addEventListener("click", function () {
+        if (ultimaLista.length <= 1) {
+            resultado.textContent = "Nova encontró una sola película para esta búsqueda.";
+            return;
+        }
+
+        indiceActual = (indiceActual + 1) % ultimaLista.length;
+        mostrarPelicula(ultimaLista[indiceActual]);
+
+        resultado.textContent = "Recomendación " + (indiceActual + 1) + " de " + ultimaLista.length;
+    });
+</script>

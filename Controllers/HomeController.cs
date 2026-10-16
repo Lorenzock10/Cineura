@@ -1,4 +1,3 @@
-
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -136,7 +135,6 @@ public class HomeController : Controller
 
         try
         {
-            // Nova interpreta la búsqueda.
             string respuestaIA =
                 await _buscadorIA.InterpretarBusquedaAsync(busqueda);
 
@@ -178,7 +176,6 @@ public class HomeController : Controller
                 );
             }
 
-            // Obtenemos las películas de SQL Server.
             BD bd = new BD();
             List<Peliculas> peliculas = bd.ObtenerPeliculas();
 
@@ -187,7 +184,6 @@ public class HomeController : Controller
                 peliculas.Count
             );
 
-            // Filtro por género.
             if (!string.IsNullOrWhiteSpace(filtros.Genero))
             {
                 string genero = Normalizar(filtros.Genero);
@@ -201,7 +197,6 @@ public class HomeController : Controller
                 ).ToList();
             }
 
-            // Filtro por duración máxima.
             if (filtros.DuracionMaxima.HasValue)
             {
                 peliculas = peliculas.Where(p =>
@@ -209,7 +204,6 @@ public class HomeController : Controller
                 ).ToList();
             }
 
-            // Filtro por ánimo.
             if (!string.IsNullOrWhiteSpace(filtros.Animo))
             {
                 string animo = Normalizar(filtros.Animo);
@@ -228,7 +222,6 @@ public class HomeController : Controller
                 peliculas.Count
             );
 
-            // Agregamos la URL del póster a cada película.
             var peliculasConPoster = peliculas.Select(p => new
             {
                 titulo = p.Titulo,
@@ -332,21 +325,11 @@ public class HomeController : Controller
             return View();
         }
 
-        HttpContext.Session.SetString(
-            "usuario", usuarioEncontrado.NombreUsuario);
+        HttpContext.Session.SetString("usuario", usuarioEncontrado.NombreUsuario);
+        HttpContext.Session.SetString("nombre", usuarioEncontrado.Nombre);
+        HttpContext.Session.SetString("apellido", usuarioEncontrado.Apellido);
 
-        HttpContext.Session.SetString(
-            "nombre", usuarioEncontrado.Nombre);
-
-        HttpContext.Session.SetString(
-            "apellido", usuarioEncontrado.Apellido);
-
-        return RedirectToAction("Home");
-    }
-
-    public IActionResult Home()
-    {
-        return View();
+        return RedirectToAction("Index");
     }
 
     public IActionResult Registrarse()
@@ -355,44 +338,53 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-public IActionResult Registrarse(
-    string nombre,
-    string apellido,
-    string usuario,
-    string contrasena)
-{
-    if (nombre == null || nombre.Length < 2 ||
-        apellido == null || apellido.Length < 2 ||
-        usuario == null || usuario.Length < 4 ||
-        contrasena == null || contrasena.Length < 6)
+    public IActionResult Registrarse(
+        string nombre,
+        string apellido,
+        string usuario,
+        string contrasena)
     {
-        ViewBag.Error =
-            "Completá los campos correctamente: nombre y apellido de al menos 2 caracteres, usuario de 4 y contraseña de 6.";
+        if (nombre == null || nombre.Length < 2 ||
+            apellido == null || apellido.Length < 2 ||
+            usuario == null || usuario.Length < 4 ||
+            contrasena == null || contrasena.Length < 6)
+        {
+            ViewBag.Error =
+                "Completá los campos correctamente: nombre y apellido de al menos 2 caracteres, usuario de 4 y contraseña de 6.";
 
-        return View();
+            return View();
+        }
+
+        BD bd = new BD();
+
+        Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
+
+        if (usuarioExistente != null)
+        {
+            ViewBag.Error = "Ese nombre de usuario ya existe.";
+            return View();
+        }
+
+        Usuarios nuevoUsuario = new Usuarios
+        {
+            Nombre = nombre,
+            Apellido = apellido,
+            NombreUsuario = usuario,
+            Contraseña = contrasena
+        };
+
+        bd.AgregarUsuario(nuevoUsuario);
+
+        HttpContext.Session.SetString("usuario", nuevoUsuario.NombreUsuario);
+        HttpContext.Session.SetString("nombre", nuevoUsuario.Nombre);
+        HttpContext.Session.SetString("apellido", nuevoUsuario.Apellido);
+
+        return RedirectToAction("Index");
     }
 
-    BD bd = new BD();
-
-    Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
-
-    if (usuarioExistente != null)
+    public IActionResult CerrarSesion()
     {
-        ViewBag.Error = "Ese nombre de usuario ya existe.";
-        return View();
+        HttpContext.Session.Clear();
+        return RedirectToAction("Index");
     }
-
-    Usuarios nuevoUsuario = new Usuarios
-    {
-        Nombre = nombre,
-        Apellido = apellido,
-        NombreUsuario = usuario,
-        Contraseña = contrasena
-    };
-
-    bd.AgregarUsuario(nuevoUsuario);
-
-    // Después de registrarse, el usuario debe iniciar sesión.
-    return RedirectToAction("Login");
-}
 }
