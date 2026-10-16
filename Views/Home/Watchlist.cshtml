@@ -1,0 +1,97 @@
+
+@model List<Cineura.Models.Peliculas>
+
+@{
+    ViewData["Title"] = "Mi Watchlist";
+}
+
+<style>
+    .listas-pagina {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+        color: white;
+    }
+
+    .listas-pagina h1 {
+        color: #FBBF24;
+        margin-bottom: 25px;
+    }
+
+    .lista-pelicula {
+        background: #1b1b1b;
+        border: 1px solid #333;
+        border-radius: 10px;
+        padding: 18px;
+        margin-bottom: 15px;
+    }
+
+    .lista-pelicula h2 {
+        margin-top: 0;
+    }
+
+    .lista-pelicula a {
+        color: #FBBF24;
+        text-decoration: none;
+    }
+
+    .lista-boton {
+        display: inline-block;
+        background: #FBBF24;
+        color: #111827 !important;
+        padding: 9px 13px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .lista-vacia {
+        color: #cccccc;
+    }
+</style>
+
+<div class="listas-pagina">
+    <h1>＋ Mi Watchlist</h1>
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <p class="lista-vacia">
+            Tu Watchlist está vacía.
+            Entrá a una película y tocá "Agregar a Watchlist".
+        </p>
+    }
+    else
+    {
+        @foreach (var pelicula in Model)
+        {
+            <div class="lista-pelicula">
+                <h2>
+                    <a asp-action="Detalles"
+                       asp-route-id="@pelicula.IdPelicula">
+                        @pelicula.Titulo
+                    </a>
+                </h2>
+
+                <p>@pelicula.Anio · @pelicula.Genero · @pelicula.DuracionMinutos minutos</p>
+
+                <p>@pelicula.Sinopsis</p>
+
+                <a asp-action="Detalles"
+                   asp-route-id="@pelicula.IdPelicula">
+                    Ver detalles
+                </a>
+
+                <form asp-action="QuitarWatchlist" method="post">
+                    <input type="hidden"
+                           name="idPelicula"
+                           value="@pelicula.IdPelicula" />
+
+                    <button type="submit" class="lista-boton">
+                        Quitar de Watchlist
+                    </button>
+                </form>
+            </div>
+        }
+    }
+</div>

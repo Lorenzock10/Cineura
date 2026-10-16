@@ -1,0 +1,199 @@
+
+@{
+    ViewData["Title"] = Model.Titulo;
+
+    string poster = !string.IsNullOrWhiteSpace(Model.PosterUrl)
+        ? Model.PosterUrl
+        : Model.Titulo switch
+        {
+            "Toy Story" => "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+            "Shrek" => "https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",
+            "The Truman Show" => "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
+            "En busca de la felicidad" => "https://image.tmdb.org/t/p/w500/7lZ3h8L4bV6fP4dY8gYxL0fV6w.jpg",
+            "Superbad" => "https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg",
+            "Coco" => "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
+            "Intensamente" => "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg",
+            "Jumanji" => "https://image.tmdb.org/t/p/w500/bXrZ5iHBEjH7WMidbUDQ0U2xbmr.jpg",
+            _ => ""
+        };
+}
+
+<style>
+    .detalles-pagina {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 25px;
+        color: white;
+    }
+
+    .detalles-contenido {
+        display: flex;
+        gap: 35px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .detalles-poster {
+        width: 280px;
+        max-width: 100%;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+    .detalles-info {
+        flex: 1;
+        min-width: 260px;
+    }
+
+    .detalles-info h1 {
+        color: #FBBF24;
+        margin-bottom: 15px;
+    }
+
+    .detalles-etiquetas {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 18px 0;
+    }
+
+    .detalles-etiquetas span {
+        background: #252525;
+        border: 1px solid #444;
+        border-radius: 20px;
+        padding: 7px 12px;
+    }
+
+    .detalles-boton {
+        display: inline-block;
+        padding: 11px 16px;
+        margin: 6px 6px 6px 0;
+        border-radius: 7px;
+        border: 1px solid #FBBF24;
+        background: #FBBF24;
+        color: #111827;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .detalles-boton-secundario {
+        background: transparent;
+        color: #FBBF24;
+    }
+
+    .detalles-mensaje {
+        margin: 15px 0;
+        color: #FBBF24;
+    }
+
+    .detalles-sinopsis {
+        line-height: 1.7;
+        color: #dddddd;
+    }
+
+    .detalles-volver {
+        display: inline-block;
+        margin-bottom: 25px;
+        color: #FBBF24;
+        text-decoration: none;
+    }
+</style>
+
+<div class="detalles-pagina">
+    <a asp-action="Index" class="detalles-volver">← Volver al inicio</a>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <p class="detalles-mensaje">@TempData["Mensaje"]</p>
+    }
+
+    <div class="detalles-contenido">
+    @if (!string.IsNullOrWhiteSpace(poster))
+    {
+        <img src="@poster"
+            alt="Póster de @Model.Titulo"
+            class="detalles-poster" />
+    }
+
+        <div class="detalles-info">
+            <h1>@Model.Titulo</h1>
+
+            <div class="detalles-etiquetas">
+                <span>@Model.Anio</span>
+                <span>@Model.Genero</span>
+                <span>@Model.DuracionMinutos minutos</span>
+                <span>@Model.Animo</span>
+            </div>
+
+            <h3>Sinopsis</h3>
+            <p class="detalles-sinopsis">
+                @Model.Sinopsis
+            </p>
+
+            <p>
+                <strong>Director:</strong>
+                @ViewBag.Director
+            </p>
+
+            <p>
+                <strong>Actores:</strong>
+
+                @if (ViewBag.Actores != null && ViewBag.Actores.Count > 0)
+                {
+                    @string.Join(", ", ViewBag.Actores)
+                }
+                else
+                {
+                    <span>No hay actores cargados.</span>
+                }
+            </p>
+
+            @if (ViewBag.UsuarioConectado == true)
+            {
+                @if (ViewBag.EsFavorito == true)
+                {
+                    <form asp-action="QuitarFavorito" method="post">
+                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                        <button type="submit" class="detalles-boton detalles-boton-secundario">
+                            ♥ Quitar de Favoritas
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="AgregarFavorito" method="post">
+                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                        <button type="submit" class="detalles-boton">
+                            ♥ Agregar a Favoritas
+                        </button>
+                    </form>
+                }
+
+                @if (ViewBag.EstaEnWatchlist == true)
+                {
+                    <form asp-action="QuitarWatchlist" method="post">
+                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                        <button type="submit" class="detalles-boton detalles-boton-secundario">
+                            ✓ Quitar de Watchlist
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="AgregarWatchlist" method="post">
+                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                        <button type="submit" class="detalles-boton">
+                            + Agregar a Watchlist
+                        </button>
+                    </form>
+                }
+            }
+            else
+            {
+                <p>Iniciá sesión para agregar esta película a tus listas.</p>
+                <a asp-action="Login" class="detalles-boton">Iniciar sesión</a>
+            }
+        </div>
+    </div>
+</div>

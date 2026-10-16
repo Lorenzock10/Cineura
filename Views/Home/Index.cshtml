@@ -1,4 +1,5 @@
 ﻿
+
 @{
     ViewData["Title"] = "Cineura | Buscador Inteligente";
 }
@@ -339,13 +340,15 @@
             mostrarPosterVacio(p.titulo);
         }
 
+        // Abre la página de detalles de la película seleccionada.
         document.getElementById("botonDetalles").onclick = function () {
-            alert(
-                (p.titulo || "Película") + "\n\n" +
-                "Género: " + (p.genero || "No disponible") + "\n" +
-                "Ánimo: " + (p.animo || "No disponible") + "\n" +
-                "Duración: " + (p.duracionMinutos || "No disponible") + " minutos"
-            );
+            if (!p.idPelicula) {
+                alert("No se encontró el ID de esta película en la base de datos.");
+                return;
+            }
+
+            window.location.href =
+                "/Home/Detalles?id=" + encodeURIComponent(p.idPelicula);
         };
     }
 
@@ -378,3 +381,4 @@
             " de " + ultimaLista.length;
     });
 </script>
+

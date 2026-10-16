@@ -2,6 +2,41 @@
   "version": 3,
   "targets": {
     "net9.0": {
+      "Azure.AI.OpenAI/2.9.0-beta.1": {
+        "type": "package",
+        "dependencies": {
+          "Azure.Core": "1.51.1",
+          "OpenAI": "2.9.1"
+        },
+        "compile": {
+          "lib/net8.0/Azure.AI.OpenAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Azure.AI.OpenAI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Azure.Core/1.51.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "10.0.2",
+          "System.ClientModel": "1.9.0",
+          "System.Memory.Data": "10.0.1"
+        },
+        "compile": {
+          "lib/net8.0/Azure.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Azure.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Dapper/2.1.89": {
         "type": "package",
         "compile": {
@@ -150,6 +185,19 @@
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Session.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.Bcl.AsyncInterfaces/10.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
             "related": ".xml"
           }
         }
@@ -696,6 +744,23 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.SemanticKernel/1.81.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.81.0",
+          "Microsoft.SemanticKernel.Core": "1.81.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.SemanticKernel.Abstractions/1.81.0": {
         "type": "package",
         "dependencies": {
@@ -712,6 +777,24 @@
         },
         "runtime": {
           "lib/net8.0/Microsoft.SemanticKernel.Abstractions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.81.0": {
+        "type": "package",
+        "dependencies": {
+          "Azure.AI.OpenAI": "2.9.0-beta.1",
+          "Microsoft.SemanticKernel.Connectors.OpenAI": "1.81.0",
+          "Microsoft.SemanticKernel.Core": "1.81.0"
+        },
+        "compile": {
+          "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll": {
             "related": ".xml"
           }
         }
@@ -1178,6 +1261,50 @@
     }
   },
   "libraries": {
+    "Azure.AI.OpenAI/2.9.0-beta.1": {
+      "sha512": "CgIYDuCSOFx+yPuCdK7iz71OW2envfVeIE/YoNYK+mhr6bxgIJV6jfBF+mV9aHDQ6KVQjeSL6OZ7x90XrvsoRg==",
+      "type": "package",
+      "path": "azure.ai.openai/2.9.0-beta.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGELOG.md",
+        "README.md",
+        "azure.ai.openai.2.9.0-beta.1.nupkg.sha512",
+        "azure.ai.openai.nuspec",
+        "azureicon.png",
+        "lib/net10.0/Azure.AI.OpenAI.dll",
+        "lib/net10.0/Azure.AI.OpenAI.xml",
+        "lib/net8.0/Azure.AI.OpenAI.dll",
+        "lib/net8.0/Azure.AI.OpenAI.xml",
+        "lib/netstandard2.0/Azure.AI.OpenAI.dll",
+        "lib/netstandard2.0/Azure.AI.OpenAI.xml"
+      ]
+    },
+    "Azure.Core/1.51.1": {
+      "sha512": "JRANrRvN5O5FFRh+pMUb8qqWU7jBQ39qXEbVr7Rkb1/s7rqc6RSzVHKGBz5Ro1gDy2WSGjG5YEOJKpPIBiCMcA==",
+      "type": "package",
+      "path": "azure.core/1.51.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGELOG.md",
+        "README.md",
+        "azure.core.1.51.1.nupkg.sha512",
+        "azure.core.nuspec",
+        "azureicon.png",
+        "lib/net10.0/Azure.Core.dll",
+        "lib/net10.0/Azure.Core.xml",
+        "lib/net462/Azure.Core.dll",
+        "lib/net462/Azure.Core.xml",
+        "lib/net472/Azure.Core.dll",
+        "lib/net472/Azure.Core.xml",
+        "lib/net8.0/Azure.Core.dll",
+        "lib/net8.0/Azure.Core.xml",
+        "lib/netstandard2.0/Azure.Core.dll",
+        "lib/netstandard2.0/Azure.Core.xml"
+      ]
+    },
     "Dapper/2.1.89": {
       "sha512": "1VjFE664wnxvuhlgP8kS4PeFFF4jqD3VkbIHW6Zlc52zuibgcz5ICnIHcQXlTp6pURpPNGLV0ZpNe5x9KePJnA==",
       "type": "package",
@@ -1301,6 +1428,29 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Session.xml",
         "microsoft.aspnetcore.session.2.3.13.nupkg.sha512",
         "microsoft.aspnetcore.session.nuspec"
+      ]
+    },
+    "Microsoft.Bcl.AsyncInterfaces/10.0.2": {
+      "sha512": "qE5JhRoeJbAipLqpUCZyNfNwnpAvUttXgIQDnTiJ15d8ji+/bPgoPkB3xLzK5cQTobN2D2ditUesUlDHb7p3Pg==",
+      "type": "package",
+      "path": "microsoft.bcl.asyncinterfaces/10.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Bcl.AsyncInterfaces.targets",
+        "buildTransitive/net462/_._",
+        "lib/net462/Microsoft.Bcl.AsyncInterfaces.dll",
+        "lib/net462/Microsoft.Bcl.AsyncInterfaces.xml",
+        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
+        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
+        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
+        "microsoft.bcl.asyncinterfaces.10.0.2.nupkg.sha512",
+        "microsoft.bcl.asyncinterfaces.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "Microsoft.Bcl.Cryptography/9.0.18": {
@@ -2124,6 +2274,25 @@
         "version.txt"
       ]
     },
+    "Microsoft.SemanticKernel/1.81.0": {
+      "sha512": "2yYOlwUrs7oiL7z55ixXyfow3COuDlBL/z6ViVAYDtOEkSmIqBg372eOHDVN9p0Nt+Wf7H4cQSnC6dIipDdjkg==",
+      "type": "package",
+      "path": "microsoft.semantickernel/1.81.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net10.0/Microsoft.SemanticKernel.dll",
+        "lib/net10.0/Microsoft.SemanticKernel.xml",
+        "lib/net8.0/Microsoft.SemanticKernel.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.xml",
+        "microsoft.semantickernel.1.81.0.nupkg.sha512",
+        "microsoft.semantickernel.nuspec"
+      ]
+    },
     "Microsoft.SemanticKernel.Abstractions/1.81.0": {
       "sha512": "IE6Nx6O+7F5t4WpASv/fRg7S2t5BbZwBH1a90cnXktVyItKtPwEZl8uxdlDwavF5lYwcQJxWZ9fYJIPDKQCkPQ==",
       "type": "package",
@@ -2141,6 +2310,25 @@
         "lib/netstandard2.0/Microsoft.SemanticKernel.Abstractions.xml",
         "microsoft.semantickernel.abstractions.1.81.0.nupkg.sha512",
         "microsoft.semantickernel.abstractions.nuspec"
+      ]
+    },
+    "Microsoft.SemanticKernel.Connectors.AzureOpenAI/1.81.0": {
+      "sha512": "DMW9e5R5iVtmP9mj+rGxxWULtgz9vrkpIVMJ76jSPOuc3mApHoYdPuv7QOi3HDZFkvG/OkQgBWvhhMDe6bGQoQ==",
+      "type": "package",
+      "path": "microsoft.semantickernel.connectors.azureopenai/1.81.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net10.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll",
+        "lib/net10.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.AzureOpenAI.xml",
+        "microsoft.semantickernel.connectors.azureopenai.1.81.0.nupkg.sha512",
+        "microsoft.semantickernel.connectors.azureopenai.nuspec"
       ]
     },
     "Microsoft.SemanticKernel.Connectors.OpenAI/1.81.0": {
@@ -2917,35 +3105,29 @@
       "Dapper >= 2.1.89",
       "Microsoft.AspNetCore.Session >= 2.3.13",
       "Microsoft.Data.SqlClient >= 7.1.1",
+      "Microsoft.SemanticKernel >= 1.81.0",
       "Microsoft.SemanticKernel.Connectors.OpenAI >= 1.81.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Usuario\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Matías\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuario\\Downloads\\Cineura\\Cineura.csproj",
+      "projectUniqueName": "C:\\Users\\Matías\\Downloads\\Cineura\\Cineura.csproj",
       "projectName": "Cineura",
-      "projectPath": "C:\\Users\\Usuario\\Downloads\\Cineura\\Cineura.csproj",
-      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuario\\Downloads\\Cineura\\obj\\",
+      "projectPath": "C:\\Users\\Matías\\Downloads\\Cineura\\Cineura.csproj",
+      "packagesPath": "C:\\Users\\Matías\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Matías\\Downloads\\Cineura\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Matías\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2964,7 +3146,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net9.0": {
@@ -2982,6 +3164,10 @@
             "target": "Package",
             "version": "[7.1.1, )"
           },
+          "Microsoft.SemanticKernel": {
+            "target": "Package",
+            "version": "[1.81.0, )"
+          },
           "Microsoft.SemanticKernel.Connectors.OpenAI": {
             "target": "Package",
             "version": "[1.81.0, )"
@@ -2998,6 +3184,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[9.0.14, 9.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[9.0.14, 9.0.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[9.0.14, 9.0.14]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[9.0.14, 9.0.14]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -3006,7 +3210,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.319/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

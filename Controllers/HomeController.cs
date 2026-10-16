@@ -180,11 +180,6 @@ public class HomeController : Controller
             BD bd = new BD();
             List<Peliculas> peliculas = bd.ObtenerPeliculas();
 
-            _logger.LogInformation(
-                "Cantidad de películas antes de filtrar: {Cantidad}",
-                peliculas.Count
-            );
-
             if (!string.IsNullOrWhiteSpace(filtros.Genero))
             {
                 string genero = Normalizar(filtros.Genero);
@@ -218,46 +213,46 @@ public class HomeController : Controller
                 ).ToList();
             }
 
-            _logger.LogInformation(
-                "Cantidad de películas después de filtrar: {Cantidad}",
-                peliculas.Count
-            );
-
             var peliculasConPoster = peliculas.Select(p => new
             {
+                idPelicula = p.IdPelicula,
                 titulo = p.Titulo,
+                sinopsis = p.Sinopsis,
                 genero = p.Genero,
                 animo = p.Animo,
                 duracionMinutos = p.DuracionMinutos,
+                anio = p.Anio,
 
-                posterUrl = p.Titulo switch
-                {
-                    "Toy Story" =>
-                        "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+                posterUrl = !string.IsNullOrWhiteSpace(p.PosterUrl)
+                    ? p.PosterUrl
+                    : p.Titulo switch
+                    {
+                        "Toy Story" =>
+                            "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
 
-                    "Shrek" =>
-                        "https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",
+                        "Shrek" =>
+                            "https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",
 
-                    "The Truman Show" =>
-                        "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
+                        "The Truman Show" =>
+                            "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
 
-                    "En busca de la felicidad" =>
-                        "https://image.tmdb.org/t/p/w500/7lZ3h8L4bV6fP4dY8gYxL0fV6w.jpg",
+                        "En busca de la felicidad" =>
+                            "https://image.tmdb.org/t/p/w500/7lZ3h8L4bV6fP4dY8gYxL0fV6w.jpg",
 
-                    "Superbad" =>
-                        "https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg",
+                        "Superbad" =>
+                            "https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg",
 
-                    "Coco" =>
-                        "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
+                        "Coco" =>
+                            "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
 
-                    "Intensamente" =>
-                        "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg",
+                        "Intensamente" =>
+                            "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg",
 
-                    "Jumanji" =>
-                        "https://image.tmdb.org/t/p/w500/bXrZ5iHBEjH7WMidbUDQ0U2xbmr.jpg",
+                        "Jumanji" =>
+                            "https://image.tmdb.org/t/p/w500/bXrZ5iHBEjH7WMidbUDQ0U2xbmr.jpg",
 
-                    _ => ""
-                }
+                        _ => ""
+                    }
             });
 
             return Json(peliculasConPoster);
@@ -272,6 +267,161 @@ public class HomeController : Controller
                 "Ocurrió un error al buscar películas."
             );
         }
+    }
+
+    // Página de detalles de una película.
+    public IActionResult Detalles(int id)
+    {
+        BD bd = new BD();
+
+        Peliculas pelicula = bd.ObtenerPeliculaPorId(id);
+
+        if (pelicula == null)
+        {
+            return NotFound();
+        }
+
+        ViewBag.Director = pelicula.IdDirector > 0
+            ? bd.ObtenerNombreDirector(pelicula.IdDirector)
+            : "No disponible";
+
+        ViewBag.Actores = bd.ObtenerActores(id);
+
+        string nombreUsuario = HttpContext.Session.GetString("usuario");
+
+        ViewBag.UsuarioConectado = !string.IsNullOrEmpty(nombreUsuario);
+        ViewBag.EsFavorito = false;
+        ViewBag.EstaEnWatchlist = false;
+
+        if (!string.IsNullOrEmpty(nombreUsuario))
+        {
+            int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+            ViewBag.EsFavorito = bd.EsFavorito(idUsuario, id);
+            ViewBag.EstaEnWatchlist = bd.EstaEnWatchlist(idUsuario, id);
+        }
+
+        return View(pelicula);
+    }
+
+    [HttpPost]
+    public IActionResult AgregarFavorito(int idPelicula)
+    {
+        string nombreUsuario = HttpContext.Session.GetString("usuario");
+
+        if (string.IsNullOrEmpty(nombreUsuario))
+        {
+            TempData["Mensaje"] = "Iniciá sesión para guardar películas en Favoritas.";
+            return RedirectToAction("Login");
+        }
+
+        BD bd = new BD();
+        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+        bd.AgregarFavorito(idUsuario, idPelicula);
+
+        TempData["Mensaje"] = "Película agregada a Favoritas.";
+
+        return RedirectToAction("Detalles", new { id = idPelicula });
+    }
+
+    [HttpPost]
+    public IActionResult QuitarFavorito(int idPelicula)
+    {
+        string nombreUsuario = HttpContext.Session.GetString("usuario");
+
+        if (string.IsNullOrEmpty(nombreUsuario))
+        {
+            return RedirectToAction("Login");
+        }
+
+        BD bd = new BD();
+        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+        bd.QuitarFavorito(idUsuario, idPelicula);
+
+        TempData["Mensaje"] = "Película quitada de Favoritas.";
+
+        return RedirectToAction("Detalles", new { id = idPelicula });
+    }
+
+    [HttpPost]
+    public IActionResult AgregarWatchlist(int idPelicula)
+    {
+        string nombreUsuario = HttpContext.Session.GetString("usuario");
+
+        if (string.IsNullOrEmpty(nombreUsuario))
+        {
+            TempData["Mensaje"] = "Iniciá sesión para guardar películas en tu Watchlist.";
+            return RedirectToAction("Login");
+        }
+
+        BD bd = new BD();
+        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+        bd.AgregarWatchlist(idUsuario, idPelicula);
+
+        TempData["Mensaje"] = "Película agregada a tu Watchlist.";
+
+        return RedirectToAction("Detalles", new { id = idPelicula });
+    }
+
+    [HttpPost]
+    public IActionResult QuitarWatchlist(int idPelicula)
+    {
+        string nombreUsuario = HttpContext.Session.GetString("usuario");
+
+        if (string.IsNullOrEmpty(nombreUsuario))
+        {
+            return RedirectToAction("Login");
+        }
+
+        BD bd = new BD();
+        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+        bd.QuitarWatchlist(idUsuario, idPelicula);
+
+        TempData["Mensaje"] = "Película quitada de tu Watchlist.";
+
+        return RedirectToAction("Detalles", new { id = idPelicula });
+    }
+
+    // Página con las películas favoritas del usuario conectado.
+    public IActionResult Favoritas()
+    {
+        string nombreUsuario = HttpContext.Session.GetString("usuario");
+
+        if (string.IsNullOrEmpty(nombreUsuario))
+        {
+            TempData["Mensaje"] = "Iniciá sesión para ver tus Favoritas.";
+            return RedirectToAction("Login");
+        }
+
+        BD bd = new BD();
+        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+        List<Peliculas> peliculas = bd.ObtenerFavoritos(idUsuario);
+
+        return View(peliculas);
+    }
+
+    // Página con las películas pendientes del usuario conectado.
+    public IActionResult Watchlist()
+    {
+        string nombreUsuario = HttpContext.Session.GetString("usuario");
+
+        if (string.IsNullOrEmpty(nombreUsuario))
+        {
+            TempData["Mensaje"] = "Iniciá sesión para ver tu Watchlist.";
+            return RedirectToAction("Login");
+        }
+
+        BD bd = new BD();
+        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+        List<Peliculas> peliculas = bd.ObtenerWatchlist(idUsuario);
+
+        return View(peliculas);
     }
 
     public class FiltrosBusqueda
@@ -326,14 +476,9 @@ public class HomeController : Controller
             return View();
         }
 
-        HttpContext.Session.SetString(
-            "usuario", usuarioEncontrado.NombreUsuario);
-
-        HttpContext.Session.SetString(
-            "nombre", usuarioEncontrado.Nombre);
-
-        HttpContext.Session.SetString(
-            "apellido", usuarioEncontrado.Apellido);
+        HttpContext.Session.SetString("usuario", usuarioEncontrado.NombreUsuario);
+        HttpContext.Session.SetString("nombre", usuarioEncontrado.Nombre);
+        HttpContext.Session.SetString("apellido", usuarioEncontrado.Apellido);
 
         return RedirectToAction("Index");
     }
@@ -363,8 +508,7 @@ public class HomeController : Controller
 
         BD bd = new BD();
 
-        Usuarios usuarioExistente =
-            bd.ObtenerUsuarioPorNombre(usuario);
+        Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
 
         if (usuarioExistente != null)
         {
@@ -382,8 +526,6 @@ public class HomeController : Controller
 
         bd.AgregarUsuario(nuevoUsuario);
 
-        // Después del registro, ir a iniciar sesión.
-        // No iniciar la sesión automáticamente.
         return RedirectToAction("Login");
     }
 
