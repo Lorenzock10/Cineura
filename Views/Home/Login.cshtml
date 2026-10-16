@@ -1,125 +1,13 @@
-
 @{
     ViewData["Title"] = "Iniciar sesión | Cineura";
 }
 
-<style>
-    .cineura-cuenta {
-        background: #111827;
-        color: #F9FAFB;
-        min-height: 85vh;
-        padding: 55px 15px;
-    }
-
-    .cuenta-contenedor {
-        max-width: 450px;
-        margin: 0 auto;
-    }
-
-    .cuenta-logo {
-        color: #FBBF24;
-        text-align: center;
-        font-size: 27px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        margin-bottom: 8px;
-    }
-
-    .cuenta-subtitulo {
-        color: #9CA3AF;
-        text-align: center;
-        margin-bottom: 28px;
-    }
-
-    .cuenta-panel {
-        background: #1F2937;
-        border: 1px solid #374151;
-        border-radius: 15px;
-        padding: 30px;
-    }
-
-    .cuenta-panel h1 {
-        font-size: 27px;
-        margin-bottom: 8px;
-    }
-
-    .cuenta-descripcion {
-        color: #9CA3AF;
-        margin-bottom: 25px;
-    }
-
-    .cuenta-label {
-        display: block;
-        margin-bottom: 7px;
-        font-weight: 600;
-    }
-
-    .cuenta-input {
-        background: #111827;
-        color: #FFFFFF;
-        border: 1px solid #4B5563;
-        border-radius: 8px;
-        padding: 12px;
-    }
-
-    .cuenta-input:focus {
-        background: #111827;
-        color: #FFFFFF;
-        border-color: #FBBF24;
-        box-shadow: none;
-    }
-
-    .cuenta-input::placeholder {
-        color: #9CA3AF;
-    }
-
-    .cuenta-boton {
-        display: block;
-        width: 100%;
-        background: #EF4444;
-        color: #FFFFFF;
-        border: none;
-        border-radius: 8px;
-        padding: 12px;
-        font-weight: bold;
-        margin-top: 20px;
-    }
-
-    .cuenta-boton:hover {
-        background: #DC2626;
-        color: #FFFFFF;
-    }
-
-    .cuenta-enlace {
-        color: #FBBF24;
-        text-decoration: none;
-    }
-
-    .cuenta-enlace:hover {
-        color: #FDE68A;
-        text-decoration: underline;
-    }
-
-    .cuenta-pie {
-        text-align: center;
-        color: #9CA3AF;
-        margin-top: 22px;
-    }
-
-    .cuenta-error {
-        background: #451A1A;
-        color: #FECACA;
-        border: 1px solid #7F1D1D;
-        border-radius: 8px;
-        padding: 12px;
-        margin-bottom: 20px;
-    }
-</style>
-
 <div class="cineura-cuenta">
     <div class="cuenta-contenedor">
 
-        <div class="cuenta-logo">✦ CINEURA</div>
+        <div class="cuenta-logo">
+            <img src="~/imagenes/cineura.png" alt="Cineura" />
+        </div>
         <p class="cuenta-subtitulo">Tu próxima película empieza acá.</p>
 
         <div class="cuenta-panel">
