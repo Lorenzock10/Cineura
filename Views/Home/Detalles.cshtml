@@ -1,4 +1,3 @@
-
 @{
     ViewData["Title"] = Model.Titulo;
 
@@ -90,7 +89,7 @@
 
                 @if (ViewBag.EstaEnWatchlist == true)
                 {
-                    <form asp-action="QuitarWatchlist" method="post">
+                    <form asp-action="QuitarWatchlist" asp-controller="Watchlist" method="post">
                         <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
                         <button type="submit" class="detalles-boton detalles-boton-secundario">
                             ✓ Quitar de Watchlist
@@ -99,7 +98,7 @@
                 }
                 else
                 {
-                    <form asp-action="AgregarWatchlist" method="post">
+                    <form asp-action="AgregarWatchlist" asp-controller="Watchlist" method="post">
                         <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
                         <button type="submit" class="detalles-boton">
                             + Agregar a Watchlist

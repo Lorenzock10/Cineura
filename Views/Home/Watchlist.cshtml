@@ -1,4 +1,3 @@
-
 @model List<Cineura.Models.Peliculas>
 
 @{
@@ -36,7 +35,7 @@
                     Ver detalles
                 </a>
 
-                <form asp-action="QuitarWatchlist" method="post">
+                <form asp-action="QuitarWatchlist" asp-controller="Watchlist" method="post">
                     <input type="hidden"
                            name="idPelicula"
                            value="@pelicula.IdPelicula" />

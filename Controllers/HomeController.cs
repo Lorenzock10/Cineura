@@ -1,4 +1,3 @@
-
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -345,47 +344,6 @@ public class HomeController : Controller
         return RedirectToAction("Detalles", new { id = idPelicula });
     }
 
-    [HttpPost]
-    public IActionResult AgregarWatchlist(int idPelicula)
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
-        {
-            TempData["Mensaje"] = "Iniciá sesión para guardar películas en tu Watchlist.";
-            return RedirectToAction("Login");
-        }
-
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        bd.AgregarWatchlist(idUsuario, idPelicula);
-
-        TempData["Mensaje"] = "Película agregada a tu Watchlist.";
-
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-
-    [HttpPost]
-    public IActionResult QuitarWatchlist(int idPelicula)
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
-        {
-            return RedirectToAction("Login");
-        }
-
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        bd.QuitarWatchlist(idUsuario, idPelicula);
-
-        TempData["Mensaje"] = "Película quitada de tu Watchlist.";
-
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-
     // Página con las películas favoritas del usuario conectado.
     public IActionResult Favoritas()
     {
@@ -401,25 +359,6 @@ public class HomeController : Controller
         int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
 
         List<Peliculas> peliculas = bd.ObtenerFavoritos(idUsuario);
-
-        return View(peliculas);
-    }
-
-    // Página con las películas pendientes del usuario conectado.
-    public IActionResult Watchlist()
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
-        {
-            TempData["Mensaje"] = "Iniciá sesión para ver tu Watchlist.";
-            return RedirectToAction("Login");
-        }
-
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        List<Peliculas> peliculas = bd.ObtenerWatchlist(idUsuario);
 
         return View(peliculas);
     }
