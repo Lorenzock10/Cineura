@@ -176,19 +176,22 @@
                 </a>
             </div>
 
-            <nav class="cineura-menu">
-                <a href="@Url.Action("Index", "Home")">Home</a>
-                <a href="@Url.Action("Explorar", "Home")">Explorar</a>
-                <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
-                <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
-            </nav>
+            @{
+                var usuarioSesion = Context.Session.GetString("usuario");
+                var nombreSesion = Context.Session.GetString("nombre");
+            }
+
+            @if (!string.IsNullOrEmpty(usuarioSesion))
+            {
+                <nav class="cineura-menu">
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <a href="@Url.Action("Explorar", "Home")">Explorar</a>
+                    <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
+                    <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
+                </nav>
+            }
 
             <div class="cineura-sesion">
-                @{
-                    var usuarioSesion = Context.Session.GetString("usuario");
-                    var nombreSesion = Context.Session.GetString("nombre");
-                }
-
                 @if (!string.IsNullOrEmpty(usuarioSesion))
                 {
                     <span class="cineura-saludo">
