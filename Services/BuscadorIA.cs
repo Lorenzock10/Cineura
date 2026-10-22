@@ -1,10 +1,25 @@
-
-using Microsoft.SemanticKernel;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Cineura.Services
 {
     public class BuscadorIA
     {
+        private static HttpClient CreateHttpClient()
+        {
+            var handler = new HttpClientHandler();
+
+            handler.ServerCertificateCustomValidationCallback =
+                (request, certificate, chain, errors) =>
+                    errors == System.Net.Security.SslPolicyErrors.None ||
+                    errors == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors;
+
+            return new HttpClient(handler)
+            {
+                Timeout = TimeSpan.FromSeconds(30)
+            };
+        }
+
         public async Task<string> InterpretarBusquedaAsync(string busqueda)
         {
             string? apiKey = Environment.GetEnvironmentVariable("GROQ_API_KEY");
@@ -15,18 +30,6 @@ namespace Cineura.Services
                     "No se encontró la clave de Groq. Configurá GROQ_API_KEY en CMD."
                 );
             }
-
-            var builder = Kernel.CreateBuilder();
-
-            #pragma warning disable SKEXP0010
-            builder.AddOpenAIChatCompletion(
-                modelId: "openai/gpt-oss-120b",
-                endpoint: new Uri("https://api.groq.com/openai/v1"),
-                apiKey: apiKey
-            );
-            #pragma warning restore SKEXP0010
-
-            var kernel = builder.Build();
 
             string prompt =
                 "Sos Nova, el buscador inteligente de Cineura. " +
@@ -43,9 +46,50 @@ namespace Cineura.Services
                 "Ejemplo: {\"genero\":\"Aventura\",\"animo\":\"Emocionante\",\"duracionMaxima\":null}. " +
                 "Mensaje del usuario: " + busqueda;
 
-            var resultado = await kernel.InvokePromptAsync(prompt);
+            using var client = CreateHttpClient();
 
-            return resultado.ToString();
+            var requestBody = new
+            {
+                model = "openai/gpt-oss-120b",
+                messages = new[]
+                {
+                    new { role = "system", content = "Respondé solo con JSON válido y sin texto extra." },
+                    new { role = "user", content = prompt }
+                },
+                temperature = 0.2,
+                response_format = new { type = "json_object" }
+            };
+
+            using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.groq.com/openai/v1/chat/completions")
+            {
+                Content = JsonContent.Create(requestBody)
+            };
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
+            using var response = await client.SendAsync(request);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException(
+                    $"Groq API respondió con estado {(int)response.StatusCode}: {responseBody}"
+                );
+            }
+
+            using JsonDocument document = JsonDocument.Parse(responseBody);
+            string? contenido = document.RootElement
+                .GetProperty("choices")[0]
+                .GetProperty("message")
+                .GetProperty("content")
+                .GetString();
+
+            if (string.IsNullOrWhiteSpace(contenido))
+            {
+                throw new InvalidOperationException("Groq no devolvió contenido válido.");
+            }
+
+            return contenido;
         }
     }
 }
