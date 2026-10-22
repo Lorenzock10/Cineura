@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\devandroid\\Downloads\\Cineura\\Cineura.csproj": {}
   },
   "projects": {
@@ -12,12 +13,29 @@
         "projectPath": "C:\\Users\\devandroid\\Downloads\\Cineura\\Cineura.csproj",
         "packagesPath": "C:\\Users\\devandroid\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\devandroid\\Downloads\\Cineura\\obj\\",
+=======
+    "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj",
+        "projectName": "Cineura",
+        "projectPath": "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj",
+        "packagesPath": "C:\\Users\\49903691\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\49903691\\Downloads\\Cineura\\obj\\",
+>>>>>>> 69b7e377dca37cde384b3dfa158cba07acc28aef
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+<<<<<<< HEAD
           "C:\\Users\\devandroid\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+          "C:\\Users\\49903691\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 69b7e377dca37cde384b3dfa158cba07acc28aef
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

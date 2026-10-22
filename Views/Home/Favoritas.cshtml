@@ -1,20 +1,24 @@
-
-@model List<Cineura.Models.Peliculas>
+ @model List<Cineura.Models.Peliculas>
 
 @{
     ViewData["Title"] = "Mis favoritas";
 }
 
-
-
 <div class="listas-pagina">
     <h1>♥ Mis películas favoritas</h1>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Mensaje"]
+        </div>
+    }
 
     @if (Model == null || Model.Count == 0)
     {
         <p class="lista-vacia">
             Todavía no agregaste películas a Favoritas.
-            Entrá a una película y tocá "Agregar a Favoritas".
+            Explorá las películas y tocá "Favoritas".
         </p>
     }
     else
@@ -22,8 +26,16 @@
         @foreach (var pelicula in Model)
         {
             <div class="lista-pelicula">
+                @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
+                {
+                    <img src="@pelicula.PosterUrl"
+                         alt="Póster de @pelicula.Titulo"
+                         style="width:140px;max-width:100%;border-radius:8px;" />
+                }
+
                 <h2>
-                    <a asp-action="Detalles"
+                    <a asp-controller="Home"
+                       asp-action="Detalles"
                        asp-route-id="@pelicula.IdPelicula">
                         @pelicula.Titulo
                     </a>
@@ -31,19 +43,21 @@
 
                 <p>@pelicula.Anio · @pelicula.Genero · @pelicula.DuracionMinutos minutos</p>
 
-                <p>@pelicula.Sinopsis</p>
+                <details>
+                    <summary>Ver detalles</summary>
+                    <p>@pelicula.Sinopsis</p>
+                    <p>
+                        Año: @pelicula.Anio<br />
+                        Género: @pelicula.Genero<br />
+                        Duración: @pelicula.DuracionMinutos minutos
+                    </p>
+                </details>
 
-                <a asp-action="Detalles"
-                   asp-route-id="@pelicula.IdPelicula">
-                    Ver detalles
-                </a>
+                <form asp-controller="Home" asp-action="QuitarFavorito" method="post">
+                    <input type="hidden" name="idPelicula" value="@pelicula.IdPelicula" />
+                    <input type="hidden" name="returnUrl" value="/Home/Favoritas" />
 
-                <form asp-action="QuitarFavorito" method="post">
-                    <input type="hidden"
-                           name="idPelicula"
-                           value="@pelicula.IdPelicula" />
-
-                    <button type="submit" class="lista-boton">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
                         Quitar de Favoritas
                     </button>
                 </form>

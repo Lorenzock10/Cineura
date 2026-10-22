@@ -1,3 +1,4 @@
+
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -6,471 +7,448 @@ using Microsoft.AspNetCore.Mvc;
 using Cineura.Models;
 using Cineura.Services;
 
-namespace Cineura.Controllers;
-
-public class HomeController : Controller
+namespace Cineura.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly BuscadorIA _buscadorIA;
-
-    public HomeController(
-        ILogger<HomeController> logger,
-        BuscadorIA buscadorIA)
+    public class HomeController : Controller
     {
-        _logger = logger;
-        _buscadorIA = buscadorIA;
-    }
+        private readonly ILogger<HomeController> _logger;
+        private readonly BuscadorIA _buscadorIA;
 
-    private string Normalizar(string texto)
-    {
-        string normalizado = texto.ToLower().Trim()
-            .Normalize(NormalizationForm.FormD);
-
-        StringBuilder resultado = new StringBuilder();
-
-        foreach (char caracter in normalizado)
+        public HomeController(ILogger<HomeController> logger, BuscadorIA buscadorIA)
         {
-            if (CharUnicodeInfo.GetUnicodeCategory(caracter)
-                != UnicodeCategory.NonSpacingMark)
-            {
-                resultado.Append(caracter);
-            }
+            _logger = logger;
+            _buscadorIA = buscadorIA;
         }
 
-        return resultado.ToString().Normalize(NormalizationForm.FormC);
-    }
-
-    private string LimpiarJson(string texto)
-    {
-        texto = texto.Trim();
-
-        if (texto.StartsWith("```"))
+        public IActionResult Index()
         {
-            int inicio = texto.IndexOf('\n');
-
-            if (inicio >= 0)
-            {
-                texto = texto.Substring(inicio + 1);
-            }
-        }
-
-        if (texto.EndsWith("```"))
-        {
-            texto = texto.Substring(0, texto.Length - 3);
-        }
-
-        texto = texto.Trim();
-
-        int inicioJson = texto.IndexOf('{');
-        int finalJson = texto.LastIndexOf('}');
-
-        if (inicioJson >= 0 && finalJson > inicioJson)
-        {
-            texto = texto.Substring(
-                inicioJson,
-                finalJson - inicioJson + 1
-            );
-        }
-
-        return texto.Trim();
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> InterpretarBusqueda(string busqueda)
-    {
-        if (string.IsNullOrWhiteSpace(busqueda))
-        {
-            return BadRequest("Escribí qué tipo de película querés ver.");
-        }
-
-        try
-        {
-            string resultado =
-                await _buscadorIA.InterpretarBusquedaAsync(busqueda);
-
-            _logger.LogInformation(
-                "Respuesta de Nova: {Respuesta}", resultado);
-
-            string jsonLimpio = LimpiarJson(resultado);
-
-            try
-            {
-                using JsonDocument documento =
-                    JsonDocument.Parse(jsonLimpio);
-            }
-            catch (JsonException)
-            {
-                return StatusCode(
-                    502,
-                    "Nova no devolvió una respuesta válida. Probá de nuevo."
-                );
-            }
-
-            return Content(jsonLimpio, "application/json");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(
-                ex, "Error al interpretar la búsqueda con IA.");
-
-            return StatusCode(
-                500,
-                "No pudimos comunicarnos con Nova."
-            );
-        }
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> BuscarPeliculas(string busqueda)
-    {
-        if (string.IsNullOrWhiteSpace(busqueda))
-        {
-            return BadRequest("Escribí qué película querés ver.");
-        }
-
-        try
-        {
-            string respuestaIA =
-                await _buscadorIA.InterpretarBusquedaAsync(busqueda);
-
-            _logger.LogInformation(
-                "Respuesta de Nova: {Respuesta}", respuestaIA);
-
-            string jsonLimpio = LimpiarJson(respuestaIA);
-
-            FiltrosBusqueda? filtros;
-
-            try
-            {
-                filtros = JsonSerializer.Deserialize<FiltrosBusqueda>(
-                    jsonLimpio,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    }
-                );
-            }
-            catch (JsonException ex)
-            {
-                _logger.LogWarning(
-                    ex,
-                    "Nova devolvió una respuesta que no se pudo convertir a JSON."
-                );
-
-                return StatusCode(
-                    502,
-                    "Nova no devolvió los filtros correctamente. Probá de nuevo."
-                );
-            }
-
-            if (filtros == null)
-            {
-                return StatusCode(
-                    502,
-                    "Nova no pudo interpretar la búsqueda."
-                );
-            }
-
             BD bd = new BD();
             List<Peliculas> peliculas = bd.ObtenerPeliculas();
 
-            if (!string.IsNullOrWhiteSpace(filtros.Genero))
-            {
-                string genero = Normalizar(filtros.Genero);
+            ViewBag.IdDune = BuscarId(peliculas, "Dune: Part Two");
+            ViewBag.IdPoorThings = BuscarId(peliculas, "Poor Things");
+            ViewBag.IdSubstance = BuscarId(peliculas, "The Substance");
+            ViewBag.IdAnatomy = BuscarId(peliculas, "Anatomy of a Fall");
 
-                peliculas = peliculas.Where(p =>
-                    !string.IsNullOrWhiteSpace(p.Genero) &&
-                    (
-                        Normalizar(p.Genero).Contains(genero) ||
-                        genero.Contains(Normalizar(p.Genero))
-                    )
-                ).ToList();
+            return View();
+        }
+
+        private int BuscarId(List<Peliculas> peliculas, string titulo)
+        {
+            Peliculas pelicula = peliculas.FirstOrDefault(p =>
+                string.Equals(p.Titulo, titulo, StringComparison.OrdinalIgnoreCase));
+
+            return pelicula?.IdPelicula ?? 0;
+        }
+
+        private string Normalizar(string texto)
+        {
+            string normalizado = texto.ToLower().Trim()
+                .Normalize(NormalizationForm.FormD);
+
+            StringBuilder resultado = new StringBuilder();
+
+            foreach (char caracter in normalizado)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(caracter)
+                    != UnicodeCategory.NonSpacingMark)
+                {
+                    resultado.Append(caracter);
+                }
             }
 
-            if (filtros.DuracionMaxima.HasValue)
+            return resultado.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        private string LimpiarJson(string texto)
+        {
+            texto = texto.Trim();
+
+            if (texto.StartsWith("```"))
             {
-                peliculas = peliculas.Where(p =>
-                    p.DuracionMinutos <= filtros.DuracionMaxima.Value
-                ).ToList();
+                int inicio = texto.IndexOf('\n');
+
+                if (inicio >= 0)
+                    texto = texto.Substring(inicio + 1);
             }
 
-            if (!string.IsNullOrWhiteSpace(filtros.Animo))
-            {
-                string animo = Normalizar(filtros.Animo);
+            if (texto.EndsWith("```"))
+                texto = texto.Substring(0, texto.Length - 3);
 
-                peliculas = peliculas.Where(p =>
-                    !string.IsNullOrWhiteSpace(p.Animo) &&
-                    (
-                        Normalizar(p.Animo).Contains(animo) ||
-                        animo.Contains(Normalizar(p.Animo))
-                    )
-                ).ToList();
+            texto = texto.Trim();
+
+            int inicioJson = texto.IndexOf('{');
+            int finalJson = texto.LastIndexOf('}');
+
+            if (inicioJson >= 0 && finalJson > inicioJson)
+                texto = texto.Substring(inicioJson, finalJson - inicioJson + 1);
+
+            return texto.Trim();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InterpretarBusqueda(string busqueda)
+        {
+            if (string.IsNullOrWhiteSpace(busqueda))
+                return BadRequest("Escribí qué tipo de película querés ver.");
+
+            try
+            {
+                string respuesta = await _buscadorIA.InterpretarBusquedaAsync(busqueda);
+                string json = LimpiarJson(respuesta);
+
+                using JsonDocument documento = JsonDocument.Parse(json);
+
+                return Content(json, "application/json");
+            }
+            catch (JsonException)
+            {
+                return StatusCode(502, "Nova no devolvió una respuesta válida.");
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, "Error al interpretar la búsqueda con IA.");
+                return StatusCode(500, "No pudimos comunicarnos con Nova.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BuscarPeliculas(string busqueda)
+        {
+            if (string.IsNullOrWhiteSpace(busqueda))
+                return BadRequest("Escribí qué película querés ver.");
+
+            try
+            {
+                string respuesta = await _buscadorIA.InterpretarBusquedaAsync(busqueda);
+                string json = LimpiarJson(respuesta);
+
+                FiltrosBusqueda filtros =
+                    JsonSerializer.Deserialize<FiltrosBusqueda>(
+                        json,
+                        new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
+
+                if (filtros == null)
+                    return StatusCode(502, "Nova no pudo interpretar la búsqueda.");
+
+                BD bd = new BD();
+                List<Peliculas> peliculas = bd.ObtenerPeliculas();
+
+                if (!string.IsNullOrWhiteSpace(filtros.Genero))
+                {
+                    string genero = Normalizar(filtros.Genero);
+
+                    peliculas = peliculas.Where(p =>
+                        !string.IsNullOrWhiteSpace(p.Genero) &&
+                        Normalizar(p.Genero).Contains(genero)).ToList();
+                }
+
+                if (filtros.DuracionMaxima.HasValue)
+                {
+                    peliculas = peliculas.Where(p =>
+                        p.DuracionMinutos <= filtros.DuracionMaxima.Value).ToList();
+                }
+
+                if (!string.IsNullOrWhiteSpace(filtros.Animo))
+                {
+                    string animo = Normalizar(filtros.Animo);
+
+                    peliculas = peliculas.Where(p =>
+                        !string.IsNullOrWhiteSpace(p.Animo) &&
+                        Normalizar(p.Animo).Contains(animo)).ToList();
+                }
+
+                var resultados = peliculas.Select(p => new
+                {
+                    idPelicula = p.IdPelicula,
+                    titulo = p.Titulo,
+                    sinopsis = p.Sinopsis,
+                    genero = p.Genero,
+                    animo = p.Animo,
+                    duracionMinutos = p.DuracionMinutos,
+                    anio = p.Anio,
+                    posterUrl = p.PosterUrl ?? ""
+                });
+
+                return Json(resultados);
+            }
+            catch (JsonException error)
+            {
+                _logger.LogError(error, "Nova devolvió un JSON incorrecto.");
+                return StatusCode(502, "Nova no devolvió los filtros correctamente.");
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, "Error al buscar películas con Nova.");
+                return StatusCode(500, "Ocurrió un error al buscar películas.");
+            }
+        }
+
+        public IActionResult Detalles(int id)
+        {
+            BD bd = new BD();
+            Peliculas pelicula = bd.ObtenerPeliculaPorId(id);
+
+            if (pelicula == null)
+                return NotFound();
+
+            ViewBag.Director = pelicula.IdDirector > 0
+                ? bd.ObtenerNombreDirector(pelicula.IdDirector)
+                : "No disponible";
+
+            ViewBag.Actores = bd.ObtenerActores(id);
+
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            ViewBag.UsuarioConectado = !string.IsNullOrEmpty(usuario);
+            ViewBag.EsFavorito = false;
+            ViewBag.EstaEnWatchlist = false;
+
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+                ViewBag.EsFavorito = bd.EsFavorito(idUsuario, id);
+                ViewBag.EstaEnWatchlist = bd.EstaEnWatchlist(idUsuario, id);
             }
 
-            var peliculasConPoster = peliculas.Select(p => new
+            return View(pelicula);
+        }
+
+        [HttpPost]
+        public IActionResult AgregarFavorito(int idPelicula, string returnUrl = "")
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(usuario))
             {
-                idPelicula = p.IdPelicula,
-                titulo = p.Titulo,
-                sinopsis = p.Sinopsis,
-                genero = p.Genero,
-                animo = p.Animo,
-                duracionMinutos = p.DuracionMinutos,
-                anio = p.Anio,
+                TempData["Mensaje"] = "Iniciá sesión para guardar películas en Favoritas.";
+                return RedirectToAction("Login");
+            }
 
-                posterUrl = !string.IsNullOrWhiteSpace(p.PosterUrl)
-                    ? p.PosterUrl
-                    : p.Titulo switch
-                    {
-                        "Toy Story" =>
-                            "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
 
-                        "Shrek" =>
-                            "https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",
+            if (idUsuario == 0)
+                return RedirectToAction("Login");
 
-                        "The Truman Show" =>
-                            "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
+            if (bd.EsFavorito(idUsuario, idPelicula))
+                TempData["Mensaje"] = "Esta película ya está en Favoritas.";
+            else
+            {
+                bd.AgregarFavorito(idUsuario, idPelicula);
+                TempData["Mensaje"] = "¡Película agregada a Favoritas!";
+            }
 
-                        "En busca de la felicidad" =>
-                            "https://image.tmdb.org/t/p/w500/7lZ3h8L4bV6fP4dY8gYxL0fV6w.jpg",
+            return VolverA(returnUrl, "Index");
+        }
 
-                        "Superbad" =>
-                            "https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg",
+        [HttpPost]
+        public IActionResult QuitarFavorito(int idPelicula, string returnUrl = "")
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
 
-                        "Coco" =>
-                            "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
+            if (string.IsNullOrEmpty(usuario))
+                return RedirectToAction("Login");
 
-                        "Intensamente" =>
-                            "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg",
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
 
-                        "Jumanji" =>
-                            "https://image.tmdb.org/t/p/w500/bXrZ5iHBEjH7WMidbUDQ0U2xbmr.jpg",
+            bd.QuitarFavorito(idUsuario, idPelicula);
 
-                        _ => ""
-                    }
+            TempData["Mensaje"] = "Película quitada de Favoritas.";
+
+            return VolverA(returnUrl, "Favoritas");
+        }
+
+        public IActionResult Favoritas()
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(usuario))
+            {
+                TempData["Mensaje"] = "Iniciá sesión para ver tus Favoritas.";
+                return RedirectToAction("Login");
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+            return View(bd.ObtenerFavoritos(idUsuario));
+        }
+
+        [HttpPost]
+        public IActionResult AgregarWatchlist(int idPelicula, string returnUrl = "")
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(usuario))
+            {
+                TempData["Mensaje"] = "Iniciá sesión para guardar películas en tu Watchlist.";
+                return RedirectToAction("Login");
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+            if (idUsuario == 0)
+                return RedirectToAction("Login");
+
+            if (bd.EstaEnWatchlist(idUsuario, idPelicula))
+                TempData["Mensaje"] = "Esta película ya está en tu Watchlist.";
+            else
+            {
+                bd.AgregarWatchlist(idUsuario, idPelicula);
+                TempData["Mensaje"] = "¡Película agregada a tu Watchlist!";
+            }
+
+            return VolverA(returnUrl, "Index");
+        }
+
+        [HttpPost]
+        public IActionResult QuitarWatchlist(int idPelicula, string returnUrl = "")
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(usuario))
+                return RedirectToAction("Login");
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+            bd.QuitarWatchlist(idUsuario, idPelicula);
+
+            TempData["Mensaje"] = "Película quitada de tu Watchlist.";
+
+            return VolverA(returnUrl, "Watchlist");
+        }
+
+        public IActionResult Watchlist()
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(usuario))
+            {
+                TempData["Mensaje"] = "Iniciá sesión para ver tu Watchlist.";
+                return RedirectToAction("Login");
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+            return View(bd.ObtenerWatchlist(idUsuario));
+        }
+
+        private IActionResult VolverA(string returnUrl, string accionPredeterminada)
+        {
+            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+
+            return RedirectToAction(accionPredeterminada);
+        }
+
+        public class FiltrosBusqueda
+        {
+            public string Genero { get; set; }
+            public string Animo { get; set; }
+            public int? DuracionMaxima { get; set; }
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
             });
-
-            return Json(peliculasConPoster);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(
-                ex, "Error al buscar películas con Nova.");
-
-            return StatusCode(
-                500,
-                "Ocurrió un error al buscar películas."
-            );
-        }
-    }
-
-    // Página de detalles de una película.
-    public IActionResult Detalles(int id)
-    {
-        BD bd = new BD();
-
-        Peliculas pelicula = bd.ObtenerPeliculaPorId(id);
-
-        if (pelicula == null)
-        {
-            return NotFound();
         }
 
-        ViewBag.Director = pelicula.IdDirector > 0
-            ? bd.ObtenerNombreDirector(pelicula.IdDirector)
-            : "No disponible";
-
-        ViewBag.Actores = bd.ObtenerActores(id);
-
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        ViewBag.UsuarioConectado = !string.IsNullOrEmpty(nombreUsuario);
-        ViewBag.EsFavorito = false;
-        ViewBag.EstaEnWatchlist = false;
-
-        if (!string.IsNullOrEmpty(nombreUsuario))
+        public IActionResult Login()
         {
-            int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-            ViewBag.EsFavorito = bd.EsFavorito(idUsuario, id);
-            ViewBag.EstaEnWatchlist = bd.EstaEnWatchlist(idUsuario, id);
+            return View();
         }
 
-        return View(pelicula);
-    }
-
-    [HttpPost]
-    public IActionResult AgregarFavorito(int idPelicula)
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
+        [HttpPost]
+        public IActionResult Login(string usuario, string contrasena)
         {
-            TempData["Mensaje"] = "Iniciá sesión para guardar películas en Favoritas.";
+            if (usuario == null || usuario.Length < 4 ||
+                contrasena == null || contrasena.Length < 6)
+            {
+                ViewBag.Error = "El usuario debe tener al menos 4 caracteres y la contraseña 6.";
+                return View();
+            }
+
+            BD bd = new BD();
+            Usuarios usuarioEncontrado = bd.ObtenerUsuario(usuario, contrasena);
+
+            if (usuarioEncontrado == null)
+            {
+                ViewBag.Error = "Usuario o contraseña incorrectos.";
+                return View();
+            }
+
+            HttpContext.Session.SetString("usuario", usuarioEncontrado.NombreUsuario);
+            HttpContext.Session.SetString("nombre", usuarioEncontrado.Nombre);
+            HttpContext.Session.SetString("apellido", usuarioEncontrado.Apellido);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Registrarse()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Registrarse(
+            string nombre,
+            string apellido,
+            string usuario,
+            string contrasena)
+        {
+            if (nombre == null || nombre.Length < 2 ||
+                apellido == null || apellido.Length < 2 ||
+                usuario == null || usuario.Length < 4 ||
+                contrasena == null || contrasena.Length < 6)
+            {
+                ViewBag.Error = "Completá los campos correctamente: nombre y apellido de al menos 2 caracteres, usuario de 4 y contraseña de 6.";
+                return View();
+            }
+
+            BD bd = new BD();
+            Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
+
+            if (usuarioExistente != null)
+            {
+                ViewBag.Error = "Ese nombre de usuario ya existe.";
+                return View();
+            }
+
+            Usuarios nuevoUsuario = new Usuarios
+            {
+                Nombre = nombre,
+                Apellido = apellido,
+                NombreUsuario = usuario,
+                Contraseña = contrasena
+            };
+
+            bd.AgregarUsuario(nuevoUsuario);
+
             return RedirectToAction("Login");
         }
 
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        bd.AgregarFavorito(idUsuario, idPelicula);
-
-        TempData["Mensaje"] = "Película agregada a Favoritas.";
-
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-
-    [HttpPost]
-    public IActionResult QuitarFavorito(int idPelicula)
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
+        public IActionResult CerrarSesion()
         {
-            return RedirectToAction("Login");
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
         }
-
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        bd.QuitarFavorito(idUsuario, idPelicula);
-
-        TempData["Mensaje"] = "Película quitada de Favoritas.";
-
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-
-    // Página con las películas favoritas del usuario conectado.
-    public IActionResult Favoritas()
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
-        {
-            TempData["Mensaje"] = "Iniciá sesión para ver tus Favoritas.";
-            return RedirectToAction("Login");
-        }
-
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        List<Peliculas> peliculas = bd.ObtenerFavoritos(idUsuario);
-
-        return View(peliculas);
-    }
-
-    public class FiltrosBusqueda
-    {
-        public string? Genero { get; set; }
-        public string? Animo { get; set; }
-        public int? DuracionMaxima { get; set; }
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(
-        Duration = 0,
-        Location = ResponseCacheLocation.None,
-        NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel
-        {
-            RequestId = Activity.Current?.Id
-                ?? HttpContext.TraceIdentifier
-        });
-    }
-
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult Login(string usuario, string contrasena)
-    {
-        if (usuario == null || usuario.Length < 4 ||
-            contrasena == null || contrasena.Length < 6)
-        {
-            ViewBag.Error =
-                "El usuario debe tener al menos 4 caracteres y la contraseña 6.";
-
-            return View();
-        }
-
-        BD bd = new BD();
-        Usuarios usuarioEncontrado =
-            bd.ObtenerUsuario(usuario, contrasena);
-
-        if (usuarioEncontrado == null)
-        {
-            ViewBag.Error = "Usuario o contraseña incorrectos.";
-            return View();
-        }
-
-        HttpContext.Session.SetString("usuario", usuarioEncontrado.NombreUsuario);
-        HttpContext.Session.SetString("nombre", usuarioEncontrado.Nombre);
-        HttpContext.Session.SetString("apellido", usuarioEncontrado.Apellido);
-
-        return RedirectToAction("Index");
-    }
-
-    public IActionResult Registrarse()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult Registrarse(
-        string nombre,
-        string apellido,
-        string usuario,
-        string contrasena)
-    {
-        if (nombre == null || nombre.Length < 2 ||
-            apellido == null || apellido.Length < 2 ||
-            usuario == null || usuario.Length < 4 ||
-            contrasena == null || contrasena.Length < 6)
-        {
-            ViewBag.Error =
-                "Completá los campos correctamente: nombre y apellido de al menos 2 caracteres, usuario de 4 y contraseña de 6.";
-
-            return View();
-        }
-
-        BD bd = new BD();
-
-        Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
-
-        if (usuarioExistente != null)
-        {
-            ViewBag.Error = "Ese nombre de usuario ya existe.";
-            return View();
-        }
-
-        Usuarios nuevoUsuario = new Usuarios
-        {
-            Nombre = nombre,
-            Apellido = apellido,
-            NombreUsuario = usuario,
-            Contraseña = contrasena
-        };
-
-        bd.AgregarUsuario(nuevoUsuario);
-
-        return RedirectToAction("Login");
-    }
-
-    public IActionResult CerrarSesion()
-    {
-        HttpContext.Session.Clear();
-        return RedirectToAction("Index");
     }
 }
