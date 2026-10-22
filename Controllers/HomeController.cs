@@ -1,4 +1,3 @@
-
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -29,6 +28,28 @@ namespace Cineura.Controllers
             ViewBag.IdPoorThings = BuscarId(peliculas, "Poor Things");
             ViewBag.IdSubstance = BuscarId(peliculas, "The Substance");
             ViewBag.IdAnatomy = BuscarId(peliculas, "Anatomy of a Fall");
+
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+                if (idUsuario > 0)
+                {
+                    ViewBag.EsFavoritoDune = ViewBag.IdDune > 0 ? bd.EsFavorito(idUsuario, ViewBag.IdDune) : false;
+                    ViewBag.EstaEnWatchlistDune = ViewBag.IdDune > 0 ? bd.EstaEnWatchlist(idUsuario, ViewBag.IdDune) : false;
+
+                    ViewBag.EsFavoritoPoorThings = ViewBag.IdPoorThings > 0 ? bd.EsFavorito(idUsuario, ViewBag.IdPoorThings) : false;
+                    ViewBag.EstaEnWatchlistPoorThings = ViewBag.IdPoorThings > 0 ? bd.EstaEnWatchlist(idUsuario, ViewBag.IdPoorThings) : false;
+
+                    ViewBag.EsFavoritoSubstance = ViewBag.IdSubstance > 0 ? bd.EsFavorito(idUsuario, ViewBag.IdSubstance) : false;
+                    ViewBag.EstaEnWatchlistSubstance = ViewBag.IdSubstance > 0 ? bd.EstaEnWatchlist(idUsuario, ViewBag.IdSubstance) : false;
+
+                    ViewBag.EsFavoritoAnatomy = ViewBag.IdAnatomy > 0 ? bd.EsFavorito(idUsuario, ViewBag.IdAnatomy) : false;
+                    ViewBag.EstaEnWatchlistAnatomy = ViewBag.IdAnatomy > 0 ? bd.EstaEnWatchlist(idUsuario, ViewBag.IdAnatomy) : false;
+                }
+            }
 
             return View();
         }
@@ -449,6 +470,151 @@ namespace Cineura.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index");
+        }
+
+        private bool EsPeticionAjax()
+        {
+            return Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+        }
+
+        private IActionResult RespuestaToggle(bool ok, string mensaje, bool esFavorito = false, bool estaEnWatchlist = false, string redirectUrl = null)
+        {
+            if (!ok && !string.IsNullOrWhiteSpace(redirectUrl))
+            {
+                return Json(new
+                {
+                    ok = false,
+                    message = mensaje,
+                    redirectUrl
+                });
+            }
+
+            return Json(new
+            {
+                ok = ok,
+                message = mensaje,
+                esFavorito,
+                estaEnWatchlist
+            });
+        }
+
+        private string ObtenerUsuarioActual()
+        {
+            return HttpContext.Session.GetString("usuario");
+        }
+
+        private int? ObtenerIdUsuarioActual(BD bd)
+        {
+            string usuario = ObtenerUsuarioActual();
+
+            if (string.IsNullOrEmpty(usuario))
+                return null;
+
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+            return idUsuario > 0 ? idUsuario : null;
+        }
+
+        private IActionResult JsonSiAjax(object data)
+        {
+            return Json(data);
+        }
+
+        [HttpPost]
+        public IActionResult ToggleFavorito(int idPelicula)
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(usuario))
+            {
+                return Json(new
+                {
+                    ok = false,
+                    redirectUrl = "/Home/Login",
+                    message = "Iniciá sesión para guardar películas en Favoritas."
+                });
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+            if (idUsuario == 0)
+            {
+                return Json(new
+                {
+                    ok = false,
+                    redirectUrl = "/Home/Login",
+                    message = "Sesión inválida."
+                });
+            }
+
+            bool estabaAgregado = bd.EsFavorito(idUsuario, idPelicula);
+
+            if (estabaAgregado)
+            {
+                bd.QuitarFavorito(idUsuario, idPelicula);
+            }
+            else
+            {
+                bd.AgregarFavorito(idUsuario, idPelicula);
+            }
+
+            bool nuevoEstado = !estabaAgregado;
+
+            return Json(new
+            {
+                ok = true,
+                esFavorito = nuevoEstado,
+                message = nuevoEstado ? "Añadida a Favoritas." : "Quitada de Favoritas."
+            });
+        }
+
+        [HttpPost]
+        public IActionResult ToggleWatchlist(int idPelicula)
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(usuario))
+            {
+                return Json(new
+                {
+                    ok = false,
+                    redirectUrl = "/Home/Login",
+                    message = "Iniciá sesión para guardar películas en tu Watchlist."
+                });
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+            if (idUsuario == 0)
+            {
+                return Json(new
+                {
+                    ok = false,
+                    redirectUrl = "/Home/Login",
+                    message = "Sesión inválida."
+                });
+            }
+
+            bool estabaAgregado = bd.EstaEnWatchlist(idUsuario, idPelicula);
+
+            if (estabaAgregado)
+            {
+                bd.QuitarWatchlist(idUsuario, idPelicula);
+            }
+            else
+            {
+                bd.AgregarWatchlist(idUsuario, idPelicula);
+            }
+
+            bool nuevoEstado = !estabaAgregado;
+
+            return Json(new
+            {
+                ok = true,
+                estaEnWatchlist = nuevoEstado,
+                message = nuevoEstado ? "Añadida a Watchlist." : "Quitada de Watchlist."
+            });
         }
     }
 }

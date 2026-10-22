@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Cineura | Buscador Inteligente";
 }
 
@@ -79,7 +78,7 @@
 
                 <!-- DUNE -->
                 <div class="col">
-                    <div class="card-pelicula">
+                    <div class="card-pelicula" data-id="@ViewBag.IdDune" data-titulo="Dune: Part Two">
                         <div class="card-poster-wrap">
                             <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
                                  class="card-poster-img"
@@ -101,20 +100,26 @@
 
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="button"
-                                        class="btn btn-outline-light btn-sm"
-                                        onclick="abrirDetallesCineura('dune')">
-                                    Ver detalles
+                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoDune == true ? "active" : "")"
+                                        data-id="@ViewBag.IdDune"
+                                        data-type="favorito"
+                                        data-active="@(ViewBag.EsFavoritoDune == true ? "true" : "false")"
+                                        aria-label="Favoritos"
+                                        title="Favoritos">
+                                    <span class="favorito-icon">♥</span>
+                                    <span class="favorito-text">Favoritas</span>
                                 </button>
 
-                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdDune" />
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
-                                </form>
-
-                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdDune" />
-                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
-                                </form>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistDune == true ? "active" : "")"
+                                        data-id="@ViewBag.IdDune"
+                                        data-type="watchlist"
+                                        data-active="@(ViewBag.EstaEnWatchlistDune == true ? "true" : "false")"
+                                        aria-label="Watchlist"
+                                        title="Watchlist">
+                                    <span class="watchlist-icon">+</span>
+                                    <span class="watchlist-text">Watchlist</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -122,7 +127,7 @@
 
                 <!-- POOR THINGS -->
                 <div class="col">
-                    <div class="card-pelicula">
+                    <div class="card-pelicula" data-id="@ViewBag.IdPoorThings" data-titulo="Poor Things">
                         <div class="card-poster-wrap">
                             <img src="https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg"
                                  class="card-poster-img"
@@ -144,20 +149,26 @@
 
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="button"
-                                        class="btn btn-outline-light btn-sm"
-                                        onclick="abrirDetallesCineura('poor-things')">
-                                    Ver detalles
+                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoPoorThings == true ? "active" : "")"
+                                        data-id="@ViewBag.IdPoorThings"
+                                        data-type="favorito"
+                                        data-active="@(ViewBag.EsFavoritoPoorThings == true ? "true" : "false")"
+                                        aria-label="Favoritos"
+                                        title="Favoritos">
+                                    <span class="favorito-icon">♥</span>
+                                    <span class="favorito-text">Favoritas</span>
                                 </button>
 
-                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdPoorThings" />
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
-                                </form>
-
-                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdPoorThings" />
-                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
-                                </form>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistPoorThings == true ? "active" : "")"
+                                        data-id="@ViewBag.IdPoorThings"
+                                        data-type="watchlist"
+                                        data-active="@(ViewBag.EstaEnWatchlistPoorThings == true ? "true" : "false")"
+                                        aria-label="Watchlist"
+                                        title="Watchlist">
+                                    <span class="watchlist-icon">+</span>
+                                    <span class="watchlist-text">Watchlist</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -165,7 +176,7 @@
 
                 <!-- THE SUBSTANCE -->
                 <div class="col">
-                    <div class="card-pelicula">
+                    <div class="card-pelicula" data-id="@ViewBag.IdSubstance" data-titulo="The Substance">
                         <div class="card-poster-wrap">
                             <img src="https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg"
                                  class="card-poster-img"
@@ -187,20 +198,26 @@
 
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="button"
-                                        class="btn btn-outline-light btn-sm"
-                                        onclick="abrirDetallesCineura('substance')">
-                                    Ver detalles
+                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoSubstance == true ? "active" : "")"
+                                        data-id="@ViewBag.IdSubstance"
+                                        data-type="favorito"
+                                        data-active="@(ViewBag.EsFavoritoSubstance == true ? "true" : "false")"
+                                        aria-label="Favoritos"
+                                        title="Favoritos">
+                                    <span class="favorito-icon">♥</span>
+                                    <span class="favorito-text">Favoritas</span>
                                 </button>
 
-                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdSubstance" />
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
-                                </form>
-
-                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdSubstance" />
-                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
-                                </form>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistSubstance == true ? "active" : "")"
+                                        data-id="@ViewBag.IdSubstance"
+                                        data-type="watchlist"
+                                        data-active="@(ViewBag.EstaEnWatchlistSubstance == true ? "true" : "false")"
+                                        aria-label="Watchlist"
+                                        title="Watchlist">
+                                    <span class="watchlist-icon">+</span>
+                                    <span class="watchlist-text">Watchlist</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -208,7 +225,7 @@
 
                 <!-- ANATOMY OF A FALL -->
                 <div class="col">
-                    <div class="card-pelicula">
+                    <div class="card-pelicula" data-id="@ViewBag.IdAnatomy" data-titulo="Anatomy of a Fall">
                         <div class="card-poster-wrap">
                             <img src="https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg"
                                  class="card-poster-img"
@@ -230,20 +247,26 @@
 
                             <div class="mt-3 d-flex flex-wrap gap-2">
                                 <button type="button"
-                                        class="btn btn-outline-light btn-sm"
-                                        onclick="abrirDetallesCineura('anatomy')">
-                                    Ver detalles
+                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoAnatomy == true ? "active" : "")"
+                                        data-id="@ViewBag.IdAnatomy"
+                                        data-type="favorito"
+                                        data-active="@(ViewBag.EsFavoritoAnatomy == true ? "true" : "false")"
+                                        aria-label="Favoritos"
+                                        title="Favoritos">
+                                    <span class="favorito-icon">♥</span>
+                                    <span class="favorito-text">Favoritas</span>
                                 </button>
 
-                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdAnatomy" />
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
-                                </form>
-
-                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
-                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdAnatomy" />
-                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
-                                </form>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistAnatomy == true ? "active" : "")"
+                                        data-id="@ViewBag.IdAnatomy"
+                                        data-type="watchlist"
+                                        data-active="@(ViewBag.EstaEnWatchlistAnatomy == true ? "true" : "false")"
+                                        aria-label="Watchlist"
+                                        title="Watchlist">
+                                    <span class="watchlist-icon">+</span>
+                                    <span class="watchlist-text">Watchlist</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -413,6 +436,93 @@
             width: 100%;
         }
     }
+
+    .card-pelicula {
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card-pelicula:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 26px rgba(0,0,0,0.2);
+    }
+
+    .favorite-toggle,
+    .watchlist-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-width: 122px;
+        border: 1px solid transparent;
+        color: #fff;
+        padding: 0.45rem 0.75rem;
+        background: transparent !important;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .favorite-toggle {
+        background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%) !important;
+        border-color: #f87171;
+        color: #fff;
+    }
+
+    .watchlist-toggle {
+        background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%) !important;
+        border-color: #facc15;
+        color: #111827;
+    }
+
+    .favorite-toggle:hover,
+    .watchlist-toggle:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+    }
+
+    .favorite-toggle.active {
+        box-shadow: 0 0 0 2px rgba(255, 93, 122, 0.25);
+    }
+
+    .favorite-toggle.active .favorito-icon {
+        color: #ffffff;
+        font-weight: 900;
+        transform: scale(1.12);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .watchlist-toggle.active {
+        box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.25);
+    }
+
+    .watchlist-toggle.active .watchlist-icon {
+        color: #1f2937;
+        font-weight: 900;
+        transform: scale(1.12);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
+    }
+
+    .favorite-toggle .favorito-icon,
+    .watchlist-toggle .watchlist-icon {
+        font-size: 1.08rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 14px;
+    }
+
+    .favorite-toggle .favorito-icon {
+        color: #fff;
+    }
+
+    .watchlist-toggle .watchlist-icon {
+        color: #111827;
+    }
+
+    .favorite-toggle.active .favorito-text,
+    .watchlist-toggle.active .watchlist-text {
+        font-weight: 700;
+    }
 </style>
 
 <script>
@@ -499,6 +609,17 @@
 
                 const tarjeta = document.createElement("div");
                 tarjeta.className = "card-pelicula h-100";
+                tarjeta.dataset.id = pelicula.idPelicula;
+                tarjeta.dataset.titulo = pelicula.titulo || "Sin título";
+
+                tarjeta.addEventListener('click', function (event) {
+                    if (event.target.closest('button')) {
+                        return;
+                    }
+                    if (pelicula.idPelicula) {
+                        window.location.href = '/Home/Detalles/' + pelicula.idPelicula;
+                    }
+                });
 
                 if (pelicula.posterUrl) {
                     const imagen = document.createElement("img");
@@ -529,16 +650,10 @@
                 sinopsis.className = "card-sinopsis";
                 sinopsis.textContent = pelicula.sinopsis || "Sin sinopsis disponible.";
 
-                const enlace = document.createElement("a");
-                enlace.className = "btn btn-outline-light btn-sm mt-2";
-                enlace.textContent = "Ver detalles";
-                enlace.href = "/Home/Detalles/" + pelicula.idPelicula;
-
                 info.appendChild(titulo);
                 info.appendChild(meta);
                 info.appendChild(genero);
                 info.appendChild(sinopsis);
-                info.appendChild(enlace);
                 tarjeta.appendChild(info);
                 columna.appendChild(tarjeta);
                 contenedor.appendChild(columna);
@@ -549,4 +664,95 @@
             boton.disabled = false;
         }
     });
+
+    function configurarAccionesCineura() {
+        document.querySelectorAll('.card-pelicula').forEach(function (card) {
+            card.addEventListener('click', function (event) {
+                if (event.target.closest('button')) {
+                    return;
+                }
+
+                const titulo = card.dataset.titulo || '';
+                const id = card.dataset.id || '';
+
+                if (id) {
+                    window.location.href = '/Home/Detalles/' + id;
+                }
+            });
+        });
+
+        document.querySelectorAll('.favorite-toggle').forEach(function (boton) {
+            boton.addEventListener('click', async function (event) {
+                event.stopPropagation();
+                const id = boton.dataset.id;
+                const activo = boton.dataset.active === 'true';
+
+                try {
+                    const respuesta = await fetch('/Home/ToggleFavorito', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                        body: 'idPelicula=' + encodeURIComponent(id)
+                    });
+
+                    const data = await respuesta.json();
+
+                    if (!respuesta.ok || !data.ok) {
+                        if (data.redirectUrl) {
+                            window.location.href = data.redirectUrl;
+                            return;
+                        }
+                        throw new Error(data.message || 'No se pudo actualizar favoritos.');
+                    }
+
+                    boton.dataset.active = String(!activo);
+                    boton.classList.toggle('active', !activo);
+                    const icono = boton.querySelector('.favorito-icon');
+                    if (icono) {
+                        icono.textContent = (!activo) ? '♥' : '♥';
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert(error.message || 'No se pudo actualizar favoritos.');
+                }
+            });
+        });
+
+        document.querySelectorAll('.watchlist-toggle').forEach(function (boton) {
+            boton.addEventListener('click', async function (event) {
+                event.stopPropagation();
+                const id = boton.dataset.id;
+                const activo = boton.dataset.active === 'true';
+
+                try {
+                    const respuesta = await fetch('/Home/ToggleWatchlist', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                        body: 'idPelicula=' + encodeURIComponent(id)
+                    });
+
+                    const data = await respuesta.json();
+
+                    if (!respuesta.ok || !data.ok) {
+                        if (data.redirectUrl) {
+                            window.location.href = data.redirectUrl;
+                            return;
+                        }
+                        throw new Error(data.message || 'No se pudo actualizar watchlist.');
+                    }
+
+                    boton.dataset.active = String(!activo);
+                    boton.classList.toggle('active', !activo);
+                    const icono = boton.querySelector('.watchlist-icon');
+                    if (icono) {
+                        icono.textContent = (!activo) ? '✓' : '+';
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert(error.message || 'No se pudo actualizar watchlist.');
+                }
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', configurarAccionesCineura);
 </script>
