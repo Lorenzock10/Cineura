@@ -1,4 +1,4 @@
-@model List<Cineura.Models.Peliculas>
+ @model List<Cineura.Models.Peliculas>
 
 @{
     ViewData["Title"] = "Mi Watchlist";
@@ -7,11 +7,18 @@
 <div class="listas-pagina">
     <h1>＋ Mi Watchlist</h1>
 
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Mensaje"]
+        </div>
+    }
+
     @if (Model == null || Model.Count == 0)
     {
         <p class="lista-vacia">
             Tu Watchlist está vacía.
-            Entrá a una película y tocá "Agregar a Watchlist".
+            Agregá películas que quieras ver más adelante.
         </p>
     }
     else
@@ -19,32 +26,176 @@
         @foreach (var pelicula in Model)
         {
             <div class="lista-pelicula">
-                <h2>
-                    <a asp-action="Detalles"
-                       asp-route-id="@pelicula.IdPelicula">
-                        @pelicula.Titulo
-                    </a>
-                </h2>
+                @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
+                {
+                    <img src="@pelicula.PosterUrl"
+                         alt="Póster de @pelicula.Titulo"
+                         style="width:140px;max-width:100%;border-radius:8px;" />
+                }
+
+                <h2>@pelicula.Titulo</h2>
 
                 <p>@pelicula.Anio · @pelicula.Genero · @pelicula.DuracionMinutos minutos</p>
 
-                <p>@pelicula.Sinopsis</p>
-
-                <a asp-action="Detalles"
-                   asp-route-id="@pelicula.IdPelicula">
+                <button type="button"
+                        class="btn btn-outline-light btn-sm"
+                        onclick="abrirDetalles('@pelicula.IdPelicula')">
                     Ver detalles
-                </a>
+                </button>
 
-                <form asp-action="QuitarWatchlist" asp-controller="Watchlist" method="post">
-                    <input type="hidden"
-                           name="idPelicula"
-                           value="@pelicula.IdPelicula" />
+                <form asp-controller="Home" asp-action="QuitarWatchlist" method="post">
+                    <input type="hidden" name="idPelicula" value="@pelicula.IdPelicula" />
+                    <input type="hidden" name="returnUrl" value="/Home/Watchlist" />
 
-                    <button type="submit" class="lista-boton">
+                    <button type="submit" class="btn btn-warning btn-sm">
                         Quitar de Watchlist
                     </button>
                 </form>
+
+                <div id="detalle-@pelicula.IdPelicula"
+                     class="modal-cineura"
+                     style="display:none;"
+                     onclick="cerrarSiFondo(event, '@pelicula.IdPelicula')">
+
+                    <div class="modal-cineura-tarjeta">
+                        <button type="button"
+                                class="modal-cineura-cerrar"
+                                onclick="cerrarDetalles('@pelicula.IdPelicula')">
+                            ×
+                        </button>
+
+                        @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
+                        {
+                            <img src="@pelicula.PosterUrl"
+                                 alt="Póster de @pelicula.Titulo"
+                                 class="modal-cineura-poster" />
+                        }
+
+                        <div class="modal-cineura-info">
+                            <h2>@pelicula.Titulo</h2>
+
+                            <p class="modal-cineura-meta">
+                                @pelicula.Anio · @pelicula.Genero · @pelicula.DuracionMinutos min
+                            </p>
+
+                            <p>@pelicula.Sinopsis</p>
+
+                            <button type="button"
+                                    class="btn btn-warning btn-sm"
+                                    onclick="cerrarDetalles('@pelicula.IdPelicula')">
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     }
 </div>
+
+<style>
+    .modal-cineura {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-cineura-tarjeta {
+        position: relative;
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        max-width: 600px;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 24px;
+        background: #111827;
+        color: white;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-cineura-poster {
+        width: 150px;
+        align-self: flex-start;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .modal-cineura-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .modal-cineura-info h2 {
+        color: #FBBF24;
+        font-size: 22px;
+        margin: 10px 25px 10px 0;
+    }
+
+    .modal-cineura-meta {
+        color: #D1D5DB;
+        font-size: 13px;
+    }
+
+    .modal-cineura-info p {
+        line-height: 1.6;
+    }
+
+    .modal-cineura-cerrar {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        border: none;
+        background: transparent;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    @@media (max-width: 500px) {
+        .modal-cineura-tarjeta {
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-cineura-poster {
+            width: 125px;
+        }
+
+        .modal-cineura-info {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    function abrirDetalles(id) {
+        var modal = document.getElementById("detalle-" + id);
+
+        if (modal) {
+            modal.style.display = "flex";
+        }
+    }
+
+    function cerrarDetalles(id) {
+        var modal = document.getElementById("detalle-" + id);
+
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function cerrarSiFondo(evento, id) {
+        if (evento.target.id === "detalle-" + id) {
+            cerrarDetalles(id);
+        }
+    }
+</script>

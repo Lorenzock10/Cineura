@@ -1,134 +1,121 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Cineura | Buscador Inteligente";
 }
 
 <div class="cineura-pagina">
     <div class="cineura-contenedor">
 
-        <!-- BUSCADOR IA -->
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert alert-success text-center mt-3" role="alert">
+                @TempData["Mensaje"]
+            </div>
+        }
+
         <div class="cineura-hero text-center mb-5">
             <div class="cineura-badge-neural mb-3">
                 <span class="punto-verde">●</span>
-                MOTOR NEURAL V4.2 ACTIVO &nbsp;•&nbsp; Calibrado a tu perfil cinematográfico
+                MOTOR NEURAL V4.2 ACTIVO • Calibrado a tu perfil cinematográfico
             </div>
 
             <h1 class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
 
             <p class="cineura-subtitulo hero-subtitulo">
-                Describí una trama difusa, un dilema moral, una atmósfera particular o un género y dejá que la IA encuentre la opción ideal.
+                Describí una trama, un dilema moral, una atmósfera o un género y dejá que Nova encuentre películas para vos.
             </p>
 
             <div class="cineura-buscador-box">
-                <form id="formBusqueda" class="w-100">
+                <form id="formBusqueda" method="post">
                     <div class="buscador-input-group">
                         <textarea id="busqueda"
                                   name="busqueda"
                                   class="form-control cineura-input-hero"
                                   rows="2"
-                                  placeholder="Ej: Un thriller psicológico oscuro con giros inesperados..."
+                                  placeholder="Ej: Un thriller psicológico oscuro de menos de dos horas..."
                                   required></textarea>
 
                         <button type="submit" id="botonBuscar" class="cineura-boton-ia">
-                            ✦ Generar Recomendación
+                            ✦ Generar recomendación
                         </button>
                     </div>
                 </form>
 
-                <!-- MOODS -->
                 <div class="filtros-rapidos mt-3">
                     <div class="grupo-tags">
                         <span class="tag-label">MOODS:</span>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cerebral & Tenso')">• Cerebral & Tenso</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Melancolía Nórdica')">Melancolía Nórdica</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Adrenalina Pura')">Adrenalina Pura</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cerebral y tenso')">Cerebral y tenso</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Melancólico')">Melancólico</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Adrenalina pura')">Adrenalina pura</button>
                         <button type="button" class="btn-tag" onclick="agregarTexto('Existencialista')">Existencialista</button>
                     </div>
 
                     <div class="grupo-tags mt-2">
                         <span class="tag-label">ESTÉTICAS:</span>
-                        <button type="button" class="btn-tag tag-destacado" onclick="agregarTexto('A24 Vibes')">✦ A24 Vibes</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cine de Autor')">Cine de Autor</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Estilo A24')">✦ A24 Vibes</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cine de autor')">Cine de autor</button>
                         <button type="button" class="btn-tag" onclick="agregarTexto('Cyberpunk')">Cyberpunk</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Sci-Fi 70s')">Sci-Fi 70s</button>
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Ciencia ficción de los años 70')">Sci-Fi 70s</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MENSAJES DEL BUSCADOR -->
-        <div id="resultado" class="cineura-estado text-center fs-5 my-4" role="status"></div>
+        <div id="resultado" class="text-center my-4" role="status"></div>
+        <div id="resultadosBusqueda" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mb-5"></div>
 
-        <!-- RESULTADO DE LA RECOMENDACIÓN -->
-        <div id="recomendacion" class="cineura-recomendacion mb-5">
-            <div class="row g-0">
-                <div class="col-md-5" id="zonaPoster">
-                    <div class="cineura-poster-vacio">
-                        <span>✦ CINEURA</span>
-                    </div>
-                </div>
-
-                <div class="col-md-7">
-                    <div class="cineura-detalle">
-                        <div class="cineura-subtitulo mb-2">✦ RECOMENDACIÓN PARA VOS</div>
-                        <h2 id="tituloPelicula">Tu próxima película</h2>
-                        <div id="etiquetasPelicula" class="my-3"></div>
-                        <p id="datosPelicula" class="cineura-datos"></p>
-
-                        <h3 class="mt-4 fs-5 text-white">Sinopsis</h3>
-                        <p id="descripcionPelicula" class="cineura-descripcion"></p>
-
-                        <div class="cineura-motivo">
-                            <h3>¿Por qué la elegimos para vos?</h3>
-                            <p id="motivoPelicula"></p>
-                        </div>
-
-                        <div class="d-flex flex-wrap gap-2 mt-4">
-                            <button type="button" id="botonDetalles" class="cineura-boton-ia py-2 px-4 w-auto">
-                                Ver detalles
-                            </button>
-                            <button type="button" id="botonOtra" class="cineura-boton-secundario">
-                                ↻ Otra recomendación
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PELÍCULAS EN TENDENCIA -->
         <div class="seccion-tendencias mt-5 pt-4">
-            <div class="d-flex justify-content-between align-items-end mb-4">
-                <div>
-                    <div class="cineura-badge-neural d-inline-block mb-1">
-                        ● TRENDING NOW &nbsp;•&nbsp; ACTUALIZADO HOY
-                    </div>
-                    <h2 class="h3 fw-bold text-white mb-0">Películas en Tendencias Globales</h2>
-                    <p class="text-secondary small mb-0">Los estrenos más vistos y aclamados de la semana.</p>
+            <div class="mb-4">
+                <div class="cineura-badge-neural d-inline-block mb-1">
+                    ● TRENDING NOW
                 </div>
+                <h2 class="h3 fw-bold text-white">Películas destacadas</h2>
+                <p class="text-secondary small">
+                    Explorá las películas y guardá las que te interesen.
+                </p>
             </div>
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
 
-                <!-- DUNE: PART TWO -->
+                <!-- DUNE -->
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
-                            <span class="badge-ranking badge-ranking-purple">#1 Tendencia Global</span>
                             <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
                                  class="card-poster-img"
-                                 alt="Póster de Dune: Part Two"
-                                 loading="lazy"
-                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Dune+Part+Two';" />
+                                 alt="Dune: Part Two"
+                                 loading="lazy" />
                             <div class="card-score">★ 8.7</div>
                         </div>
+
                         <div class="card-info">
                             <div class="card-meta">2024 • 2h 46m</div>
                             <h4 class="card-titulo">Dune: Part Two</h4>
                             <div class="card-tags">
-                                <span class="mini-tag">Sci-Fi Épico</span>
-                                <span class="mini-tag">Denis Villeneuve</span>
+                                <span class="mini-tag">Ciencia ficción</span>
+                                <span class="mini-tag">Aventura</span>
                             </div>
-                            <p class="card-sinopsis">Paul Atreides se une a Chani y los Fremen mientras busca venganza contra los conspiradores.</p>
+                            <p class="card-sinopsis">
+                                Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.
+                            </p>
+
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <button type="button"
+                                        class="btn btn-outline-light btn-sm"
+                                        onclick="abrirDetallesCineura('dune')">
+                                    Ver detalles
+                                </button>
+
+                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdDune" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
+                                </form>
+
+                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdDune" />
+                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,22 +124,41 @@
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
-                            <span class="badge-ranking badge-ranking-cyan">#2 en Auge</span>
                             <img src="https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg"
                                  class="card-poster-img"
-                                 alt="Póster de Poor Things"
-                                 loading="lazy"
-                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Poor+Things';" />
+                                 alt="Poor Things"
+                                 loading="lazy" />
                             <div class="card-score">★ 8.4</div>
                         </div>
+
                         <div class="card-info">
                             <div class="card-meta">2023 • 2h 21m</div>
                             <h4 class="card-titulo">Poor Things</h4>
                             <div class="card-tags">
-                                <span class="mini-tag">Fantasía Satírica</span>
-                                <span class="mini-tag">Yorgos Lanthimos</span>
+                                <span class="mini-tag">Fantasía</span>
+                                <span class="mini-tag">Drama</span>
                             </div>
-                            <p class="card-sinopsis">La increíble evolución de Bella Baxter, una joven resucitada por un brillante y excéntrico científico.</p>
+                            <p class="card-sinopsis">
+                                Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.
+                            </p>
+
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <button type="button"
+                                        class="btn btn-outline-light btn-sm"
+                                        onclick="abrirDetallesCineura('poor-things')">
+                                    Ver detalles
+                                </button>
+
+                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdPoorThings" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
+                                </form>
+
+                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdPoorThings" />
+                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,22 +167,41 @@
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
-                            <span class="badge-ranking badge-ranking-gold">#3 Más Comentada</span>
                             <img src="https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg"
                                  class="card-poster-img"
-                                 alt="Póster de The Substance"
-                                 loading="lazy"
-                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=The+Substance';" />
+                                 alt="The Substance"
+                                 loading="lazy" />
                             <div class="card-score">★ 8.0</div>
                         </div>
+
                         <div class="card-info">
                             <div class="card-meta">2024 • 2h 21m</div>
                             <h4 class="card-titulo">The Substance</h4>
                             <div class="card-tags">
-                                <span class="mini-tag">Body Horror</span>
-                                <span class="mini-tag">Coralie Fargeat</span>
+                                <span class="mini-tag">Terror</span>
+                                <span class="mini-tag">Suspenso</span>
                             </div>
-                            <p class="card-sinopsis">Una celebridad en declive utiliza una droga clandestina que genera una versión más joven de sí misma.</p>
+                            <p class="card-sinopsis">
+                                Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.
+                            </p>
+
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <button type="button"
+                                        class="btn btn-outline-light btn-sm"
+                                        onclick="abrirDetallesCineura('substance')">
+                                    Ver detalles
+                                </button>
+
+                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdSubstance" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
+                                </form>
+
+                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdSubstance" />
+                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -185,29 +210,343 @@
                 <div class="col">
                     <div class="card-pelicula">
                         <div class="card-poster-wrap">
-                            <span class="badge-ranking badge-ranking-dark">#4 Palma de Oro</span>
                             <img src="https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg"
                                  class="card-poster-img"
-                                 alt="Póster de Anatomy of a Fall"
-                                 loading="lazy"
-                                 onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Anatomy+of+a+Fall';" />
+                                 alt="Anatomy of a Fall"
+                                 loading="lazy" />
                             <div class="card-score">★ 8.1</div>
                         </div>
+
                         <div class="card-info">
                             <div class="card-meta">2023 • 2h 31m</div>
                             <h4 class="card-titulo">Anatomy of a Fall</h4>
                             <div class="card-tags">
-                                <span class="mini-tag">Drama Judicial</span>
-                                <span class="mini-tag">Justine Triet</span>
+                                <span class="mini-tag">Drama</span>
+                                <span class="mini-tag">Misterio</span>
                             </div>
-                            <p class="card-sinopsis">Una escritora es acusada de asesinar a su esposo tras una misteriosa caída en su aislado chalet.</p>
+                            <p class="card-sinopsis">
+                                Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.
+                            </p>
+
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <button type="button"
+                                        class="btn btn-outline-light btn-sm"
+                                        onclick="abrirDetallesCineura('anatomy')">
+                                    Ver detalles
+                                </button>
+
+                                <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdAnatomy" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">♥ Favoritas</button>
+                                </form>
+
+                                <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
+                                    <input type="hidden" name="idPelicula" value="@ViewBag.IdAnatomy" />
+                                    <button type="submit" class="btn btn-warning btn-sm">+ Watchlist</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
             </div>
         </div>
-
     </div>
 </div>
 
+<!-- CARTELITOS DE DETALLES -->
+
+<div id="detalle-cineura-dune"
+     class="modal-cineura"
+     style="display:none;"
+     onclick="cerrarSiFondoCineura(event, 'dune')">
+    <div class="modal-cineura-tarjeta">
+        <button type="button" class="modal-cineura-cerrar"
+                onclick="cerrarDetallesCineura('dune')">×</button>
+        <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
+             alt="Póster de Dune: Part Two" class="modal-cineura-poster" />
+        <div class="modal-cineura-info">
+            <h2>Dune: Part Two</h2>
+            <p class="modal-cineura-meta">2024 · Ciencia ficción · 166 min</p>
+            <p>Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.</p>
+            <button type="button" class="btn btn-warning btn-sm"
+                    onclick="cerrarDetallesCineura('dune')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div id="detalle-cineura-poor-things"
+     class="modal-cineura"
+     style="display:none;"
+     onclick="cerrarSiFondoCineura(event, 'poor-things')">
+    <div class="modal-cineura-tarjeta">
+        <button type="button" class="modal-cineura-cerrar"
+                onclick="cerrarDetallesCineura('poor-things')">×</button>
+        <img src="https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg"
+             alt="Póster de Poor Things" class="modal-cineura-poster" />
+        <div class="modal-cineura-info">
+            <h2>Poor Things</h2>
+            <p class="modal-cineura-meta">2023 · Fantasía · 141 min</p>
+            <p>Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.</p>
+            <button type="button" class="btn btn-warning btn-sm"
+                    onclick="cerrarDetallesCineura('poor-things')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div id="detalle-cineura-substance"
+     class="modal-cineura"
+     style="display:none;"
+     onclick="cerrarSiFondoCineura(event, 'substance')">
+    <div class="modal-cineura-tarjeta">
+        <button type="button" class="modal-cineura-cerrar"
+                onclick="cerrarDetallesCineura('substance')">×</button>
+        <img src="https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg"
+             alt="Póster de The Substance" class="modal-cineura-poster" />
+        <div class="modal-cineura-info">
+            <h2>The Substance</h2>
+            <p class="modal-cineura-meta">2024 · Terror · 141 min</p>
+            <p>Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.</p>
+            <button type="button" class="btn btn-warning btn-sm"
+                    onclick="cerrarDetallesCineura('substance')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div id="detalle-cineura-anatomy"
+     class="modal-cineura"
+     style="display:none;"
+     onclick="cerrarSiFondoCineura(event, 'anatomy')">
+    <div class="modal-cineura-tarjeta">
+        <button type="button" class="modal-cineura-cerrar"
+                onclick="cerrarDetallesCineura('anatomy')">×</button>
+        <img src="https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg"
+             alt="Póster de Anatomy of a Fall" class="modal-cineura-poster" />
+        <div class="modal-cineura-info">
+            <h2>Anatomy of a Fall</h2>
+            <p class="modal-cineura-meta">2023 · Drama · 151 min</p>
+            <p>Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.</p>
+            <button type="button" class="btn btn-warning btn-sm"
+                    onclick="cerrarDetallesCineura('anatomy')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-cineura {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-cineura-tarjeta {
+        position: relative;
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        max-width: 600px;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 24px;
+        background: #111827;
+        color: white;
+        border: 1px solid #374151;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-cineura-poster {
+        width: 150px;
+        align-self: flex-start;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .modal-cineura-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .modal-cineura-info h2 {
+        color: #FBBF24;
+        font-size: 22px;
+        margin: 10px 25px 10px 0;
+    }
+
+    .modal-cineura-meta {
+        color: #D1D5DB;
+        font-size: 13px;
+    }
+
+    .modal-cineura-info p {
+        line-height: 1.6;
+    }
+
+    .modal-cineura-cerrar {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        border: none;
+        background: transparent;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    @@media (max-width: 500px) {
+        .modal-cineura-tarjeta {
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-cineura-poster {
+            width: 125px;
+        }
+
+        .modal-cineura-info {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    function abrirDetallesCineura(id) {
+        var modal = document.getElementById("detalle-cineura-" + id);
+
+        if (modal) {
+            modal.style.display = "flex";
+        }
+    }
+
+    function cerrarDetallesCineura(id) {
+        var modal = document.getElementById("detalle-cineura-" + id);
+
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function cerrarSiFondoCineura(evento, id) {
+        if (evento.target.id === "detalle-cineura-" + id) {
+            cerrarDetallesCineura(id);
+        }
+    }
+
+    document.addEventListener("keydown", function (evento) {
+        if (evento.key === "Escape") {
+            document.querySelectorAll(".modal-cineura").forEach(function (modal) {
+                modal.style.display = "none";
+            });
+        }
+    });
+
+    function agregarTexto(texto) {
+        const campo = document.getElementById("busqueda");
+
+        if (campo.value.trim() !== "") {
+            campo.value += ", " + texto;
+        } else {
+            campo.value = texto;
+        }
+
+        campo.focus();
+    }
+
+    document.getElementById("formBusqueda").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const campo = document.getElementById("busqueda");
+        const boton = document.getElementById("botonBuscar");
+        const mensaje = document.getElementById("resultado");
+        const contenedor = document.getElementById("resultadosBusqueda");
+
+        mensaje.textContent = "Nova está buscando películas para vos...";
+        contenedor.innerHTML = "";
+        boton.disabled = true;
+
+        try {
+            const datos = new FormData();
+            datos.append("busqueda", campo.value);
+
+            const respuesta = await fetch("/Home/BuscarPeliculas", {
+                method: "POST",
+                body: datos
+            });
+
+            if (!respuesta.ok) {
+                const error = await respuesta.text();
+                throw new Error(error || "No se pudo realizar la búsqueda.");
+            }
+
+            const peliculas = await respuesta.json();
+
+            if (!peliculas.length) {
+                mensaje.textContent = "No encontramos películas con esos filtros. Probá describirlo de otra manera.";
+                return;
+            }
+
+            mensaje.textContent = "Encontramos estas películas para vos:";
+
+            peliculas.forEach(function (pelicula) {
+                const columna = document.createElement("div");
+                columna.className = "col";
+
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "card-pelicula h-100";
+
+                if (pelicula.posterUrl) {
+                    const imagen = document.createElement("img");
+                    imagen.src = pelicula.posterUrl;
+                    imagen.alt = "Póster de " + pelicula.titulo;
+                    imagen.className = "card-poster-img";
+                    imagen.loading = "lazy";
+                    tarjeta.appendChild(imagen);
+                }
+
+                const info = document.createElement("div");
+                info.className = "card-info";
+
+                const titulo = document.createElement("h4");
+                titulo.className = "card-titulo";
+                titulo.textContent = pelicula.titulo || "Sin título";
+
+                const meta = document.createElement("p");
+                meta.className = "card-meta";
+                meta.textContent =
+                    (pelicula.anio || "") + " • " +
+                    (pelicula.duracionMinutos || "?") + " minutos";
+
+                const genero = document.createElement("p");
+                genero.textContent = pelicula.genero || "";
+
+                const sinopsis = document.createElement("p");
+                sinopsis.className = "card-sinopsis";
+                sinopsis.textContent = pelicula.sinopsis || "Sin sinopsis disponible.";
+
+                const enlace = document.createElement("a");
+                enlace.className = "btn btn-outline-light btn-sm mt-2";
+                enlace.textContent = "Ver detalles";
+                enlace.href = "/Home/Detalles/" + pelicula.idPelicula;
+
+                info.appendChild(titulo);
+                info.appendChild(meta);
+                info.appendChild(genero);
+                info.appendChild(sinopsis);
+                info.appendChild(enlace);
+                tarjeta.appendChild(info);
+                columna.appendChild(tarjeta);
+                contenedor.appendChild(columna);
+            });
+        } catch (error) {
+            mensaje.textContent = error.message || "Ocurrió un error al buscar películas.";
+        } finally {
+            boton.disabled = false;
+        }
+    });
+</script>

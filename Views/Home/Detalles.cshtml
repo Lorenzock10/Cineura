@@ -1,37 +1,35 @@
+
+@model Cineura.Models.Peliculas
+
 @{
     ViewData["Title"] = Model.Titulo;
 
     string poster = !string.IsNullOrWhiteSpace(Model.PosterUrl)
         ? Model.PosterUrl
-        : Model.Titulo switch
-        {
-            "Toy Story" => "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
-            "Shrek" => "https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",
-            "The Truman Show" => "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
-            "En busca de la felicidad" => "https://image.tmdb.org/t/p/w500/7lZ3h8L4bV6fP4dY8gYxL0fV6w.jpg",
-            "Superbad" => "https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg",
-            "Coco" => "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
-            "Intensamente" => "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg",
-            "Jumanji" => "https://image.tmdb.org/t/p/w500/bXrZ5iHBEjH7WMidbUDQ0U2xbmr.jpg",
-            _ => ""
-        };
+        : "";
 }
 
 <div class="detalles-pagina">
-    <a asp-action="Index" class="detalles-volver">← Volver al inicio</a>
+
+    <a asp-controller="Home" asp-action="Index" class="detalles-volver">
+        ← Volver al inicio
+    </a>
 
     @if (TempData["Mensaje"] != null)
     {
-        <p class="detalles-mensaje">@TempData["Mensaje"]</p>
+        <div class="alert alert-success mt-3" role="alert">
+            @TempData["Mensaje"]
+        </div>
     }
 
     <div class="detalles-contenido">
-    @if (!string.IsNullOrWhiteSpace(poster))
-    {
-    <img src="@poster"
-         alt="Póster de @Model.Titulo"
-         class="detalles-poster" />
-    }
+
+        @if (!string.IsNullOrWhiteSpace(poster))
+        {
+            <img src="@poster"
+                 alt="Póster de @Model.Titulo"
+                 class="detalles-poster" />
+        }
 
         <div class="detalles-info">
             <h1>@Model.Titulo</h1>
@@ -45,7 +43,9 @@
 
             <h3>Sinopsis</h3>
             <p class="detalles-sinopsis">
-                @Model.Sinopsis
+                @(string.IsNullOrWhiteSpace(Model.Sinopsis)
+                    ? "No hay una sinopsis cargada para esta película."
+                    : Model.Sinopsis)
             </p>
 
             <p>
@@ -68,48 +68,65 @@
 
             @if (ViewBag.UsuarioConectado == true)
             {
-                @if (ViewBag.EsFavorito == true)
-                {
-                    <form asp-action="QuitarFavorito" method="post">
-                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                        <button type="submit" class="detalles-boton detalles-boton-secundario">
-                            ♥ Quitar de Favoritas
-                        </button>
-                    </form>
-                }
-                else
-                {
-                    <form asp-action="AgregarFavorito" method="post">
-                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                        <button type="submit" class="detalles-boton">
-                            ♥ Agregar a Favoritas
-                        </button>
-                    </form>
-                }
+                <div class="d-flex flex-wrap gap-2 mt-4">
 
-                @if (ViewBag.EstaEnWatchlist == true)
-                {
-                    <form asp-action="QuitarWatchlist" asp-controller="Watchlist" method="post">
-                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                        <button type="submit" class="detalles-boton detalles-boton-secundario">
-                            ✓ Quitar de Watchlist
-                        </button>
-                    </form>
-                }
-                else
-                {
-                    <form asp-action="AgregarWatchlist" asp-controller="Watchlist" method="post">
-                        <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                        <button type="submit" class="detalles-boton">
-                            + Agregar a Watchlist
-                        </button>
-                    </form>
-                }
+                    @if (ViewBag.EsFavorito == true)
+                    {
+                        <form asp-controller="Home" asp-action="QuitarFavorito" method="post">
+                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
+
+                            <button type="submit" class="detalles-boton detalles-boton-secundario">
+                                ♥ Quitar de Favoritas
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
+                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
+
+                            <button type="submit" class="detalles-boton">
+                                ♥ Agregar a Favoritas
+                            </button>
+                        </form>
+                    }
+
+                    @if (ViewBag.EstaEnWatchlist == true)
+                    {
+                        <form asp-controller="Home" asp-action="QuitarWatchlist" method="post">
+                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
+
+                            <button type="submit" class="detalles-boton detalles-boton-secundario">
+                                ✓ Quitar de Watchlist
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
+                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
+                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
+
+                            <button type="submit" class="detalles-boton">
+                                + Agregar a Watchlist
+                            </button>
+                        </form>
+                    }
+
+                </div>
             }
             else
             {
-                <p>Iniciá sesión para agregar esta película a tus listas.</p>
-                <a asp-action="Login" class="detalles-boton">Iniciar sesión</a>
+                <p>Iniciá sesión para guardar esta película en tus listas.</p>
+
+                <a asp-controller="Home"
+                   asp-action="Login"
+                   class="detalles-boton">
+                    Iniciar sesión
+                </a>
             }
         </div>
     </div>
