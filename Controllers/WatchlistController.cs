@@ -1,71 +1,109 @@
+
 using Cineura.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cineura.Controllers;
-
-public class WatchlistController : Controller
+namespace Cineura.Controllers
 {
-    public IActionResult Index()
+    public class WatchlistController : Controller
     {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
+        public IActionResult Index()
         {
-            TempData["Mensaje"] = "Iniciá sesión para ver tu Watchlist.";
-            return RedirectToAction("Login", "Home");
+            string nombreUsuario =
+                HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                TempData["Mensaje"] =
+                    "Iniciá sesión para ver tu Watchlist.";
+
+                return RedirectToAction("Login", "Home");
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+            List<Peliculas> peliculas =
+                bd.ObtenerWatchlist(idUsuario);
+
+            return View("~/Views/Home/Watchlist.cshtml", peliculas);
         }
 
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        List<Peliculas> peliculas = bd.ObtenerWatchlist(idUsuario);
-
-        return View("~/Views/Home/Watchlist.cshtml", peliculas);
-    }
-
-    public IActionResult Watchlist()
-    {
-        return Index();
-    }
-
-    [HttpPost]
-    public IActionResult AgregarWatchlist(int idPelicula)
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
+        public IActionResult Watchlist()
         {
-            TempData["Mensaje"] = "Iniciá sesión para guardar películas en tu Watchlist.";
-            return RedirectToAction("Login", "Home");
+            return Index();
         }
 
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
-
-        bd.AgregarWatchlist(idUsuario, idPelicula);
-
-        TempData["Mensaje"] = "Película agregada a tu Watchlist.";
-
-        return RedirectToAction("Detalles", "Home", new { id = idPelicula });
-    }
-
-    [HttpPost]
-    public IActionResult QuitarWatchlist(int idPelicula)
-    {
-        string nombreUsuario = HttpContext.Session.GetString("usuario");
-
-        if (string.IsNullOrEmpty(nombreUsuario))
+        [HttpPost]
+        public IActionResult AgregarWatchlist(int idPelicula)
         {
-            return RedirectToAction("Login", "Home");
+            string nombreUsuario =
+                HttpContext.Session.GetString("usuario");
+
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                TempData["Mensaje"] =
+                    "Iniciá sesión para guardar películas en tu Watchlist.";
+
+                return RedirectToAction("Login", "Home");
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+            if (idUsuario <= 0)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (!bd.EstaEnWatchlist(idUsuario, idPelicula))
+            {
+                bd.AgregarWatchlist(idUsuario, idPelicula);
+                TempData["Mensaje"] =
+                    "Película agregada a tu Watchlist.";
+            }
+            else
+            {
+                TempData["Mensaje"] =
+                    "Esta película ya está en tu Watchlist.";
+            }
+
+            return RedirectToAction(
+                "Detalles",
+                "Home",
+                new { id = idPelicula });
         }
 
-        BD bd = new BD();
-        int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+        [HttpPost]
+        public IActionResult QuitarWatchlist(int idPelicula)
+        {
+            string nombreUsuario =
+                HttpContext.Session.GetString("usuario");
 
-        bd.QuitarWatchlist(idUsuario, idPelicula);
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                TempData["Mensaje"] =
+                    "Iniciá sesión para modificar tu Watchlist.";
 
-        TempData["Mensaje"] = "Película quitada de tu Watchlist.";
+                return RedirectToAction("Login", "Home");
+            }
 
-        return RedirectToAction("Detalles", "Home", new { id = idPelicula });
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(nombreUsuario);
+
+            if (idUsuario <= 0)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            bd.QuitarWatchlist(idUsuario, idPelicula);
+
+            TempData["Mensaje"] =
+                "Película quitada de tu Watchlist.";
+
+            return RedirectToAction(
+                "Detalles",
+                "Home",
+                new { id = idPelicula });
+        }
     }
 }

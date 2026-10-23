@@ -1,3 +1,4 @@
+
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -7,14 +8,7 @@ namespace Cineura.Services
     {
         private static HttpClient CreateHttpClient()
         {
-            var handler = new HttpClientHandler();
-
-            handler.ServerCertificateCustomValidationCallback =
-                (request, certificate, chain, errors) =>
-                    errors == System.Net.Security.SslPolicyErrors.None ||
-                    errors == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors;
-
-            return new HttpClient(handler)
+            return new HttpClient
             {
                 Timeout = TimeSpan.FromSeconds(30)
             };
@@ -31,20 +25,56 @@ namespace Cineura.Services
                 );
             }
 
-            string prompt =
-                "Sos Nova, el buscador inteligente de Cineura. " +
-                "Interpretá qué película quiere ver el usuario. " +
-                "Respondé únicamente con un JSON válido, sin Markdown ni explicaciones. " +
-                "Usá exactamente estos campos: genero, animo, duracionMaxima. " +
-                "Los géneros disponibles son Animacion, Comedia, Drama y Aventura. " +
-                "Los ánimos disponibles son Alegre, Divertido, Reflexivo, Inspirador, Emotivo y Emocionante. " +
-                "Si el usuario no indica género, usá null. " +
-                "Si el usuario no indica ánimo, usá null. " +
-                "Si el usuario no indica duración máxima, usá null. " +
-                "No inventes preferencias. " +
-                "La duración máxima debe ser un número entero o null. " +
-                "Ejemplo: {\"genero\":\"Aventura\",\"animo\":\"Emocionante\",\"duracionMaxima\":null}. " +
-                "Mensaje del usuario: " + busqueda;
+            string prompt = """
+                Sos Nova, el buscador inteligente de Cineura.
+
+                Tu tarea es interpretar el mensaje del usuario y convertir
+                sus preferencias en filtros para buscar películas.
+
+                Respondé únicamente con un objeto JSON válido.
+                No incluyas explicaciones, Markdown ni texto fuera del JSON.
+
+                Usá exactamente estas propiedades:
+                - genero: string o null
+                - animo: string o null
+                - duracionMaxima: número entero o null
+
+                GÉNEROS DISPONIBLES:
+                Animacion, Comedia, Drama, Aventura.
+
+                ÁNIMOS DISPONIBLES:
+                Alegre, Divertido, Reflexivo, Inspirador, Emotivo,
+                Emocionante.
+
+                REGLAS:
+                1. Si el usuario pide un género, identificá el más adecuado.
+                2. Si describe cómo quiere sentirse o qué tipo de experiencia
+                   busca, identificá el ánimo correspondiente.
+                3. Si menciona una duración, convertíla a minutos.
+                4. "Menos de 2 horas" equivale a una duración máxima de 120 minutos.
+                5. "Una hora y media" equivale a 90 minutos.
+                6. Si no menciona un criterio, devolvé null para ese campo.
+                7. No inventes preferencias que el usuario no expresó.
+                8. No devuelvas todos los filtros como null si el usuario
+                   expresó alguna preferencia que se pueda identificar.
+                9. No agregues propiedades diferentes de las indicadas.
+
+                EJEMPLOS:
+
+                Mensaje: Quiero una comedia graciosa.
+                JSON: {"genero":"Comedia","animo":"Divertido","duracionMaxima":null}
+
+                Mensaje: Estoy feliz y quiero algo de menos de dos horas.
+                JSON: {"genero":null,"animo":"Alegre","duracionMaxima":120}
+
+                Mensaje: Quiero una película de aventura que me emocione.
+                JSON: {"genero":"Aventura","animo":"Emocionante","duracionMaxima":null}
+
+                Mensaje: Quiero un drama profundo de 90 minutos como máximo.
+                JSON: {"genero":"Drama","animo":"Reflexivo","duracionMaxima":90}
+
+                Mensaje del usuario:
+                """ + "\n" + busqueda;
 
             using var client = CreateHttpClient();
 
@@ -53,22 +83,38 @@ namespace Cineura.Services
                 model = "openai/gpt-oss-120b",
                 messages = new[]
                 {
-                    new { role = "system", content = "Respondé solo con JSON válido y sin texto extra." },
-                    new { role = "user", content = prompt }
+                    new
+                    {
+                        role = "system",
+                        content = "Convertí las preferencias del usuario en filtros. Respondé únicamente con JSON válido."
+                    },
+                    new
+                    {
+                        role = "user",
+                        content = prompt
+                    }
                 },
-                temperature = 0.2,
-                response_format = new { type = "json_object" }
+                temperature = 0.1,
+                response_format = new
+                {
+                    type = "json_object"
+                }
             };
 
-            using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.groq.com/openai/v1/chat/completions")
+            using var request = new HttpRequestMessage(
+                HttpMethod.Post,
+                "https://api.groq.com/openai/v1/chat/completions")
             {
                 Content = JsonContent.Create(requestBody)
             };
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+            request.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", apiKey);
 
             using var response = await client.SendAsync(request);
-            string responseBody = await response.Content.ReadAsStringAsync();
+
+            string responseBody =
+                await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
@@ -77,7 +123,9 @@ namespace Cineura.Services
                 );
             }
 
-            using JsonDocument document = JsonDocument.Parse(responseBody);
+            using JsonDocument document =
+                JsonDocument.Parse(responseBody);
+
             string? contenido = document.RootElement
                 .GetProperty("choices")[0]
                 .GetProperty("message")
@@ -86,7 +134,9 @@ namespace Cineura.Services
 
             if (string.IsNullOrWhiteSpace(contenido))
             {
-                throw new InvalidOperationException("Groq no devolvió contenido válido.");
+                throw new InvalidOperationException(
+                    "Groq no devolvió contenido válido."
+                );
             }
 
             return contenido;
