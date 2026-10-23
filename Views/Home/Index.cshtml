@@ -98,7 +98,7 @@
                                 Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.
                             </p>
 
-                            <div class="mt-3 d-flex flex-wrap gap-2">
+                            <div class="mt-3 acciones-pelicula">
                                 <button type="button"
                                         class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoDune == true ? "active" : "")"
                                         data-id="@ViewBag.IdDune"
@@ -147,7 +147,7 @@
                                 Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.
                             </p>
 
-                            <div class="mt-3 d-flex flex-wrap gap-2">
+                            <div class="mt-3 acciones-pelicula">
                                 <button type="button"
                                         class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoPoorThings == true ? "active" : "")"
                                         data-id="@ViewBag.IdPoorThings"
@@ -196,7 +196,7 @@
                                 Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.
                             </p>
 
-                            <div class="mt-3 d-flex flex-wrap gap-2">
+                            <div class="mt-3 acciones-pelicula">
                                 <button type="button"
                                         class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoSubstance == true ? "active" : "")"
                                         data-id="@ViewBag.IdSubstance"
@@ -245,7 +245,7 @@
                                 Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.
                             </p>
 
-                            <div class="mt-3 d-flex flex-wrap gap-2">
+                            <div class="mt-3 acciones-pelicula">
                                 <button type="button"
                                         class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoAnatomy == true ? "active" : "")"
                                         data-id="@ViewBag.IdAnatomy"
@@ -440,11 +440,27 @@
     .card-pelicula {
         cursor: pointer;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        width: 100%;
+        max-width: 290px;
+        margin: 0 auto;
     }
 
     .card-pelicula:hover {
         transform: translateY(-4px);
         box-shadow: 0 12px 26px rgba(0,0,0,0.2);
+    }
+
+    .card-info {
+        width: 100%;
+    }
+
+    .acciones-pelicula {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+        align-items: center;
+        margin-top: 12px;
     }
 
     .favorite-toggle,
@@ -453,12 +469,14 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        min-width: 122px;
+        width: 100%;
+        min-width: 0;
         border: 1px solid transparent;
         color: #fff;
-        padding: 0.45rem 0.75rem;
+        padding: 0.5rem 0.8rem;
         background: transparent !important;
         transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+        white-space: nowrap;
     }
 
     .favorite-toggle {
@@ -522,6 +540,12 @@
     .favorite-toggle.active .favorito-text,
     .watchlist-toggle.active .watchlist-text {
         font-weight: 700;
+    }
+
+    .mt-3.acciones-pelicula {
+        display: flex;
+        gap: 8px;
+        flex-wrap: nowrap;
     }
 </style>
 
