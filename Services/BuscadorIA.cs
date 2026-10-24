@@ -6,79 +6,43 @@ namespace Cineura.Services
 {
     public class BuscadorIA
     {
-        private static HttpClient CreateHttpClient()
+        public string InterpretarBusqueda(string busqueda)
         {
-            return new HttpClient
-            {
-                Timeout = TimeSpan.FromSeconds(30)
-            };
-        }
-
-        public async Task<string> InterpretarBusquedaAsync(string busqueda)
-        {
-            string? apiKey = Environment.GetEnvironmentVariable("GROQ_API_KEY");
+            string apiKey = Environment.GetEnvironmentVariable("GROQ_API_KEY");
 
             if (string.IsNullOrWhiteSpace(apiKey))
             {
-                throw new InvalidOperationException(
-                    "No se encontró la clave de Groq. Configurá GROQ_API_KEY en CMD."
-                );
+                throw new Exception("No se encontro la clave de Groq. Configura GROQ_API_KEY en CMD.");
             }
 
-            string prompt = """
-                Sos Nova, el buscador inteligente de Cineura.
+            string prompt = "Sos Nova, el buscador inteligente de Cineura. " +
+                "Interpreta las preferencias del usuario para buscar peliculas. " +
+                "Responde solamente con un objeto JSON valido. " +
+                "Usa exactamente estas propiedades: genero, animo y duracionMaxima. " +
+                "Los generos disponibles son Animacion, Comedia, Drama y Aventura. " +
+                "Los animos disponibles son Alegre, Divertido, Reflexivo, Inspirador, Emotivo y Emocionante. " +
+                "Si el usuario no menciona un genero, usa null. " +
+                "Si no menciona un animo, usa null. " +
+                "Si no menciona una duracion, usa null. " +
+                "Menos de dos horas equivale a 119 minutos. " +
+                "Hasta dos horas equivale a 120 minutos. " +
+                "Una hora y media equivale a 90 minutos. " +
+                "No inventes preferencias. " +
+                "Ejemplo: {\"genero\":\"Comedia\",\"animo\":\"Divertido\",\"duracionMaxima\":90}. " +
+                "Mensaje del usuario: " + busqueda;
 
-                Tu tarea es interpretar el mensaje del usuario y convertir
-                sus preferencias en filtros para buscar películas.
+            HttpClient cliente = new HttpClient();
+            cliente.Timeout = TimeSpan.FromSeconds(30);
 
-                Respondé únicamente con un objeto JSON válido.
-                No incluyas explicaciones, Markdown ni texto fuera del JSON.
+            HttpRequestMessage solicitud = new HttpRequestMessage(
+                HttpMethod.Post,
+                "https://api.groq.com/openai/v1/chat/completions"
+            );
 
-                Usá exactamente estas propiedades:
-                - genero: string o null
-                - animo: string o null
-                - duracionMaxima: número entero o null
+            solicitud.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", apiKey);
 
-                GÉNEROS DISPONIBLES:
-                Animacion, Comedia, Drama, Aventura.
-
-                ÁNIMOS DISPONIBLES:
-                Alegre, Divertido, Reflexivo, Inspirador, Emotivo,
-                Emocionante.
-
-                REGLAS:
-                1. Si el usuario pide un género, identificá el más adecuado.
-                2. Si describe cómo quiere sentirse o qué tipo de experiencia
-                   busca, identificá el ánimo correspondiente.
-                3. Si menciona una duración, convertíla a minutos.
-                4. "Menos de 2 horas" equivale a una duración máxima de 120 minutos.
-                5. "Una hora y media" equivale a 90 minutos.
-                6. Si no menciona un criterio, devolvé null para ese campo.
-                7. No inventes preferencias que el usuario no expresó.
-                8. No devuelvas todos los filtros como null si el usuario
-                   expresó alguna preferencia que se pueda identificar.
-                9. No agregues propiedades diferentes de las indicadas.
-
-                EJEMPLOS:
-
-                Mensaje: Quiero una comedia graciosa.
-                JSON: {"genero":"Comedia","animo":"Divertido","duracionMaxima":null}
-
-                Mensaje: Estoy feliz y quiero algo de menos de dos horas.
-                JSON: {"genero":null,"animo":"Alegre","duracionMaxima":120}
-
-                Mensaje: Quiero una película de aventura que me emocione.
-                JSON: {"genero":"Aventura","animo":"Emocionante","duracionMaxima":null}
-
-                Mensaje: Quiero un drama profundo de 90 minutos como máximo.
-                JSON: {"genero":"Drama","animo":"Reflexivo","duracionMaxima":90}
-
-                Mensaje del usuario:
-                """ + "\n" + busqueda;
-
-            using var client = CreateHttpClient();
-
-            var requestBody = new
+            object datos = new
             {
                 model = "openai/gpt-oss-120b",
                 messages = new[]
@@ -86,7 +50,7 @@ namespace Cineura.Services
                     new
                     {
                         role = "system",
-                        content = "Convertí las preferencias del usuario en filtros. Respondé únicamente con JSON válido."
+                        content = "Responde solamente con JSON valido."
                     },
                     new
                     {
@@ -101,32 +65,20 @@ namespace Cineura.Services
                 }
             };
 
-            using var request = new HttpRequestMessage(
-                HttpMethod.Post,
-                "https://api.groq.com/openai/v1/chat/completions")
+            solicitud.Content = JsonContent.Create(datos);
+
+            HttpResponseMessage respuesta = cliente.Send(solicitud);
+
+            string respuestaTexto = respuesta.Content.ReadAsStringAsync().Result;
+
+            if (!respuesta.IsSuccessStatusCode)
             {
-                Content = JsonContent.Create(requestBody)
-            };
-
-            request.Headers.Authorization =
-                new AuthenticationHeaderValue("Bearer", apiKey);
-
-            using var response = await client.SendAsync(request);
-
-            string responseBody =
-                await response.Content.ReadAsStringAsync();
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new InvalidOperationException(
-                    $"Groq API respondió con estado {(int)response.StatusCode}: {responseBody}"
-                );
+                throw new Exception("Error de Groq: " + respuestaTexto);
             }
 
-            using JsonDocument document =
-                JsonDocument.Parse(responseBody);
+            JsonDocument documento = JsonDocument.Parse(respuestaTexto);
 
-            string? contenido = document.RootElement
+            string contenido = documento.RootElement
                 .GetProperty("choices")[0]
                 .GetProperty("message")
                 .GetProperty("content")
@@ -134,10 +86,13 @@ namespace Cineura.Services
 
             if (string.IsNullOrWhiteSpace(contenido))
             {
-                throw new InvalidOperationException(
-                    "Groq no devolvió contenido válido."
-                );
+                throw new Exception("Groq no devolvio una respuesta valida.");
             }
+
+            documento.Dispose();
+            respuesta.Dispose();
+            solicitud.Dispose();
+            cliente.Dispose();
 
             return contenido;
         }

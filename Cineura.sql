@@ -146,6 +146,7 @@ GO
 
 
 
+
 USE Cineura;
 GO
 
@@ -154,72 +155,77 @@ BEGIN
     INSERT INTO Peliculas
         (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
     VALUES
-        ('Toy Story', 'Una aventura entre juguetes.',
-         'Animacion', 81, 1995, 'Alegre',
-         'https://image.tmdb.org/t/p/w500/4Z2h4D7f3Q1bQ1a0jW2h7v9K2.jpg'),
-
-        ('Shrek', 'Un ogro emprende una aventura inesperada.',
-         'Comedia', 90, 2001, 'Divertido',
-         'https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg'),
-
-        ('The Truman Show', 'Un hombre descubre secretos sobre su vida.',
-         'Drama', 103, 1998, 'Reflexivo',
-         'https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg'),
-
-        ('En busca de la felicidad', 'Un padre lucha por salir adelante.',
-         'Drama', 117, 2006, 'Inspirador',
-         'https://image.tmdb.org/t/p/w500/lBYOKAMcxIvuk9s9hMuecB9dPBV.jpg'),
-
-        ('Superbad', 'Dos amigos viven una noche inolvidable.',
-         'Comedia', 113, 2007, 'Divertido',
-         'https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg'),
-
-        ('Coco', 'Un chico descubre la historia de su familia.',
-         'Animacion', 105, 2017, 'Emotivo',
-         'https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg'),
-
-        ('Intensamente', 'Las emociones acompañan a una chica en su vida.',
-         'Animacion', 95, 2015, 'Reflexivo',
-         'https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg'),
-
-        ('Jumanji', 'Un juego transforma una aventura en realidad.',
-         'Aventura', 104, 1995, 'Emocionante',
-         'https://image.tmdb.org/t/p/w500/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg');
+        (
+            'Toy Story',
+            'Una aventura entre juguetes.',
+            'Animacion',
+            81,
+            1995,
+            'Alegre',
+            'https://image.tmdb.org/t/p/w500/4Z2h4D7f3Q1bQ1a0jW2h7v9K2.jpg'
+        ),
+        (
+            'Shrek',
+            'Un ogro emprende una aventura inesperada.',
+            'Comedia',
+            90,
+            2001,
+            'Divertido',
+            'https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg'
+        ),
+        (
+            'The Truman Show',
+            'Un hombre descubre secretos sobre su vida.',
+            'Drama',
+            103,
+            1998,
+            'Reflexivo',
+            'https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg'
+        ),
+        (
+            'En busca de la felicidad',
+            'Un padre lucha por salir adelante.',
+            'Drama',
+            117,
+            2006,
+            'Inspirador',
+            'https://image.tmdb.org/t/p/w500/lBYOKAMcxIvuk9s9hMuecB9dPBV.jpg'
+        ),
+        (
+            'Superbad',
+            'Dos amigos viven una noche inolvidable.',
+            'Comedia',
+            113,
+            2007,
+            'Divertido',
+            'https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg'
+        ),
+        (
+            'Coco',
+            'Un chico descubre la historia de su familia.',
+            'Animacion',
+            105,
+            2017,
+            'Emotivo',
+            'https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg'
+        ),
+        (
+            'Intensamente',
+            'Las emociones acompañan a una chica en su vida.',
+            'Animacion',
+            95,
+            2015,
+            'Reflexivo',
+            'https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg'
+        ),
+        (
+            'Jumanji',
+            'Un juego transforma una aventura en realidad.',
+            'Aventura',
+            104,
+            1995,
+            'Emocionante',
+            'https://image.tmdb.org/t/p/w500/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg'
+        );
 END
-GO
-
-USE Cineura;
-GO
-
-UPDATE Peliculas
-SET PosterUrl = 'https://image.tmdb.org/t/p/w500/4Z2h4D7f3Q1bQ1a0jW2h7v9K2.jpg'
-WHERE Titulo = 'Toy Story';
-
-UPDATE Peliculas
-SET PosterUrl = 'https://image.tmdb.org/t/p/w500/lBYOKAMcxIvuk9s9hMuecB9dPBV.jpg'
-WHERE Titulo = 'En busca de la felicidad';
-
-UPDATE Peliculas
-SET PosterUrl = 'https://image.tmdb.org/t/p/w500/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg'
-WHERE Titulo = 'Jumanji';
-
-UPDATE Peliculas SET PosterUrl =
-    'https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg'
-WHERE Titulo = 'Shrek';
-
-UPDATE Peliculas SET PosterUrl =
-    'https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg'
-WHERE Titulo = 'The Truman Show';
-
-UPDATE Peliculas SET PosterUrl =
-    'https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg'
-WHERE Titulo = 'Superbad';
-
-UPDATE Peliculas SET PosterUrl =
-    'https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg'
-WHERE Titulo = 'Coco';
-
-UPDATE Peliculas SET PosterUrl =
-    'https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg'
-WHERE Titulo = 'Intensamente';
 GO
