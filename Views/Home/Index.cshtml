@@ -2,6 +2,14 @@
     ViewData["Title"] = "Cineura | Buscador Inteligente";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/home-index.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/home-index.js" asp-append-version="true"></script>
+}
+
 <div class="cineura-pagina">
     <div class="cineura-contenedor">
 
@@ -12,63 +20,65 @@
             </div>
         }
 
-        <div class="cineura-hero text-center mb-5">
-            <div class="cineura-badge-neural mb-3">
-                <span class="punto-verde">●</span>
-                MOTOR NEURAL V4.2 ACTIVO • Calibrado a tu perfil cinematográfico
-            </div>
+        <section class="cineura-seccion-ia" aria-labelledby="titulo-buscador-ia">
+            <div class="cineura-hero text-center mb-5">
+                <div class="cineura-badge-neural mb-3">
+                    <span class="punto-verde">●</span>
+                    MOTOR NEURAL V4.2 ACTIVO • Calibrado a tu perfil cinematográfico
+                </div>
 
-            <h1 class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
+                <h1 id="titulo-buscador-ia" class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
 
-            <p class="cineura-subtitulo hero-subtitulo">
-                Describí una trama, un dilema moral, una atmósfera o un género y dejá que Nova encuentre películas para vos.
-            </p>
+                <p class="cineura-subtitulo hero-subtitulo">
+                    Describí una trama, un dilema moral, una atmósfera o un género y dejá que Nova encuentre películas para vos.
+                </p>
 
-            <div class="cineura-buscador-box">
-                <form id="formBusqueda" method="post">
-                    <div class="buscador-input-group">
-                        <textarea id="busqueda"
-                                  name="busqueda"
-                                  class="form-control cineura-input-hero"
-                                  rows="2"
-                                  placeholder="Ej: Un thriller psicológico oscuro de menos de dos horas..."
-                                  required></textarea>
+                <div class="cineura-buscador-box">
+                    <form id="formBusqueda" method="post">
+                        <div class="buscador-input-group">
+                            <textarea id="busqueda"
+                                      name="busqueda"
+                                      class="form-control cineura-input-hero"
+                                      rows="2"
+                                      placeholder="Ej: Un thriller psicológico oscuro de menos de dos horas..."
+                                      required></textarea>
 
-                        <button type="submit" id="botonBuscar" class="cineura-boton-ia">
-                            ✦ Generar recomendación
-                        </button>
-                    </div>
-                </form>
+                            <button type="submit" id="botonBuscar" class="cineura-boton-ia">
+                                ✦ Generar recomendación
+                            </button>
+                        </div>
+                    </form>
 
-                <div class="filtros-rapidos mt-3">
-                    <div class="grupo-tags">
-                        <span class="tag-label">MOODS:</span>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cerebral y tenso')">Cerebral y tenso</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Melancólico')">Melancólico</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Adrenalina pura')">Adrenalina pura</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Existencialista')">Existencialista</button>
-                    </div>
+                    <div class="filtros-rapidos mt-3">
+                        <div class="grupo-tags">
+                            <span class="tag-label">MOODS:</span>
+                            <button type="button" class="btn-tag" data-busqueda="Cerebral y tenso">Cerebral y tenso</button>
+                            <button type="button" class="btn-tag" data-busqueda="Melancólico">Melancólico</button>
+                            <button type="button" class="btn-tag" data-busqueda="Adrenalina pura">Adrenalina pura</button>
+                            <button type="button" class="btn-tag" data-busqueda="Existencialista">Existencialista</button>
+                        </div>
 
-                    <div class="grupo-tags mt-2">
-                        <span class="tag-label">ESTÉTICAS:</span>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Estilo A24')">✦ A24 Vibes</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cine de autor')">Cine de autor</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cyberpunk')">Cyberpunk</button>
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Ciencia ficción de los años 70')">Sci-Fi 70s</button>
+                        <div class="grupo-tags mt-2">
+                            <span class="tag-label">ESTÉTICAS:</span>
+                            <button type="button" class="btn-tag" data-busqueda="Estilo A24">✦ A24 Vibes</button>
+                            <button type="button" class="btn-tag" data-busqueda="Cine de autor">Cine de autor</button>
+                            <button type="button" class="btn-tag" data-busqueda="Cyberpunk">Cyberpunk</button>
+                            <button type="button" class="btn-tag" data-busqueda="Ciencia ficción de los años 70">Sci-Fi 70s</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="resultado" class="text-center my-4" role="status"></div>
-        <div id="resultadosBusqueda" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mb-5"></div>
+            <div id="resultado" class="text-center my-4" role="status"></div>
+            <div id="resultadosBusqueda" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mb-5"></div>
+        </section>
 
-        <div class="seccion-tendencias mt-5 pt-4">
+        <section class="seccion-tendencias mt-5 pt-4" aria-labelledby="titulo-peliculas-destacadas">
             <div class="mb-4">
                 <div class="cineura-badge-neural d-inline-block mb-1">
                     ● TRENDING NOW
                 </div>
-                <h2 class="h3 fw-bold text-white">Películas destacadas</h2>
+                <h2 id="titulo-peliculas-destacadas" class="h3 fw-bold text-white">Películas destacadas</h2>
                 <p class="text-secondary small">
                     Explorá las películas y guardá las que te interesen.
                 </p>
@@ -273,7 +283,7 @@
                 </div>
 
             </div>
-        </div>
+        </section>
     </div>
 </div>
 
@@ -281,502 +291,64 @@
 
 <div id="detalle-cineura-dune"
      class="modal-cineura"
-     style="display:none;"
-     onclick="cerrarSiFondoCineura(event, 'dune')">
+     data-modal-id="dune">
     <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar"
-                onclick="cerrarDetallesCineura('dune')">×</button>
+        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="dune">×</button>
         <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
              alt="Póster de Dune: Part Two" class="modal-cineura-poster" />
         <div class="modal-cineura-info">
             <h2>Dune: Part Two</h2>
             <p class="modal-cineura-meta">2024 · Ciencia ficción · 166 min</p>
             <p>Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.</p>
-            <button type="button" class="btn btn-warning btn-sm"
-                    onclick="cerrarDetallesCineura('dune')">Cerrar</button>
+            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="dune">Cerrar</button>
         </div>
     </div>
 </div>
 
 <div id="detalle-cineura-poor-things"
      class="modal-cineura"
-     style="display:none;"
-     onclick="cerrarSiFondoCineura(event, 'poor-things')">
+     data-modal-id="poor-things">
     <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar"
-                onclick="cerrarDetallesCineura('poor-things')">×</button>
+        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="poor-things">×</button>
         <img src="https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg"
              alt="Póster de Poor Things" class="modal-cineura-poster" />
         <div class="modal-cineura-info">
             <h2>Poor Things</h2>
             <p class="modal-cineura-meta">2023 · Fantasía · 141 min</p>
             <p>Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.</p>
-            <button type="button" class="btn btn-warning btn-sm"
-                    onclick="cerrarDetallesCineura('poor-things')">Cerrar</button>
+            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="poor-things">Cerrar</button>
         </div>
     </div>
 </div>
 
 <div id="detalle-cineura-substance"
      class="modal-cineura"
-     style="display:none;"
-     onclick="cerrarSiFondoCineura(event, 'substance')">
+     data-modal-id="substance">
     <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar"
-                onclick="cerrarDetallesCineura('substance')">×</button>
+        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="substance">×</button>
         <img src="https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg"
              alt="Póster de The Substance" class="modal-cineura-poster" />
         <div class="modal-cineura-info">
             <h2>The Substance</h2>
             <p class="modal-cineura-meta">2024 · Terror · 141 min</p>
             <p>Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.</p>
-            <button type="button" class="btn btn-warning btn-sm"
-                    onclick="cerrarDetallesCineura('substance')">Cerrar</button>
+            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="substance">Cerrar</button>
         </div>
     </div>
 </div>
 
 <div id="detalle-cineura-anatomy"
      class="modal-cineura"
-     style="display:none;"
-     onclick="cerrarSiFondoCineura(event, 'anatomy')">
+     data-modal-id="anatomy">
     <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar"
-                onclick="cerrarDetallesCineura('anatomy')">×</button>
+        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="anatomy">×</button>
         <img src="https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg"
              alt="Póster de Anatomy of a Fall" class="modal-cineura-poster" />
         <div class="modal-cineura-info">
             <h2>Anatomy of a Fall</h2>
             <p class="modal-cineura-meta">2023 · Drama · 151 min</p>
             <p>Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.</p>
-            <button type="button" class="btn btn-warning btn-sm"
-                    onclick="cerrarDetallesCineura('anatomy')">Cerrar</button>
+            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="anatomy">Cerrar</button>
         </div>
     </div>
 </div>
-
-<style>
-    .modal-cineura {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        background: rgba(0, 0, 0, 0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    }
-
-    .modal-cineura-tarjeta {
-        position: relative;
-        display: flex;
-        gap: 20px;
-        width: 100%;
-        max-width: 600px;
-        max-height: 85vh;
-        overflow-y: auto;
-        padding: 24px;
-        background: #111827;
-        color: white;
-        border: 1px solid #374151;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-cineura-poster {
-        width: 150px;
-        align-self: flex-start;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-
-    .modal-cineura-info {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .modal-cineura-info h2 {
-        color: #FBBF24;
-        font-size: 22px;
-        margin: 10px 25px 10px 0;
-    }
-
-    .modal-cineura-meta {
-        color: #D1D5DB;
-        font-size: 13px;
-    }
-
-    .modal-cineura-info p {
-        line-height: 1.6;
-    }
-
-    .modal-cineura-cerrar {
-        position: absolute;
-        top: 8px;
-        right: 12px;
-        border: none;
-        background: transparent;
-        color: white;
-        font-size: 28px;
-        cursor: pointer;
-    }
-
-    @@media (max-width: 500px) {
-        .modal-cineura-tarjeta {
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-cineura-poster {
-            width: 125px;
-        }
-
-        .modal-cineura-info {
-            width: 100%;
-        }
-    }
-
-    .card-pelicula {
-        cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        width: 100%;
-        max-width: 290px;
-        margin: 0 auto;
-    }
-
-    .card-pelicula:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 26px rgba(0,0,0,0.2);
-    }
-
-    .card-info {
-        width: 100%;
-    }
-
-    .acciones-pelicula {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        width: 100%;
-        align-items: center;
-        margin-top: 12px;
-    }
-
-    .favorite-toggle,
-    .watchlist-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        width: 100%;
-        min-width: 0;
-        border: 1px solid transparent;
-        color: #fff;
-        padding: 0.5rem 0.8rem;
-        background: transparent !important;
-        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-        white-space: nowrap;
-    }
-
-    .favorite-toggle {
-        background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%) !important;
-        border-color: #f87171;
-        color: #fff;
-    }
-
-    .watchlist-toggle {
-        background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%) !important;
-        border-color: #facc15;
-        color: #111827;
-    }
-
-    .favorite-toggle:hover,
-    .watchlist-toggle:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-    }
-
-    .favorite-toggle.active {
-        box-shadow: 0 0 0 2px rgba(255, 93, 122, 0.25);
-    }
-
-    .favorite-toggle.active .favorito-icon {
-        color: #ffffff;
-        font-weight: 900;
-        transform: scale(1.12);
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-    }
-
-    .watchlist-toggle.active {
-        box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.25);
-    }
-
-    .watchlist-toggle.active .watchlist-icon {
-        color: #1f2937;
-        font-weight: 900;
-        transform: scale(1.12);
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
-    }
-
-    .favorite-toggle .favorito-icon,
-    .watchlist-toggle .watchlist-icon {
-        font-size: 1.08rem;
-        line-height: 1;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 14px;
-    }
-
-    .favorite-toggle .favorito-icon {
-        color: #fff;
-    }
-
-    .watchlist-toggle .watchlist-icon {
-        color: #111827;
-    }
-
-    .favorite-toggle.active .favorito-text,
-    .watchlist-toggle.active .watchlist-text {
-        font-weight: 700;
-    }
-
-    .mt-3.acciones-pelicula {
-        display: flex;
-        gap: 8px;
-        flex-wrap: nowrap;
-    }
-</style>
-
-<script>
-    function abrirDetallesCineura(id) {
-        var modal = document.getElementById("detalle-cineura-" + id);
-
-        if (modal) {
-            modal.style.display = "flex";
-        }
-    }
-
-    function cerrarDetallesCineura(id) {
-        var modal = document.getElementById("detalle-cineura-" + id);
-
-        if (modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    function cerrarSiFondoCineura(evento, id) {
-        if (evento.target.id === "detalle-cineura-" + id) {
-            cerrarDetallesCineura(id);
-        }
-    }
-
-    document.addEventListener("keydown", function (evento) {
-        if (evento.key === "Escape") {
-            document.querySelectorAll(".modal-cineura").forEach(function (modal) {
-                modal.style.display = "none";
-            });
-        }
-    });
-
-    function agregarTexto(texto) {
-        const campo = document.getElementById("busqueda");
-
-        if (campo.value.trim() !== "") {
-            campo.value += ", " + texto;
-        } else {
-            campo.value = texto;
-        }
-
-        campo.focus();
-    }
-
-    document.getElementById("formBusqueda").addEventListener("submit", async function (e) {
-        e.preventDefault();
-
-        const campo = document.getElementById("busqueda");
-        const boton = document.getElementById("botonBuscar");
-        const mensaje = document.getElementById("resultado");
-        const contenedor = document.getElementById("resultadosBusqueda");
-
-        mensaje.textContent = "Nova está buscando películas para vos...";
-        contenedor.innerHTML = "";
-        boton.disabled = true;
-
-        try {
-            const datos = new FormData();
-            datos.append("busqueda", campo.value);
-
-            const respuesta = await fetch("/Home/BuscarPeliculas", {
-                method: "POST",
-                body: datos
-            });
-
-            if (!respuesta.ok) {
-                const error = await respuesta.text();
-                throw new Error(error || "No se pudo realizar la búsqueda.");
-            }
-
-            const peliculas = await respuesta.json();
-
-            if (!peliculas.length) {
-                mensaje.textContent = "No encontramos películas con esos filtros. Probá describirlo de otra manera.";
-                return;
-            }
-
-            mensaje.textContent = "Encontramos estas películas para vos:";
-
-            peliculas.forEach(function (pelicula) {
-                const columna = document.createElement("div");
-                columna.className = "col";
-
-                const tarjeta = document.createElement("div");
-                tarjeta.className = "card-pelicula h-100";
-                tarjeta.dataset.id = pelicula.idPelicula;
-                tarjeta.dataset.titulo = pelicula.titulo || "Sin título";
-
-                tarjeta.addEventListener('click', function (event) {
-                    if (event.target.closest('button')) {
-                        return;
-                    }
-                    if (pelicula.idPelicula) {
-                        window.location.href = '/Home/Detalles/' + pelicula.idPelicula;
-                    }
-                });
-
-                if (pelicula.posterUrl) {
-                    const imagen = document.createElement("img");
-                    imagen.src = pelicula.posterUrl;
-                    imagen.alt = "Póster de " + pelicula.titulo;
-                    imagen.className = "card-poster-img";
-                    imagen.loading = "lazy";
-                    tarjeta.appendChild(imagen);
-                }
-
-                const info = document.createElement("div");
-                info.className = "card-info";
-
-                const titulo = document.createElement("h4");
-                titulo.className = "card-titulo";
-                titulo.textContent = pelicula.titulo || "Sin título";
-
-                const meta = document.createElement("p");
-                meta.className = "card-meta";
-                meta.textContent =
-                    (pelicula.anio || "") + " • " +
-                    (pelicula.duracionMinutos || "?") + " minutos";
-
-                const genero = document.createElement("p");
-                genero.textContent = pelicula.genero || "";
-
-                const sinopsis = document.createElement("p");
-                sinopsis.className = "card-sinopsis";
-                sinopsis.textContent = pelicula.sinopsis || "Sin sinopsis disponible.";
-
-                info.appendChild(titulo);
-                info.appendChild(meta);
-                info.appendChild(genero);
-                info.appendChild(sinopsis);
-                tarjeta.appendChild(info);
-                columna.appendChild(tarjeta);
-                contenedor.appendChild(columna);
-            });
-        } catch (error) {
-            mensaje.textContent = error.message || "Ocurrió un error al buscar películas.";
-        } finally {
-            boton.disabled = false;
-        }
-    });
-
-    function configurarAccionesCineura() {
-        document.querySelectorAll('.card-pelicula').forEach(function (card) {
-            card.addEventListener('click', function (event) {
-                if (event.target.closest('button')) {
-                    return;
-                }
-
-                const titulo = card.dataset.titulo || '';
-                const id = card.dataset.id || '';
-
-                if (id) {
-                    window.location.href = '/Home/Detalles/' + id;
-                }
-            });
-        });
-
-        document.querySelectorAll('.favorite-toggle').forEach(function (boton) {
-            boton.addEventListener('click', async function (event) {
-                event.stopPropagation();
-                const id = boton.dataset.id;
-                const activo = boton.dataset.active === 'true';
-
-                try {
-                    const respuesta = await fetch('/Home/ToggleFavorito', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-                        body: 'idPelicula=' + encodeURIComponent(id)
-                    });
-
-                    const data = await respuesta.json();
-
-                    if (!respuesta.ok || !data.ok) {
-                        if (data.redirectUrl) {
-                            window.location.href = data.redirectUrl;
-                            return;
-                        }
-                        throw new Error(data.message || 'No se pudo actualizar favoritos.');
-                    }
-
-                    boton.dataset.active = String(!activo);
-                    boton.classList.toggle('active', !activo);
-                    const icono = boton.querySelector('.favorito-icon');
-                    if (icono) {
-                        icono.textContent = (!activo) ? '♥' : '♥';
-                    }
-                } catch (error) {
-                    console.error(error);
-                    alert(error.message || 'No se pudo actualizar favoritos.');
-                }
-            });
-        });
-
-        document.querySelectorAll('.watchlist-toggle').forEach(function (boton) {
-            boton.addEventListener('click', async function (event) {
-                event.stopPropagation();
-                const id = boton.dataset.id;
-                const activo = boton.dataset.active === 'true';
-
-                try {
-                    const respuesta = await fetch('/Home/ToggleWatchlist', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-                        body: 'idPelicula=' + encodeURIComponent(id)
-                    });
-
-                    const data = await respuesta.json();
-
-                    if (!respuesta.ok || !data.ok) {
-                        if (data.redirectUrl) {
-                            window.location.href = data.redirectUrl;
-                            return;
-                        }
-                        throw new Error(data.message || 'No se pudo actualizar watchlist.');
-                    }
-
-                    boton.dataset.active = String(!activo);
-                    boton.classList.toggle('active', !activo);
-                    const icono = boton.querySelector('.watchlist-icon');
-                    if (icono) {
-                        icono.textContent = (!activo) ? '✓' : '+';
-                    }
-                } catch (error) {
-                    console.error(error);
-                    alert(error.message || 'No se pudo actualizar watchlist.');
-                }
-            });
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', configurarAccionesCineura);
-</script>

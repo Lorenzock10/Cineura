@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Cineura.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 
     <style>
         body {
@@ -48,23 +49,62 @@
             object-fit: contain;
         }
 
+        .cineura-menu-desplegable {
+            position: relative;
+        }
+
+        .cineura-menu-resumen {
+            color: #FFFFFF;
+            cursor: pointer;
+            font-weight: bold;
+            list-style: none;
+            padding: 10px 14px;
+            border: 1px solid #374151;
+            border-radius: 8px;
+        }
+
+        .cineura-menu-resumen::-webkit-details-marker {
+            display: none;
+        }
+
+        .cineura-menu-resumen::after {
+            content: "⌄";
+            margin-left: 8px;
+            color: #FBBF24;
+        }
+
+        .cineura-menu-desplegable[open] .cineura-menu-resumen::after {
+            content: "⌃";
+        }
+
         .cineura-menu {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            z-index: 1060;
+            display: grid;
+            gap: 4px;
+            min-width: 190px;
+            padding: 8px;
+            background-color: #1F2937;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
         }
 
         .cineura-menu a {
+            display: block;
             color: #FFFFFF;
             text-decoration: none;
             font-weight: bold;
+            padding: 10px 12px;
+            border-radius: 6px;
             transition: color 0.3s;
         }
 
         .cineura-menu a:hover {
             color: #FBBF24;
+            background-color: rgba(251, 191, 36, 0.08);
         }
 
         .cineura-sesion {
@@ -160,12 +200,13 @@
                 height: 75px;
             }
 
-            .cineura-menu {
-                gap: 15px;
+            .cineura-menu-desplegable {
+                order: 3;
             }
 
             .cineura-sesion {
-                width: 100%;
+                flex: 1;
+                justify-content: flex-end;
             }
         }
     </style>
@@ -188,12 +229,15 @@
 
             @if (!string.IsNullOrEmpty(usuarioSesion))
             {
-                <nav class="cineura-menu">
-                    <a href="@Url.Action("Index", "Home")">Home</a>
-                    <a href="@Url.Action("Explorar", "Home")">Explorar</a>
-                    <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
-                    <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
-                </nav>
+                <details class="cineura-menu-desplegable">
+                    <summary class="cineura-menu-resumen">Menú</summary>
+                    <nav class="cineura-menu" aria-label="Navegación principal">
+                        <a href="@Url.Action("Index", "Home")">Inicio</a>
+                        <a href="@Url.Action("Explorar", "Home")">Explorar</a>
+                        <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
+                        <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
+                    </nav>
+                </details>
             }
 
             <div class="cineura-sesion">

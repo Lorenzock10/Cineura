@@ -46,7 +46,6 @@ namespace Cineura.Controllers
             if (!string.IsNullOrEmpty(usuario))
             {
                 int idUsuario = bd.ObtenerIdUsuario(usuario);
-
                 if (idUsuario > 0)
                 {
                     int idDune = ViewBag.IdDune;
@@ -92,7 +91,6 @@ namespace Cineura.Controllers
                     return pelicula.IdPelicula;
                 }
             }
-
             return 0;
         }
 
@@ -107,7 +105,6 @@ namespace Cineura.Controllers
         private string LimpiarJson(string texto)
         {
             texto = texto.Trim();
-
             if (texto.StartsWith("```"))
             {
                 int inicio = texto.IndexOf('\n');
@@ -124,7 +121,6 @@ namespace Cineura.Controllers
             }
 
             texto = texto.Trim();
-
             int inicioJson = texto.IndexOf('{');
             int finalJson = texto.LastIndexOf('}');
 
@@ -267,7 +263,6 @@ namespace Cineura.Controllers
             foreach (Peliculas pelicula in peliculasFiltradas)
             {
                 string poster = "";
-
                 if (pelicula.PosterUrl != null)
                 {
                     poster = pelicula.PosterUrl;
@@ -287,32 +282,25 @@ namespace Cineura.Controllers
 
                 resultados.Add(resultado);
             }
-
             return Json(resultados);
         }
 
         public IActionResult Detalles(int id)
         {
             BD bd = new BD();
-
             Peliculas pelicula = bd.ObtenerPeliculaPorId(id);
-
             if (pelicula == null)
             {
                 return NotFound();
             }
 
             ViewBag.Director = "No disponible";
-
             if (pelicula.IdDirector > 0)
             {
                 ViewBag.Director = bd.ObtenerNombreDirector(pelicula.IdDirector);
             }
-
             ViewBag.Actores = bd.ObtenerActores(id);
-
             string usuario = HttpContext.Session.GetString("usuario");
-
             ViewBag.UsuarioConectado = false;
             ViewBag.EsFavorito = false;
             ViewBag.EstaEnWatchlist = false;
@@ -320,13 +308,10 @@ namespace Cineura.Controllers
             if (!string.IsNullOrEmpty(usuario))
             {
                 ViewBag.UsuarioConectado = true;
-
                 int idUsuario = bd.ObtenerIdUsuario(usuario);
-
                 ViewBag.EsFavorito = bd.EsFavorito(idUsuario, id);
                 ViewBag.EstaEnWatchlist = bd.EstaEnWatchlist(idUsuario, id);
             }
-
             return View(pelicula);
         }
 
@@ -334,7 +319,6 @@ namespace Cineura.Controllers
         public IActionResult AgregarFavorito(int idPelicula, string returnUrl = "")
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             if (string.IsNullOrEmpty(usuario))
             {
                 TempData["Mensaje"] = "Iniciá sesión para guardar películas en Favoritas.";
@@ -343,7 +327,6 @@ namespace Cineura.Controllers
 
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             if (idUsuario == 0)
             {
                 return RedirectToAction("Login");
@@ -358,7 +341,6 @@ namespace Cineura.Controllers
                 bd.AgregarFavorito(idUsuario, idPelicula);
                 TempData["Mensaje"] = "¡Película agregada a Favoritas!";
             }
-
             return VolverA(returnUrl, "Index");
         }
 
@@ -366,19 +348,14 @@ namespace Cineura.Controllers
         public IActionResult QuitarFavorito(int idPelicula, string returnUrl = "")
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             if (string.IsNullOrEmpty(usuario))
             {
                 return RedirectToAction("Login");
             }
-
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             bd.QuitarFavorito(idUsuario, idPelicula);
-
             TempData["Mensaje"] = "Película quitada de Favoritas.";
-
             return VolverA(returnUrl, "Favoritas");
         }
 
@@ -402,16 +379,13 @@ namespace Cineura.Controllers
         public IActionResult AgregarWatchlist(int idPelicula, string returnUrl = "")
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             if (string.IsNullOrEmpty(usuario))
             {
                 TempData["Mensaje"] = "Iniciá sesión para guardar películas en tu Watchlist.";
                 return RedirectToAction("Login");
             }
-
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             if (idUsuario == 0)
             {
                 return RedirectToAction("Login");
@@ -453,16 +427,13 @@ namespace Cineura.Controllers
         public IActionResult Watchlist()
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             if (string.IsNullOrEmpty(usuario))
             {
                 TempData["Mensaje"] = "Iniciá sesión para ver tu Watchlist.";
                 return RedirectToAction("Login");
             }
-
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             return View(bd.ObtenerWatchlist(idUsuario));
         }
 
@@ -475,7 +446,6 @@ namespace Cineura.Controllers
                     return Redirect(returnUrl);
                 }
             }
-
             return RedirectToAction(accionPredeterminada);
         }
 
@@ -488,7 +458,6 @@ namespace Cineura.Controllers
         public IActionResult Error()
         {
             ErrorViewModel modelo = new ErrorViewModel();
-
             if (Activity.Current != null)
             {
                 modelo.RequestId = Activity.Current.Id;
@@ -497,7 +466,6 @@ namespace Cineura.Controllers
             {
                 modelo.RequestId = HttpContext.TraceIdentifier;
             }
-
             return View(modelo);
         }
 
@@ -517,7 +485,6 @@ namespace Cineura.Controllers
             }
 
             BD bd = new BD();
-
             Usuarios usuarioEncontrado = bd.ObtenerUsuario(usuario, contrasena);
 
             if (usuarioEncontrado == null)
@@ -525,11 +492,9 @@ namespace Cineura.Controllers
                 ViewBag.Error = "Usuario o contraseña incorrectos.";
                 return View();
             }
-
             HttpContext.Session.SetString("usuario", usuarioEncontrado.NombreUsuario);
             HttpContext.Session.SetString("nombre", usuarioEncontrado.Nombre);
             HttpContext.Session.SetString("apellido", usuarioEncontrado.Apellido);
-
             return RedirectToAction("Index");
         }
 
@@ -555,9 +520,7 @@ namespace Cineura.Controllers
             }
 
             BD bd = new BD();
-
             Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
-
             if (usuarioExistente != null)
             {
                 ViewBag.Error = "Ese nombre de usuario ya existe.";
@@ -579,7 +542,6 @@ namespace Cineura.Controllers
         public IActionResult CerrarSesion()
         {
             HttpContext.Session.Clear();
-
             return RedirectToAction("Index");
         }
 
@@ -617,21 +579,18 @@ namespace Cineura.Controllers
         private string ObtenerUsuarioActual()
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             return usuario;
         }
 
         private int ObtenerIdUsuarioActual(BD bd)
         {
             string usuario = ObtenerUsuarioActual();
-
             if (string.IsNullOrEmpty(usuario))
             {
                 return 0;
             }
 
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             return idUsuario;
         }
 
@@ -644,7 +603,6 @@ namespace Cineura.Controllers
         public IActionResult ToggleFavorito(int idPelicula)
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             if (string.IsNullOrEmpty(usuario))
             {
                 return Json(new
@@ -657,7 +615,6 @@ namespace Cineura.Controllers
 
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             if (idUsuario == 0)
             {
                 return Json(new
@@ -669,7 +626,6 @@ namespace Cineura.Controllers
             }
 
             bool estabaAgregado = bd.EsFavorito(idUsuario, idPelicula);
-
             if (estabaAgregado)
             {
                 bd.QuitarFavorito(idUsuario, idPelicula);
@@ -680,7 +636,6 @@ namespace Cineura.Controllers
             }
 
             bool nuevoEstado = !estabaAgregado;
-
             return Json(new
             {
                 ok = true,
@@ -693,7 +648,6 @@ namespace Cineura.Controllers
         public IActionResult ToggleWatchlist(int idPelicula)
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             if (string.IsNullOrEmpty(usuario))
             {
                 return Json(new
@@ -703,10 +657,8 @@ namespace Cineura.Controllers
                     message = "Iniciá sesión para guardar películas en tu Watchlist."
                 });
             }
-
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             if (idUsuario == 0)
             {
                 return Json(new
@@ -716,9 +668,7 @@ namespace Cineura.Controllers
                     message = "Sesión inválida."
                 });
             }
-
             bool estabaAgregado = bd.EstaEnWatchlist(idUsuario, idPelicula);
-
             if (estabaAgregado)
             {
                 bd.QuitarWatchlist(idUsuario, idPelicula);
@@ -727,9 +677,7 @@ namespace Cineura.Controllers
             {
                 bd.AgregarWatchlist(idUsuario, idPelicula);
             }
-
             bool nuevoEstado = !estabaAgregado;
-
             return Json(new
             {
                 ok = true,

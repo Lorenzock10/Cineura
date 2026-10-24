@@ -1,4 +1,3 @@
-
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -12,10 +11,13 @@ namespace Cineura.Services
 
             if (string.IsNullOrWhiteSpace(apiKey))
             {
-                throw new Exception("No se encontro la clave de Groq. Configura GROQ_API_KEY en CMD.");
+                throw new Exception(
+                    "No se encontro la clave de Groq. Configura GROQ_API_KEY en CMD."
+                );
             }
 
-            string prompt = "Sos Nova, el buscador inteligente de Cineura. " +
+            string prompt =
+                "Sos Nova, el buscador inteligente de Cineura. " +
                 "Interpreta las preferencias del usuario para buscar peliculas. " +
                 "Responde solamente con un objeto JSON valido. " +
                 "Usa exactamente estas propiedades: genero, animo y duracionMaxima. " +
@@ -69,7 +71,8 @@ namespace Cineura.Services
 
             HttpResponseMessage respuesta = cliente.Send(solicitud);
 
-            string respuestaTexto = respuesta.Content.ReadAsStringAsync().Result;
+            string respuestaTexto =
+                respuesta.Content.ReadAsStringAsync().Result;
 
             if (!respuesta.IsSuccessStatusCode)
             {

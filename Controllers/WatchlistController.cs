@@ -1,4 +1,3 @@
-
 using Cineura.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,6 +57,7 @@ namespace Cineura.Controllers
             if (!bd.EstaEnWatchlist(idUsuario, idPelicula))
             {
                 bd.AgregarWatchlist(idUsuario, idPelicula);
+
                 TempData["Mensaje"] =
                     "Película agregada a tu Watchlist.";
             }
@@ -70,7 +70,8 @@ namespace Cineura.Controllers
             return RedirectToAction(
                 "Detalles",
                 "Home",
-                new { id = idPelicula });
+                new { id = idPelicula }
+            );
         }
 
         [HttpPost]
@@ -103,7 +104,8 @@ namespace Cineura.Controllers
             return RedirectToAction(
                 "Detalles",
                 "Home",
-                new { id = idPelicula });
+                new { id = idPelicula }
+            );
         }
     }
 }

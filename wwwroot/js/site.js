@@ -25,7 +25,7 @@ function agregarTexto(texto) {
     }
 }
 
-if (formulario) {
+if (formulario && campoBusqueda && resultado && recomendacion && botonBuscar) {
     formulario.addEventListener("submit", async function (e) {
         e.preventDefault();
 
