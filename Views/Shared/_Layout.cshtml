@@ -107,6 +107,28 @@
             background-color: rgba(251, 191, 36, 0.08);
         }
 
+        .cineura-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cineura-nav-links a {
+            display: inline-block;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .cineura-nav-links a:hover {
+            color: #FBBF24;
+            background-color: rgba(251, 191, 36, 0.08);
+        }
+
         .cineura-sesion {
             display: flex;
             align-items: center;
@@ -204,6 +226,11 @@
                 order: 3;
             }
 
+            .cineura-nav-links {
+                justify-content: center;
+                width: 100%;
+            }
+
             .cineura-sesion {
                 flex: 1;
                 justify-content: flex-end;
@@ -229,15 +256,12 @@
 
             @if (!string.IsNullOrEmpty(usuarioSesion))
             {
-                <details class="cineura-menu-desplegable">
-                    <summary class="cineura-menu-resumen">Menú</summary>
-                    <nav class="cineura-menu" aria-label="Navegación principal">
-                        <a href="@Url.Action("Index", "Home")">Inicio</a>
-                        <a href="@Url.Action("Explorar", "Home")">Explorar</a>
-                        <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
-                        <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
-                    </nav>
-                </details>
+                <nav class="cineura-nav-links" aria-label="Navegación principal">
+                    <a href="@Url.Action("Index", "Home")">Inicio</a>
+                    <a href="@Url.Action("Explorar", "Home")">Explorar</a>
+                    <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
+                    <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
+                </nav>
             }
 
             <div class="cineura-sesion">
