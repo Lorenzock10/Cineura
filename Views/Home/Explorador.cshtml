@@ -1,0 +1,158 @@
+
+@model List<Cineura.Models.Peliculas>
+
+@{
+    ViewData["Title"] = "Explorador | Cineura";
+}
+
+<link rel="stylesheet" href="~/css/Explorador.css" asp-append-version="true" />
+
+<main class="explorador">
+
+    <section class="explorador-encabezado">
+        <span class="explorador-etiqueta">TU PRÓXIMA PELÍCULA TE ESPERA</span>
+        <h1>Explorá el universo del cine</h1>
+        <p>Encontrá tu próxima película favorita.</p>
+    </section>
+
+    <form method="get" action="/Explorador/Index" class="explorador-buscador">
+
+        <div class="explorador-campos">
+
+            <div class="explorador-campo">
+                <label for="busqueda">Buscar por título</label>
+                <input type="text"
+                       id="busqueda"
+                       name="busqueda"
+                       value="@ViewBag.Busqueda"
+                       placeholder="Ej. Dune, Poor Things..." />
+            </div>
+
+            <div class="explorador-campo">
+                <label for="genero">Género</label>
+                <select id="genero" name="genero">
+                    <option value="">Todos los géneros</option>
+                    <option value="Acción" selected="@(ViewBag.Genero == "Acción")">Acción</option>
+                    <option value="Aventura" selected="@(ViewBag.Genero == "Aventura")">Aventura</option>
+                    <option value="Ciencia ficción" selected="@(ViewBag.Genero == "Ciencia ficción")">Ciencia ficción</option>
+                    <option value="Comedia" selected="@(ViewBag.Genero == "Comedia")">Comedia</option>
+                    <option value="Drama" selected="@(ViewBag.Genero == "Drama")">Drama</option>
+                    <option value="Fantasía" selected="@(ViewBag.Genero == "Fantasía")">Fantasía</option>
+                    <option value="Terror" selected="@(ViewBag.Genero == "Terror")">Terror</option>
+                    <option value="Suspenso" selected="@(ViewBag.Genero == "Suspenso")">Suspenso</option>
+                </select>
+            </div>
+
+            <div class="explorador-campo">
+                <label for="anio">Año</label>
+                <input type="number"
+                       id="anio"
+                       name="anio"
+                       value="@ViewBag.Anio"
+                       placeholder="Ej. 2024" />
+            </div>
+
+            <div class="explorador-campo">
+                <label for="duracionMaxima">Duración máxima</label>
+                <select id="duracionMaxima" name="duracionMaxima">
+                    <option value="">Cualquier duración</option>
+                    <option value="90" selected="@(ViewBag.DuracionMaxima?.ToString() == "90")">Hasta 90 minutos</option>
+                    <option value="120" selected="@(ViewBag.DuracionMaxima?.ToString() == "120")">Hasta 120 minutos</option>
+                    <option value="150" selected="@(ViewBag.DuracionMaxima?.ToString() == "150")">Hasta 150 minutos</option>
+                    <option value="180" selected="@(ViewBag.DuracionMaxima?.ToString() == "180")">Hasta 180 minutos</option>
+                </select>
+            </div>
+
+            <div class="explorador-campo">
+                <label for="ordenar">Ordenar por</label>
+                <select id="ordenar" name="ordenar">
+                    <option value="titulo" selected="@(ViewBag.Ordenar != "anio")">Título</option>
+                    <option value="anio" selected="@(ViewBag.Ordenar == "anio")">Año más reciente</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="explorador-acciones">
+            <button type="submit" class="explorador-boton">
+                Buscar películas
+            </button>
+
+            <a href="/Explorador/Index" class="explorador-boton-secundario">
+                Limpiar filtros
+            </a>
+        </div>
+
+    </form>
+
+    <section class="explorador-resultados">
+
+        <div class="explorador-resultados-titulo">
+            <div>
+                <h2>Películas disponibles</h2>
+                <p>Descubrí historias para todos tus gustos.</p>
+            </div>
+
+            <span class="explorador-cantidad">
+                @Model.Count películas
+            </span>
+        </div>
+
+        <div class="explorador-peliculas">
+
+            @if (Model.Count > 0)
+            {
+                @foreach (Cineura.Models.Peliculas pelicula in Model)
+                {
+                    <article class="explorador-tarjeta">
+
+                        <div class="explorador-poster-contenedor">
+                            @if (!string.IsNullOrEmpty(pelicula.PosterUrl))
+                            {
+                                <img class="explorador-poster"
+                                     src="@pelicula.PosterUrl"
+                                     alt="Póster de @pelicula.Titulo" />
+                            }
+                            else
+                            {
+                                <div class="explorador-poster-vacio">
+                                    <span>✦</span>
+                                    <p>Póster no disponible</p>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="explorador-informacion">
+
+                            <h3>@pelicula.Titulo</h3>
+
+                            <div class="explorador-datos">
+                                <span>@pelicula.Anio</span>
+                                <span class="explorador-genero">@pelicula.Genero</span>
+                                <span>@pelicula.DuracionMinutos min</span>
+                            </div>
+
+                            <a href="/Home/Detalles/@pelicula.IdPelicula"
+                               class="explorador-detalle">
+                                Ver detalle
+                            </a>
+
+                        </div>
+
+                    </article>
+                }
+            }
+            else
+            {
+                <div class="explorador-sin-resultados">
+                    <h3>No encontramos películas</h3>
+                    <p>Probá cambiando la búsqueda o quitando algún filtro.</p>
+                    <a href="/Explorador/Index">Ver todas las películas</a>
+                </div>
+            }
+
+        </div>
+
+    </section>
+
+</main>
