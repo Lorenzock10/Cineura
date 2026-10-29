@@ -473,3 +473,228 @@ ELSE
     INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
     VALUES ('Whiplash', 'Un joven e intempestivo baterista desafía sus límites con un profesor despiadado.', 'Drama', 106, 2014, 'Intenso', 'https://image.tmdb.org/t/p/w500/7fn624j5lj3xTme2SgiLCeuedmO.jpg');
 GO
+
+USE Cineura;
+GO
+
+-- 1. AGREGAR LOS ACTORES PRINCIPALES DE CADA PELÍCULA
+DECLARE @Relaciones TABLE (
+    Titulo NVARCHAR(200),
+    Actor NVARCHAR(150)
+);
+
+INSERT INTO @Relaciones (Titulo, Actor)
+VALUES
+-- Toy Story
+('Toy Story', 'Tom Hanks'),
+('Toy Story', 'Tim Allen'),
+('Toy Story', 'Don Rickles'),
+
+-- Shrek
+('Shrek', 'Mike Myers'),
+('Shrek', 'Eddie Murphy'),
+('Shrek', 'Cameron Diaz'),
+
+-- The Truman Show
+('The Truman Show', 'Jim Carrey'),
+('The Truman Show', 'Laura Linney'),
+('The Truman Show', 'Noah Emmerich'),
+
+-- En busca de la felicidad
+('En busca de la felicidad', 'Will Smith'),
+('En busca de la felicidad', 'Jaden Smith'),
+('En busca de la felicidad', 'Thandiwe Newton'),
+
+-- Superbad
+('Superbad', 'Jonah Hill'),
+('Superbad', 'Michael Cera'),
+('Superbad', 'Christopher Mintz-Plasse'),
+
+-- Coco
+('Coco', 'Anthony Gonzalez'),
+('Coco', 'Gael García Bernal'),
+('Coco', 'Benjamin Bratt'),
+
+-- Intensamente
+('Intensamente', 'Amy Poehler'),
+('Intensamente', 'Phyllis Smith'),
+('Intensamente', 'Bill Hader'),
+
+-- Jumanji
+('Jumanji', 'Robin Williams'),
+('Jumanji', 'Kirsten Dunst'),
+('Jumanji', 'Bonnie Hunt'),
+
+-- Dune: Part Two
+('Dune: Part Two', 'Timothée Chalamet'),
+('Dune: Part Two', 'Zendaya'),
+('Dune: Part Two', 'Rebecca Ferguson'),
+
+-- Poor Things
+('Poor Things', 'Emma Stone'),
+('Poor Things', 'Mark Ruffalo'),
+('Poor Things', 'Willem Dafoe'),
+
+-- The Substance
+('The Substance', 'Demi Moore'),
+('The Substance', 'Margaret Qualley'),
+('The Substance', 'Dennis Quaid'),
+
+-- Anatomy of a Fall
+('Anatomy of a Fall', 'Sandra Hüller'),
+('Anatomy of a Fall', 'Swann Arlaud'),
+('Anatomy of a Fall', 'Milo Machado-Graner'),
+
+-- The Dark Knight
+('The Dark Knight', 'Christian Bale'),
+('The Dark Knight', 'Heath Ledger'),
+('The Dark Knight', 'Aaron Eckhart'),
+
+-- Inception
+('Inception', 'Leonardo DiCaprio'),
+('Inception', 'Joseph Gordon-Levitt'),
+('Inception', 'Elliot Page'),
+
+-- Interstellar
+('Interstellar', 'Matthew McConaughey'),
+('Interstellar', 'Anne Hathaway'),
+('Interstellar', 'Jessica Chastain'),
+
+-- Pulp Fiction
+('Pulp Fiction', 'John Travolta'),
+('Pulp Fiction', 'Samuel L. Jackson'),
+('Pulp Fiction', 'Uma Thurman'),
+
+-- Forrest Gump
+('Forrest Gump', 'Tom Hanks'),
+('Forrest Gump', 'Robin Wright'),
+('Forrest Gump', 'Gary Sinise'),
+
+-- Fight Club
+('Fight Club', 'Brad Pitt'),
+('Fight Club', 'Edward Norton'),
+('Fight Club', 'Helena Bonham Carter'),
+
+-- El viaje de Chihiro
+('El viaje de Chihiro', 'Rumi Hiiragi'),
+('El viaje de Chihiro', 'Miyu Irino'),
+('El viaje de Chihiro', 'Mari Natsuki'),
+
+-- Gladiator
+('Gladiator', 'Russell Crowe'),
+('Gladiator', 'Joaquin Phoenix'),
+('Gladiator', 'Connie Nielsen'),
+
+-- Parasite
+('Parasite', 'Song Kang-ho'),
+('Parasite', 'Lee Sun-kyun'),
+('Parasite', 'Cho Yeo-jeong'),
+
+-- La La Land
+('La La Land', 'Ryan Gosling'),
+('La La Land', 'Emma Stone'),
+('La La Land', 'John Legend'),
+
+-- Avengers: Endgame
+('Avengers: Endgame', 'Robert Downey Jr.'),
+('Avengers: Endgame', 'Chris Evans'),
+('Avengers: Endgame', 'Mark Ruffalo'),
+
+-- Oppenheimer
+('Oppenheimer', 'Cillian Murphy'),
+('Oppenheimer', 'Emily Blunt'),
+('Oppenheimer', 'Robert Downey Jr.'),
+
+-- El Rey León
+('El Rey León', 'Matthew Broderick'),
+('El Rey León', 'Jeremy Irons'),
+('El Rey León', 'James Earl Jones'),
+
+-- Jurassic Park
+('Jurassic Park', 'Sam Neill'),
+('Jurassic Park', 'Laura Dern'),
+('Jurassic Park', 'Jeff Goldblum'),
+
+-- El silencio de los inocentes
+('El silencio de los inocentes', 'Jodie Foster'),
+('El silencio de los inocentes', 'Anthony Hopkins'),
+('El silencio de los inocentes', 'Scott Glenn'),
+
+-- Volver al Futuro
+('Volver al Futuro', 'Michael J. Fox'),
+('Volver al Futuro', 'Christopher Lloyd'),
+('Volver al Futuro', 'Lea Thompson'),
+
+-- Se7en
+('Se7en', 'Brad Pitt'),
+('Se7en', 'Morgan Freeman'),
+('Se7en', 'Gwyneth Paltrow'),
+
+-- El Padrino
+('El Padrino', 'Marlon Brando'),
+('El Padrino', 'Al Pacino'),
+('El Padrino', 'James Caan'),
+
+-- Everything Everywhere All at Once
+('Everything Everywhere All at Once', 'Michelle Yeoh'),
+('Everything Everywhere All at Once', 'Stephanie Hsu'),
+('Everything Everywhere All at Once', 'Ke Huy Quan'),
+
+-- Amélie
+('Amélie', 'Audrey Tautou'),
+('Amélie', 'Mathieu Kassovitz'),
+('Amélie', 'Rufus'),
+
+-- Psicosis
+('Psicosis', 'Anthony Perkins'),
+('Psicosis', 'Janet Leigh'),
+('Psicosis', 'Vera Miles'),
+
+-- Spider-Man: Into the Spider-Verse
+('Spider-Man: Into the Spider-Verse', 'Shameik Moore'),
+('Spider-Man: Into the Spider-Verse', 'Hailee Steinfeld'),
+('Spider-Man: Into the Spider-Verse', 'Jake Johnson'),
+
+-- The Matrix
+('The Matrix', 'Keanu Reeves'),
+('The Matrix', 'Laurence Fishburne'),
+('The Matrix', 'Carrie-Anne Moss'),
+
+-- WALL-E
+('WALL-E', 'Ben Burtt'),
+('WALL-E', 'Elissa Knight'),
+('WALL-E', 'Jeff Garlin'),
+
+-- Whiplash
+('Whiplash', 'Miles Teller'),
+('Whiplash', 'J.K. Simmons'),
+('Whiplash', 'Paul Reiser');
+
+
+-- 2. INSERTAR LOS ACTORES QUE TODAVÍA NO EXISTEN
+INSERT INTO Actores (Nombre)
+SELECT DISTINCT R.Actor
+FROM @Relaciones R
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Actores A
+    WHERE A.Nombre = R.Actor
+);
+
+
+-- 3. VINCULAR CADA ACTOR CON SU PELÍCULA
+-- No se repiten relaciones que ya existen.
+INSERT INTO PeliculaActor (IdPelicula, IdActor)
+SELECT P.IdPelicula, A.IdActor
+FROM @Relaciones R
+INNER JOIN Peliculas P
+    ON P.Titulo = R.Titulo
+INNER JOIN Actores A
+    ON A.Nombre = R.Actor
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM PeliculaActor PA
+    WHERE PA.IdPelicula = P.IdPelicula
+      AND PA.IdActor = A.IdActor
+);
+GO
