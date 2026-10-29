@@ -8,6 +8,12 @@
         .Where(p => !p.Titulo.Contains("Toy Story", StringComparison.OrdinalIgnoreCase))
         .Take(36)
         .ToList();
+
+    bool mostrarGrilla =
+        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Busqueda)) ||
+        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Genero)) ||
+        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Anio)) ||
+        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.DuracionMaxima));
 }
 
 <link rel="stylesheet" href="~/css/Explorador.css" asp-append-version="true" />
@@ -34,13 +40,13 @@
         </div>
 
         <div class="explorador-hero-decoracion">
-    <div class="explorador-hero-circulo explorador-hero-circulo-uno"></div>
-    <div class="explorador-hero-circulo explorador-hero-circulo-dos"></div>
+            <div class="explorador-hero-circulo explorador-hero-circulo-uno"></div>
+            <div class="explorador-hero-circulo explorador-hero-circulo-dos"></div>
 
-    <img src="/imagenes/cineura.jpg"
-         alt="Logo de Cineura"
-         style="display:block; width:280px; height:auto; object-fit:contain;" />
-</div>
+            <img src="/imagenes/cineura.jpg"
+                 alt="Logo de Cineura"
+                 style="display:block; width:280px; height:auto; object-fit:contain;" />
+        </div>
     </section>
 
     <section class="explorador-buscador-seccion">
@@ -124,8 +130,16 @@
         <div class="explorador-resultados-titulo">
             <div>
                 <span class="explorador-mini-etiqueta">EL CATÁLOGO DE CINEURA</span>
-                <h2>Películas para descubrir</h2>
-                <p>Elegí una historia y dejate llevar.</p>
+
+                <h2>
+                    @(mostrarGrilla ? "Resultados de tu búsqueda" : "Películas para descubrir")
+                </h2>
+
+                <p>
+                    @(mostrarGrilla
+                        ? "Estas películas coinciden con tus filtros."
+                        : "Elegí una historia y dejate llevar.")
+                </p>
             </div>
 
             <div class="explorador-cantidad">
@@ -136,15 +150,9 @@
 
         @if (peliculasCarrusel.Count > 0)
         {
-            <div class="explorador-carrusel">
-                <button type="button"
-                        class="explorador-flecha"
-                        onclick="moverCarrusel(-1)"
-                        aria-label="Películas anteriores">
-                    &#10094;
-                </button>
-
-                <div class="explorador-peliculas-carrusel" id="carruselPeliculas">
+            @if (mostrarGrilla)
+            {
+                <div class="explorador-grilla-resultados">
                     @foreach (Cineura.Models.Peliculas pelicula in peliculasCarrusel)
                     {
                         <a href="/Home/Detalles/@pelicula.IdPelicula"
@@ -152,7 +160,7 @@
                            title="@pelicula.Titulo"
                            aria-label="Ver detalle de @pelicula.Titulo">
 
-                            @if (!string.IsNullOrEmpty(pelicula.PosterUrl))
+                            @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
                             {
                                 <img class="explorador-poster"
                                      src="@pelicula.PosterUrl"
@@ -169,14 +177,51 @@
                         </a>
                     }
                 </div>
+            }
+            else
+            {
+                <div class="explorador-carrusel">
+                    <button type="button"
+                            class="explorador-flecha"
+                            onclick="moverCarrusel(-1)"
+                            aria-label="Películas anteriores">
+                        &#10094;
+                    </button>
 
-                <button type="button"
-                        class="explorador-flecha"
-                        onclick="moverCarrusel(1)"
-                        aria-label="Películas siguientes">
-                    &#10095;
-                </button>
-            </div>
+                    <div class="explorador-peliculas-carrusel" id="carruselPeliculas">
+                        @foreach (Cineura.Models.Peliculas pelicula in peliculasCarrusel)
+                        {
+                            <a href="/Home/Detalles/@pelicula.IdPelicula"
+                               class="explorador-poster-link"
+                               title="@pelicula.Titulo"
+                               aria-label="Ver detalle de @pelicula.Titulo">
+
+                                @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
+                                {
+                                    <img class="explorador-poster"
+                                         src="@pelicula.PosterUrl"
+                                         alt="Póster de @pelicula.Titulo"
+                                         loading="lazy" />
+                                }
+                                else
+                                {
+                                    <div class="explorador-poster-vacio">
+                                        <span>✦</span>
+                                        <p>CINEURA</p>
+                                    </div>
+                                }
+                            </a>
+                        }
+                    </div>
+
+                    <button type="button"
+                            class="explorador-flecha"
+                            onclick="moverCarrusel(1)"
+                            aria-label="Películas siguientes">
+                        &#10095;
+                    </button>
+                </div>
+            }
         }
         else
         {

@@ -718,3 +718,114 @@
     height: auto;
     object-fit: contain;
 }
+
+.explorador-hero-decoracion {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.explorador-hero-circulo {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.explorador-hero-circulo-uno {
+    z-index: 0;
+}
+
+.explorador-hero-circulo-dos {
+    z-index: 1;
+}
+
+.explorador-hero-decoracion img {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 280px;
+    height: auto;
+    object-fit: contain;
+}
+/* Subir los dos círculos */
+.explorador-hero-circulo-uno {
+    transform: translateY(-20px);
+}
+
+.explorador-hero-circulo-dos {
+    transform: translateY(-20px);
+}
+
+/* Bajar el logo de Cineura */
+.explorador-hero-decoracion img {
+    transform: translateY(20px);
+}
+.explorador-hero-decoracion img {
+    transform: translate(35px, 35px);
+}
+
+.explorador-hero-decoracion {
+    transform: translate(150px, -50px);
+}
+
+
+/* Grilla de resultados de búsqueda */
+.explorador-grilla-resultados {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.explorador-grilla-resultados .explorador-poster-link {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.explorador-grilla-resultados .explorador-poster-link:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.explorador-grilla-resultados .explorador-poster {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    height: auto;
+    object-fit: cover;
+}
+
+.explorador-grilla-resultados .explorador-poster-vacio {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 1000px) {
+    .explorador-grilla-resultados {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+@media (max-width: 700px) {
+    .explorador-grilla-resultados {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+}
+
+@media (max-width: 450px) {
+    .explorador-grilla-resultados {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
