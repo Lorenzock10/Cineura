@@ -156,88 +156,106 @@ BEGIN
 END
 GO
 
-
 -- 13. TENDENCIAS DE PRUEBA
 IF NOT EXISTS (
-    SELECT 1 FROM Tendencias T
+    SELECT 1
+    FROM Tendencias T
     INNER JOIN Peliculas P ON T.IdPelicula = P.IdPelicula
     WHERE P.Titulo = 'Dune: Part Two'
 )
 BEGIN
     INSERT INTO Tendencias (IdPelicula, CantidadInteracciones, FechaActualizacion)
-    SELECT IdPelicula, 1000, SYSDATETIME() FROM Peliculas WHERE Titulo = 'Dune: Part Two';
+    SELECT IdPelicula, 1000, SYSDATETIME()
+    FROM Peliculas
+    WHERE Titulo = 'Dune: Part Two';
 END
 
 IF NOT EXISTS (
-    SELECT 1 FROM Tendencias T
+    SELECT 1
+    FROM Tendencias T
     INNER JOIN Peliculas P ON T.IdPelicula = P.IdPelicula
     WHERE P.Titulo = 'The Substance'
 )
 BEGIN
     INSERT INTO Tendencias (IdPelicula, CantidadInteracciones, FechaActualizacion)
-    SELECT IdPelicula, 800, SYSDATETIME() FROM Peliculas WHERE Titulo = 'The Substance';
+    SELECT IdPelicula, 800, SYSDATETIME()
+    FROM Peliculas
+    WHERE Titulo = 'The Substance';
 END
 GO
 
 -- 14. FAVORITOS DE PRUEBA
 IF NOT EXISTS (
-    SELECT 1 FROM Favoritos F
+    SELECT 1
+    FROM Favoritos F
     INNER JOIN Usuarios U ON F.IdUsuario = U.IdUsuario
     INNER JOIN Peliculas P ON F.IdPelicula = P.IdPelicula
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'The Dark Knight'
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'The Dark Knight'
 )
 BEGIN
     INSERT INTO Favoritos (IdUsuario, IdPelicula, Fecha)
     SELECT U.IdUsuario, P.IdPelicula, SYSDATETIME()
     FROM Usuarios U, Peliculas P
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'The Dark Knight';
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'The Dark Knight';
 END
 
 IF NOT EXISTS (
-    SELECT 1 FROM Favoritos F
+    SELECT 1
+    FROM Favoritos F
     INNER JOIN Usuarios U ON F.IdUsuario = U.IdUsuario
     INNER JOIN Peliculas P ON F.IdPelicula = P.IdPelicula
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'Inception'
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'Inception'
 )
 BEGIN
     INSERT INTO Favoritos (IdUsuario, IdPelicula, Fecha)
     SELECT U.IdUsuario, P.IdPelicula, SYSDATETIME()
     FROM Usuarios U, Peliculas P
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'Inception';
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'Inception';
 END
 GO
 
 -- 15. WATCHLIST DE PRUEBA
 IF NOT EXISTS (
-    SELECT 1 FROM Watchlist W
+    SELECT 1
+    FROM Watchlist W
     INNER JOIN Usuarios U ON W.IdUsuario = U.IdUsuario
     INNER JOIN Peliculas P ON W.IdPelicula = P.IdPelicula
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'Oppenheimer'
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'Oppenheimer'
 )
 BEGIN
     INSERT INTO Watchlist (IdUsuario, IdPelicula, FechaAgregado)
     SELECT U.IdUsuario, P.IdPelicula, SYSDATETIME()
     FROM Usuarios U, Peliculas P
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'Oppenheimer';
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'Oppenheimer';
 END
 
 IF NOT EXISTS (
-    SELECT 1 FROM Watchlist W
+    SELECT 1
+    FROM Watchlist W
     INNER JOIN Usuarios U ON W.IdUsuario = U.IdUsuario
     INNER JOIN Peliculas P ON W.IdPelicula = P.IdPelicula
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'Poor Things'
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'Poor Things'
 )
 BEGIN
     INSERT INTO Watchlist (IdUsuario, IdPelicula, FechaAgregado)
     SELECT U.IdUsuario, P.IdPelicula, SYSDATETIME()
     FROM Usuarios U, Peliculas P
-    WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'Poor Things';
+    WHERE U.NombreUsuario = 'admin'
+      AND P.Titulo = 'Poor Things';
 END
 GO
+
 USE Cineura;
 GO
 
--- ACTUALIZACIÓN DE POSTERS PARA LAS 21 PELÍCULAS AFECTADAS
+-- ACTUALIZACIÓN DE POSTERS PARA LAS 37 PELÍCULAS
 
 IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Toy Story')
     UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/1/13/Toy_Story.jpg' WHERE Titulo = 'Toy Story';
@@ -340,6 +358,7 @@ IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Forrest Gump')
 ELSE
     INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
     VALUES ('Forrest Gump', 'La historia de un hombre bondadoso que presenciará eventos históricos clave.', 'Drama', 142, 1994, 'Emotivo', 'https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg');
+
 IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Fight Club')
     UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg' WHERE Titulo = 'Fight Club';
 ELSE
@@ -474,10 +493,93 @@ ELSE
     VALUES ('Whiplash', 'Un joven e intempestivo baterista desafía sus límites con un profesor despiadado.', 'Drama', 106, 2014, 'Intenso', 'https://image.tmdb.org/t/p/w500/7fn624j5lj3xTme2SgiLCeuedmO.jpg');
 GO
 
-USE Cineura;
+-- 16. ASIGNAR UN DIRECTOR A CADA PELÍCULA
+-- Un director puede estar asociado a varias películas.
+-- Cada película queda asociada a un único director.
+
+DECLARE @DirectoresPeliculas TABLE (
+    Titulo NVARCHAR(200),
+    Director NVARCHAR(150)
+);
+
+INSERT INTO @DirectoresPeliculas (Titulo, Director)
+VALUES
+('Toy Story', 'John Lasseter'),
+('Shrek', 'Andrew Adamson'),
+('The Truman Show', 'Peter Weir'),
+('En busca de la felicidad', 'Gabriele Muccino'),
+('Superbad', 'Greg Mottola'),
+('Coco', 'Lee Unkrich'),
+('Intensamente', 'Pete Docter'),
+('Jumanji', 'Joe Johnston'),
+('Dune: Part Two', 'Denis Villeneuve'),
+('Poor Things', 'Yorgos Lanthimos'),
+('The Substance', 'Coralie Fargeat'),
+('Anatomy of a Fall', 'Justine Triet'),
+('The Dark Knight', 'Christopher Nolan'),
+('Inception', 'Christopher Nolan'),
+('Interstellar', 'Christopher Nolan'),
+('Pulp Fiction', 'Quentin Tarantino'),
+('Forrest Gump', 'Robert Zemeckis'),
+('Fight Club', 'David Fincher'),
+('El viaje de Chihiro', 'Hayao Miyazaki'),
+('Gladiator', 'Ridley Scott'),
+('Parasite', 'Bong Joon-ho'),
+('La La Land', 'Damien Chazelle'),
+('Avengers: Endgame', 'Anthony Russo'),
+('Oppenheimer', 'Christopher Nolan'),
+('El Rey León', 'Roger Allers'),
+('Jurassic Park', 'Steven Spielberg'),
+('El silencio de los inocentes', 'Jonathan Demme'),
+('Volver al Futuro', 'Robert Zemeckis'),
+('Se7en', 'David Fincher'),
+('El Padrino', 'Francis Ford Coppola'),
+('Everything Everywhere All at Once', 'Daniel Kwan'),
+('Amélie', 'Jean-Pierre Jeunet'),
+('Psicosis', 'Alfred Hitchcock'),
+('Spider-Man: Into the Spider-Verse', 'Bob Persichetti'),
+('The Matrix', 'Lana Wachowski'),
+('WALL-E', 'Andrew Stanton'),
+('Whiplash', 'Damien Chazelle');
+
+-- 16.1. INSERTAR LOS DIRECTORES QUE TODAVÍA NO EXISTEN
+INSERT INTO Directores (Nombre)
+SELECT DISTINCT DP.Director
+FROM @DirectoresPeliculas DP
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Directores D
+    WHERE D.Nombre = DP.Director
+);
+
+-- 16.2. ASIGNAR EL DIRECTOR CORRESPONDIENTE A CADA PELÍCULA
+UPDATE P
+SET P.IdDirector = D.IdDirector
+FROM Peliculas P
+INNER JOIN @DirectoresPeliculas DP
+    ON DP.Titulo = P.Titulo
+INNER JOIN Directores D
+    ON D.Nombre = DP.Director;
+
+-- 16.3. VERIFICAR QUE TODAS LAS PELÍCULAS TENGAN DIRECTOR
+IF EXISTS (
+    SELECT 1
+    FROM Peliculas
+    WHERE IdDirector IS NULL
+)
+BEGIN
+    PRINT 'ATENCIÓN: Hay películas sin director asignado. No se puede establecer NOT NULL hasta asignarles un director.';
+END
+ELSE
+BEGIN
+    ALTER TABLE Peliculas
+    ALTER COLUMN IdDirector INT NOT NULL;
+
+    PRINT 'Todos los registros tienen director asignado.';
+END
 GO
 
--- 1. AGREGAR LOS ACTORES PRINCIPALES DE CADA PELÍCULA
+-- 17. AGREGAR LOS ACTORES PRINCIPALES DE CADA PELÍCULA
 DECLARE @Relaciones TABLE (
     Titulo NVARCHAR(200),
     Actor NVARCHAR(150)
@@ -670,8 +772,7 @@ VALUES
 ('Whiplash', 'J.K. Simmons'),
 ('Whiplash', 'Paul Reiser');
 
-
--- 2. INSERTAR LOS ACTORES QUE TODAVÍA NO EXISTEN
+-- 18. INSERTAR LOS ACTORES QUE TODAVÍA NO EXISTEN
 INSERT INTO Actores (Nombre)
 SELECT DISTINCT R.Actor
 FROM @Relaciones R
@@ -681,8 +782,7 @@ WHERE NOT EXISTS (
     WHERE A.Nombre = R.Actor
 );
 
-
--- 3. VINCULAR CADA ACTOR CON SU PELÍCULA
+-- 19. VINCULAR CADA ACTOR CON SU PELÍCULA
 -- No se repiten relaciones que ya existen.
 INSERT INTO PeliculaActor (IdPelicula, IdActor)
 SELECT P.IdPelicula, A.IdActor
@@ -697,4 +797,27 @@ WHERE NOT EXISTS (
     WHERE PA.IdPelicula = P.IdPelicula
       AND PA.IdActor = A.IdActor
 );
+
+GO
+
+-- 20. COMPROBAR LOS ACTORES ASIGNADOS
+SELECT
+    P.Titulo AS Pelicula,
+    A.Nombre AS Actor
+FROM PeliculaActor PA
+INNER JOIN Peliculas P
+    ON P.IdPelicula = PA.IdPelicula
+INNER JOIN Actores A
+    ON A.IdActor = PA.IdActor
+ORDER BY P.Titulo, A.Nombre;
+GO
+
+-- 21. COMPROBAR LOS DIRECTORES ASIGNADOS
+SELECT
+    P.Titulo AS Pelicula,
+    D.Nombre AS Director
+FROM Peliculas P
+INNER JOIN Directores D
+    ON P.IdDirector = D.IdDirector
+ORDER BY D.Nombre, P.Titulo;
 GO
