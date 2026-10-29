@@ -7,143 +7,351 @@
     string poster = !string.IsNullOrWhiteSpace(Model.PosterUrl)
         ? Model.PosterUrl
         : "";
+
+    string titulo = string.IsNullOrWhiteSpace(Model.Titulo)
+        ? "Película sin título"
+        : Model.Titulo;
+
+    string sinopsis = string.IsNullOrWhiteSpace(Model.Sinopsis)
+        ? "Todavía no hay una sinopsis disponible para esta película."
+        : Model.Sinopsis;
+
+    string director = ViewBag.Director == null
+        ? "No disponible"
+        : ViewBag.Director.ToString();
+
+    bool usuarioConectado = ViewBag.UsuarioConectado == true;
+    bool esFavorito = ViewBag.EsFavorito == true;
+    bool estaEnWatchlist = ViewBag.EstaEnWatchlist == true;
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/Detalles.css" asp-append-version="true" />
 }
 
-<div class="detalles-pagina">
+<main class="cine-detalle">
 
-    <a asp-controller="Home" asp-action="Index" class="detalles-volver">
-        ← Volver al inicio
-    </a>
-
-    @if (TempData["Mensaje"] != null)
+    @if (!string.IsNullOrWhiteSpace(poster))
     {
-        <div class="alert alert-success mt-3" role="alert">
-            @TempData["Mensaje"]
+        <div class="cine-detalle-fondo"
+             style="background-image: url('@poster');">
         </div>
     }
+    else
+    {
+        <div class="cine-detalle-fondo cine-detalle-fondo-vacio"></div>
+    }
 
-    <div class="detalles-contenido">
+    <div class="cine-detalle-fondo-degradado"></div>
 
-        @if (!string.IsNullOrWhiteSpace(poster))
+    <div class="cine-detalle-contenedor">
+
+        <a href="/Explorador/Index" class="cine-volver">
+            <span aria-hidden="true">←</span>
+            Volver al explorador
+        </a>
+
+        @if (TempData["Mensaje"] != null)
         {
-            <div class="detalles-poster-contenedor">
-                <img src="@poster"
-                     alt="Póster de @Model.Titulo"
-                     class="detalles-poster" />
+            <div class="cine-mensaje" role="status">
+                <span aria-hidden="true">✓</span>
+                @TempData["Mensaje"]
             </div>
         }
-        else
-        {
-            <div class="detalles-poster-contenedor detalles-poster-vacio" aria-label="Póster no disponible">
-                <span aria-hidden="true">🎬</span>
-                <span>Póster no disponible</span>
+
+        <section class="cine-portada">
+
+            <div class="cine-poster-columna">
+                @if (!string.IsNullOrWhiteSpace(poster))
+                {
+                    <div class="cine-poster-marco">
+                        <img src="@poster"
+                             alt="Póster de @titulo"
+                             class="cine-poster" />
+                    </div>
+                }
+                else
+                {
+                    <div class="cine-poster-marco cine-poster-sin-imagen">
+                        <span aria-hidden="true">🎬</span>
+                        <p>Póster no disponible</p>
+                    </div>
+                }
+
+                <span class="cine-poster-pie">
+                    <span class="cine-punto"></span>
+                    FICHA DE CINEURA
+                </span>
             </div>
-        }
 
-        <div class="detalles-info">
-            <span class="detalles-eyebrow">CINEURA <span>·</span> FICHA DE PELÍCULA</span>
-            <h1>@Model.Titulo</h1>
+            <div class="cine-informacion">
 
-            <div class="detalles-etiquetas">
-                <span>@Model.Anio</span>
-                <span>@Model.Genero</span>
-                <span>@Model.DuracionMinutos minutos</span>
-                <span>@Model.Animo</span>
-            </div>
+                <div class="cine-etiqueta-superior">
+                    <span class="cine-etiqueta-icono">C</span>
+                    CINEURA
+                    <span class="cine-separador">/</span>
+                    DETALLES DE LA PELÍCULA
+                </div>
 
-            <h3>Sinopsis</h3>
-            <p class="detalles-sinopsis">
-                @(string.IsNullOrWhiteSpace(Model.Sinopsis)
-                    ? "No hay una sinopsis cargada para esta película."
-                    : Model.Sinopsis)
-            </p>
+                <h1 class="cine-titulo">@titulo</h1>
 
-            <div class="detalles-creditos">
-                <p>
-                    <strong>Director</strong>
-                    <span>@ViewBag.Director</span>
-                </p>
-
-                <p>
-                    <strong>Reparto</strong>
-
-                    @if (ViewBag.Actores != null && ViewBag.Actores.Count > 0)
+                <div class="cine-datos-principales">
+                    @if (Model.Anio > 0)
                     {
-                        <span>@string.Join(", ", ViewBag.Actores)</span>
+                        <span class="cine-dato">
+                            <span aria-hidden="true">▦</span>
+                            @Model.Anio
+                        </span>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Genero))
+                    {
+                        <span class="cine-genero">
+                            @Model.Genero
+                        </span>
+                    }
+
+                    @if (Model.DuracionMinutos > 0)
+                    {
+                        <span class="cine-dato">
+                            <span aria-hidden="true">◷</span>
+                            @Model.DuracionMinutos min
+                        </span>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Animo))
+                    {
+                        <span class="cine-animo">
+                            ✦ @Model.Animo
+                        </span>
+                    }
+                </div>
+
+                <div class="cine-linea-decorativa">
+                    <span></span>
+                </div>
+
+                <div class="cine-sinopsis-bloque">
+                    <span class="cine-seccion-mini">LA HISTORIA</span>
+                    <h2>¿De qué trata?</h2>
+                    <p>@sinopsis</p>
+                </div>
+
+                <div class="cine-creditos">
+
+                    <div class="cine-credito">
+                        <div class="cine-credito-icono">✦</div>
+                        <div>
+                            <span class="cine-credito-titulo">DIRECCIÓN</span>
+                            <p>@director</p>
+                        </div>
+                    </div>
+
+                    <div class="cine-credito">
+                        <div class="cine-credito-icono">♟</div>
+                        <div>
+                            <span class="cine-credito-titulo">REPARTO</span>
+
+                            @if (ViewBag.Actores != null && ViewBag.Actores.Count > 0)
+                            {
+                                <p>@string.Join(", ", ViewBag.Actores)</p>
+                            }
+                            else
+                            {
+                                <p class="cine-texto-suave">
+                                    Todavía no hay actores cargados.
+                                </p>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="cine-acciones">
+
+                    @if (usuarioConectado)
+                    {
+                        @if (esFavorito)
+                        {
+                            <form asp-controller="Home"
+                                  asp-action="QuitarFavorito"
+                                  method="post"
+                                  class="cine-formulario-accion">
+
+                                <input type="hidden"
+                                       name="idPelicula"
+                                       value="@Model.IdPelicula" />
+
+                                <input type="hidden"
+                                       name="returnUrl"
+                                       value="/Home/Detalles/@Model.IdPelicula" />
+
+                                <button type="submit"
+                                        class="cine-boton cine-boton-favorito-activo">
+                                    <span aria-hidden="true">♥</span>
+                                    En Favoritas
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Home"
+                                  asp-action="AgregarFavorito"
+                                  method="post"
+                                  class="cine-formulario-accion">
+
+                                <input type="hidden"
+                                       name="idPelicula"
+                                       value="@Model.IdPelicula" />
+
+                                <input type="hidden"
+                                       name="returnUrl"
+                                       value="/Home/Detalles/@Model.IdPelicula" />
+
+                                <button type="submit" class="cine-boton cine-boton-principal">
+                                    <span aria-hidden="true">♥</span>
+                                    Agregar a Favoritas
+                                </button>
+                            </form>
+                        }
+
+                        @if (estaEnWatchlist)
+                        {
+                            <form asp-controller="Home"
+                                  asp-action="QuitarWatchlist"
+                                  method="post"
+                                  class="cine-formulario-accion">
+
+                                <input type="hidden"
+                                       name="idPelicula"
+                                       value="@Model.IdPelicula" />
+
+                                <input type="hidden"
+                                       name="returnUrl"
+                                       value="/Home/Detalles/@Model.IdPelicula" />
+
+                                <button type="submit" class="cine-boton cine-boton-secundario">
+                                    <span aria-hidden="true">✓</span>
+                                    En Watchlist
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Home"
+                                  asp-action="AgregarWatchlist"
+                                  method="post"
+                                  class="cine-formulario-accion">
+
+                                <input type="hidden"
+                                       name="idPelicula"
+                                       value="@Model.IdPelicula" />
+
+                                <input type="hidden"
+                                       name="returnUrl"
+                                       value="/Home/Detalles/@Model.IdPelicula" />
+
+                                <button type="submit" class="cine-boton cine-boton-secundario">
+                                    <span aria-hidden="true">＋</span>
+                                    Agregar a Watchlist
+                                </button>
+                            </form>
+                        }
                     }
                     else
                     {
-                        <span>No hay actores cargados.</span>
-                    }
-                </p>
-            </div>
-
-            @if (ViewBag.UsuarioConectado == true)
-            {
-                <div class="d-flex flex-wrap gap-2 mt-4">
-
-                    @if (ViewBag.EsFavorito == true)
-                    {
-                        <form asp-controller="Home" asp-action="QuitarFavorito" method="post">
-                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
-
-                            <button type="submit" class="detalles-boton detalles-boton-secundario">
-                                ♥ Quitar de Favoritas
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form asp-controller="Home" asp-action="AgregarFavorito" method="post">
-                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
-
-                            <button type="submit" class="detalles-boton">
-                                ♥ Agregar a Favoritas
-                            </button>
-                        </form>
-                    }
-
-                    @if (ViewBag.EstaEnWatchlist == true)
-                    {
-                        <form asp-controller="Home" asp-action="QuitarWatchlist" method="post">
-                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
-
-                            <button type="submit" class="detalles-boton detalles-boton-secundario">
-                                ✓ Quitar de Watchlist
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form asp-controller="Home" asp-action="AgregarWatchlist" method="post">
-                            <input type="hidden" name="idPelicula" value="@Model.IdPelicula" />
-                            <input type="hidden" name="returnUrl" value="/Home/Detalles/@Model.IdPelicula" />
-
-                            <button type="submit" class="detalles-boton">
-                                + Agregar a Watchlist
-                            </button>
-                        </form>
+                        <a asp-controller="Home"
+                           asp-action="Login"
+                           class="cine-boton cine-boton-principal">
+                            <span aria-hidden="true">♥</span>
+                            Iniciá sesión para guardar
+                        </a>
                     }
 
                 </div>
-            }
-            else
-            {
-                <p>Iniciá sesión para guardar esta película en tus listas.</p>
 
-                <a asp-controller="Home"
-                   asp-action="Login"
-                   class="detalles-boton">
-                    Iniciar sesión
-                </a>
-            }
-        </div>
+                <p class="cine-nota-acciones">
+                    Organizá tus películas y guardá las que querés ver.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="cine-panel-extra">
+
+            <div class="cine-panel-encabezado">
+                <div>
+                    <span class="cine-seccion-mini">DESCUBRÍ MÁS</span>
+                    <h2>Tu próxima experiencia cinematográfica</h2>
+                </div>
+
+                <span class="cine-panel-simbolo" aria-hidden="true">✦</span>
+            </div>
+
+            <div class="cine-panel-tarjetas">
+
+                <article class="cine-tarjeta-extra">
+                    <div class="cine-tarjeta-icono cine-icono-rojo">♥</div>
+                    <div>
+                        <h3>Tus favoritas</h3>
+                        <p>Guardá las películas que más te gustan para encontrarlas fácilmente.</p>
+
+                        @if (usuarioConectado)
+                        {
+                            <a asp-controller="Home" asp-action="Favoritas">
+                                Ver mis favoritas <span aria-hidden="true">→</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Home" asp-action="Login">
+                                Iniciar sesión <span aria-hidden="true">→</span>
+                            </a>
+                        }
+                    </div>
+                </article>
+
+                <article class="cine-tarjeta-extra">
+                    <div class="cine-tarjeta-icono cine-icono-oro">＋</div>
+                    <div>
+                        <h3>Tu Watchlist</h3>
+                        <p>Creá tu lista de películas pendientes para tu próxima noche de cine.</p>
+
+                        @if (usuarioConectado)
+                        {
+                            <a asp-controller="Home" asp-action="Watchlist">
+                                Ver mi Watchlist <span aria-hidden="true">→</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Home" asp-action="Login">
+                                Iniciar sesión <span aria-hidden="true">→</span>
+                            </a>
+                        }
+                    </div>
+                </article>
+
+                <article class="cine-tarjeta-extra">
+                    <div class="cine-tarjeta-icono cine-icono-azul">⌕</div>
+                    <div>
+                        <h3>Seguí explorando</h3>
+                        <p>Encontrá otras películas según tus gustos y descubrí nuevas historias.</p>
+
+                        <a href="/Explorador/Index">
+                            Explorar películas <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="cine-frase-final">
+                <span aria-hidden="true">“</span>
+                Cada película tiene una historia. Encontrá la próxima que te deje algo.
+            </div>
+
+        </section>
+
     </div>
-</div>
+</main>
