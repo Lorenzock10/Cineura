@@ -156,158 +156,8 @@ BEGIN
 END
 GO
 
--- 12. INSERCION DE PELICULAS CON POSTERURL
 
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Toy Story')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Toy Story', 'Una aventura entre juguetes.', 'Animacion', 81, 1995, 'Alegre', 'https://image.tmdb.org/t/p/w500/uXD11I321B3yA283.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Shrek')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Shrek', 'Un ogro emprende una aventura inesperada.', 'Comedia', 90, 2001, 'Divertido', 'https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Truman Show')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('The Truman Show', 'Un hombre descubre secretos sobre su vida.', 'Drama', 103, 1998, 'Reflexivo', 'https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'En busca de la felicidad')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('En busca de la felicidad', 'Un padre lucha por salir adelante.', 'Drama', 117, 2006, 'Inspirador', 'https://image.tmdb.org/t/p/w500/lBYOKAMcxIvuk9s9hMuecB9dPBV.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Superbad')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Superbad', 'Dos amigos viven una noche inolvidable.', 'Comedia', 113, 2007, 'Divertido', 'https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Coco')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Coco', 'Un chico descubre la historia de su familia.', 'Animacion', 105, 2017, 'Emotivo', 'https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Intensamente')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Intensamente', 'Las emociones acompañan a una chica en su vida.', 'Animacion', 95, 2015, 'Reflexivo', 'https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Jumanji')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Jumanji', 'Un juego transforma una aventura en realidad.', 'Aventura', 104, 1995, 'Emocionante', 'https://image.tmdb.org/t/p/w500/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Dune: Part Two')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Dune: Part Two', 'Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.', 'Ciencia ficción', 166, 2024, 'Emocionante', 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Poor Things')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Poor Things', 'Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.', 'Fantasía', 141, 2023, 'Reflexivo', 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Substance')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('The Substance', 'Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.', 'Terror', 141, 2024, 'Intenso', 'https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Anatomy of a Fall')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Anatomy of a Fall', 'Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.', 'Drama', 151, 2023, 'Intrigante', 'https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Dark Knight')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('The Dark Knight', 'Un héroe de la noche enfrenta al caos y a la anarquía en la ciudad de Gotham.', 'Acción', 152, 2008, 'Intenso', 'https://image.tmdb.org/t/p/w500/qJ2tW6WM2f8L3A3M32K3x83K3.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Inception')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Inception', 'Un ladrón que roba secretos a través del sueño profundo debe cumplir una misión imposible.', 'Ciencia ficción', 148, 2010, 'Intrigante', 'https://image.tmdb.org/t/p/w500/xYGkdhOEVoFrLNUotuTXemtQAWd.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Interstellar')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Interstellar', 'Un grupo de exploradores viaja a través de un agujero de gusano para salvar a la humanidad.', 'Ciencia ficción', 169, 2014, 'Inspirador', 'https://image.tmdb.org/t/p/w500/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Pulp Fiction')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Pulp Fiction', 'Las vidas de varios criminales en Los Ángeles se entrelazan de forma inesperada.', 'Crimen', 154, 1994, 'Intenso', 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Forrest Gump')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Forrest Gump', 'La historia de un hombre bondadoso que presenciará eventos históricos clave.', 'Drama', 142, 1994, 'Emotivo', 'https://image.tmdb.org/t/p/w500/arw232Gl1318622Q9x93527k2.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Matrix')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('The Matrix', 'Un programador descubre que la realidad es una simulación controlada por máquinas.', 'Ciencia ficción', 136, 1999, 'Emocionante', 'https://image.tmdb.org/t/p/w500/f89U3w9322384732.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Fight Club')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Fight Club', 'Un hombre aburrido funda un club clandestino que se transforma en algo más grande.', 'Drama', 139, 1999, 'Intenso', 'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B65e932.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El viaje de Chihiro')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('El viaje de Chihiro', 'Una niña entra a un mundo mágico repleto de dioses y espíritus para rescatar a sus padres.', 'Animación', 125, 2001, 'Mágico', 'https://image.tmdb.org/t/p/w500/3931847128.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Gladiator')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Gladiator', 'Un antiguo general romano busca venganza contra el corrupto emperador que masacró a su familia.', 'Acción', 155, 2000, 'Épico', 'https://image.tmdb.org/t/p/w500/ty83921.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Parasite')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Parasite', 'Una familia humilde se infiltra en la vida de una adinerada familia con oscuras consecuencias.', 'Suspenso', 132, 2019, 'Intrigante', 'https://image.tmdb.org/t/p/w500/dsVdT6XbOpzkpag4GbFQv9n7nWy.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Whiplash')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Whiplash', 'Un joven e intempestivo baterista desafía sus límites con un profesor despiadado.', 'Drama', 106, 2014, 'Intenso', 'https://image.tmdb.org/t/p/w500/whiplash.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'La La Land')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('La La Land', 'Un pianista de jazz y una aspirante a actriz persiguen sus sueños en la ciudad de las estrellas.', 'Romance', 128, 2016, 'Melancólico', 'https://image.tmdb.org/t/p/w500/lalaland.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Spider-Man: Into the Spider-Verse')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Spider-Man: Into the Spider-Verse', 'El joven Miles Morales aprende a ser Spider-Man cruzándose con héroes de otros universos.', 'Animación', 117, 2018, 'Emocionante', 'https://image.tmdb.org/t/p/w500/spiderman.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Avengers: Endgame')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Avengers: Endgame', 'Los Vengadores restantes se unen en un intento final por revertir las acciones de Thanos.', 'Acción', 181, 2019, 'Épico', 'https://image.tmdb.org/t/p/w500/endgame.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Oppenheimer')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Oppenheimer', 'La vida y conflictos de J. Robert Oppenheimer durante el desarrollo de la bomba atómica.', 'Biografía', 180, 2023, 'Reflexivo', 'https://image.tmdb.org/t/p/w500/oppenheimer.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El Rey León')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('El Rey León', 'Un joven león debe superar la tragedia y asumir su lugar legítimo como rey.', 'Animación', 88, 1994, 'Inspirador', 'https://image.tmdb.org/t/p/w500/lionking.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Jurassic Park')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Jurassic Park', 'Un parque temático con dinosaurios genéticamente clonados sufre una falla catastrófica.', 'Aventura', 127, 1993, 'Emocionante', 'https://image.tmdb.org/t/p/w500/jurassicpark.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El silencio de los inocentes')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('El silencio de los inocentes', 'Una novata del FBI busca la ayuda de un brillante asesino caníbal para capturar a otro criminal.', 'Suspenso', 118, 1991, 'Tenebroso', 'https://image.tmdb.org/t/p/w500/silence.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Volver al Futuro')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Volver al Futuro', 'Un joven es enviado accidentalmente 30 años al pasado en una máquina del tiempo.', 'Aventura', 116, 1985, 'Divertido', 'https://image.tmdb.org/t/p/w500/backto.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'WALL-E')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('WALL-E', 'Un pequeño robot compactador de basura en una Tierra abandonada emprende un viaje espacial.', 'Animación', 98, 2008, 'Tierno', 'https://image.tmdb.org/t/p/w500/walle.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Psicosis')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Psicosis', 'Una secretaria en fuga se hospeda en un siniestro motel regentado por Norman Bates.', 'Terror', 109, 1960, 'Tenebroso', 'https://image.tmdb.org/t/p/w500/psycho.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Se7en')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Se7en', 'Dos detectives investigan una serie de crueles asesinatos basados en los siete pecados capitales.', 'Crimen', 127, 1995, 'Oscuro', 'https://image.tmdb.org/t/p/w500/se7en.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Amélie')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Amélie', 'Una joven camarera parisina decide mejorar de forma orquestada la vida de quienes la rodean.', 'Comedia', 122, 2001, 'Alegre', 'https://image.tmdb.org/t/p/w500/amelie.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El Padrino')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('El Padrino', 'El envejecido patriarca de una dinastía del crimen organizado transfiere el control a su hijo.', 'Crimen', 175, 1972, 'Intenso', 'https://image.tmdb.org/t/p/w500/godfather.jpg');
-
-IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Everything Everywhere All at Once')
-    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
-    VALUES ('Everything Everywhere All at Once', 'Una mujer de mediana edad descubre que debe conectarse con versiones suyas en universos paralelos.', 'Ciencia ficción', 139, 2022, 'Inspirador', 'https://image.tmdb.org/t/p/w500/eeaao.jpg');
-GO
-
--- 13. TENDENCIAS
+-- 13. TENDENCIAS DE PRUEBA
 IF NOT EXISTS (
     SELECT 1 FROM Tendencias T
     INNER JOIN Peliculas P ON T.IdPelicula = P.IdPelicula
@@ -336,7 +186,7 @@ IF NOT EXISTS (
     INNER JOIN Peliculas P ON F.IdPelicula = P.IdPelicula
     WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'The Dark Knight'
 )
-BEGIN 
+BEGIN
     INSERT INTO Favoritos (IdUsuario, IdPelicula, Fecha)
     SELECT U.IdUsuario, P.IdPelicula, SYSDATETIME()
     FROM Usuarios U, Peliculas P
@@ -383,4 +233,243 @@ BEGIN
     FROM Usuarios U, Peliculas P
     WHERE U.NombreUsuario = 'admin' AND P.Titulo = 'Poor Things';
 END
+GO
+USE Cineura;
+GO
+
+-- ACTUALIZACIÓN DE POSTERS PARA LAS 21 PELÍCULAS AFECTADAS
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Toy Story')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/1/13/Toy_Story.jpg' WHERE Titulo = 'Toy Story';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Toy Story', 'Una aventura entre juguetes.', 'Animacion', 81, 1995, 'Alegre', 'https://upload.wikimedia.org/wikipedia/en/1/13/Toy_Story.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Shrek')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg' WHERE Titulo = 'Shrek';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Shrek', 'Un ogro emprende una aventura inesperada.', 'Comedia', 90, 2001, 'Divertido', 'https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Truman Show')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg' WHERE Titulo = 'The Truman Show';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('The Truman Show', 'Un hombre descubre secretos sobre su vida.', 'Drama', 103, 1998, 'Reflexivo', 'https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'En busca de la felicidad')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/lBYOKAMcxIvuk9s9hMuecB9dPBV.jpg' WHERE Titulo = 'En busca de la felicidad';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('En busca de la felicidad', 'Un padre lucha por salir adelante.', 'Drama', 117, 2006, 'Inspirador', 'https://image.tmdb.org/t/p/w500/lBYOKAMcxIvuk9s9hMuecB9dPBV.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Superbad')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg' WHERE Titulo = 'Superbad';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Superbad', 'Dos amigos viven una noche inolvidable.', 'Comedia', 113, 2007, 'Divertido', 'https://image.tmdb.org/t/p/w500/ek8e8txUyUwd2BNqj6lFEerJfbq.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Coco')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg' WHERE Titulo = 'Coco';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Coco', 'Un chico descubre la historia de su familia.', 'Animacion', 105, 2017, 'Emotivo', 'https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Intensamente')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg' WHERE Titulo = 'Intensamente';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Intensamente', 'Las emociones acompañan a una chica en su vida.', 'Animacion', 95, 2015, 'Reflexivo', 'https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4Tl5A.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Jumanji')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg' WHERE Titulo = 'Jumanji';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Jumanji', 'Un juego transforma una aventura en realidad.', 'Aventura', 104, 1995, 'Emocionante', 'https://image.tmdb.org/t/p/w500/vgpXmVaVyUL7GGiDeiK1mKEKzcX.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Dune: Part Two')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg' WHERE Titulo = 'Dune: Part Two';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Dune: Part Two', 'Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.', 'Ciencia ficción', 166, 2024, 'Emocionante', 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Poor Things')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg' WHERE Titulo = 'Poor Things';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Poor Things', 'Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.', 'Fantasía', 141, 2023, 'Reflexivo', 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Substance')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg' WHERE Titulo = 'The Substance';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('The Substance', 'Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.', 'Terror', 141, 2024, 'Intenso', 'https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Anatomy of a Fall')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg' WHERE Titulo = 'Anatomy of a Fall';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Anatomy of a Fall', 'Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.', 'Drama', 151, 2023, 'Intrigante', 'https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Dark Knight')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg' WHERE Titulo = 'The Dark Knight';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('The Dark Knight', 'Un héroe de la noche enfrenta al caos y a la anarquía en la ciudad de Gotham.', 'Acción', 152, 2008, 'Intenso', 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Inception')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg' WHERE Titulo = 'Inception';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Inception', 'Un ladrón que roba secretos a través del sueño profundo debe cumplir una misión imposible.', 'Ciencia ficción', 148, 2010, 'Intrigante', 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Interstellar')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg' WHERE Titulo = 'Interstellar';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Interstellar', 'Un grupo de exploradores viaja a través de un agujero de gusano para salvar a la humanidad.', 'Ciencia ficción', 169, 2014, 'Inspirador', 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Pulp Fiction')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg' WHERE Titulo = 'Pulp Fiction';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Pulp Fiction', 'Las vidas de varios criminales en Los Ángeles se entrelazan de forma inesperada.', 'Crimen', 154, 1994, 'Intenso', 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Forrest Gump')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg' WHERE Titulo = 'Forrest Gump';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Forrest Gump', 'La historia de un hombre bondadoso que presenciará eventos históricos clave.', 'Drama', 142, 1994, 'Emotivo', 'https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg');
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Fight Club')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg' WHERE Titulo = 'Fight Club';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Fight Club', 'Un hombre aburrido funda un club clandestino que se transforma en algo más grande.', 'Drama', 139, 1999, 'Intenso', 'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El viaje de Chihiro')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg' WHERE Titulo = 'El viaje de Chihiro';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('El viaje de Chihiro', 'Una niña entra a un mundo mágico repleto de dioses y espíritus para rescatar a sus padres.', 'Animación', 125, 2001, 'Mágico', 'https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Gladiator')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/f/fb/Gladiator_%282000_film_poster%29.png' WHERE Titulo = 'Gladiator';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Gladiator', 'Un antiguo general romano busca venganza contra el corrupto emperador que masacró a su familia.', 'Acción', 155, 2000, 'Épico', 'https://upload.wikimedia.org/wikipedia/en/f/fb/Gladiator_%282000_film_poster%29.png');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Parasite')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/ku1UvTWYvhFQbSesOD6zteY7bXT.jpg' WHERE Titulo = 'Parasite';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Parasite', 'Una familia humilde se infiltra en la vida de una adinerada familia con oscuras consecuencias.', 'Suspenso', 132, 2019, 'Intrigante', 'https://image.tmdb.org/t/p/w500/ku1UvTWYvhFQbSesOD6zteY7bXT.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'La La Land')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/a/ab/La_La_Land_%28film%29.png' WHERE Titulo = 'La La Land';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('La La Land', 'Un pianista de jazz y una aspirante a actriz persiguen sus sueños en la ciudad de las estrellas.', 'Romance', 128, 2016, 'Melancólico', 'https://upload.wikimedia.org/wikipedia/en/a/ab/La_La_Land_%28film%29.png');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Avengers: Endgame')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg' WHERE Titulo = 'Avengers: Endgame';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Avengers: Endgame', 'Los Vengadores restantes se unen en un intento final por revertir las acciones de Thanos.', 'Acción', 181, 2019, 'Épico', 'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Oppenheimer')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg' WHERE Titulo = 'Oppenheimer';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Oppenheimer', 'La vida y conflictos de J. Robert Oppenheimer durante el desarrollo de la bomba atómica.', 'Biografía', 180, 2023, 'Reflexivo', 'https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El Rey León')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/3/3d/The_Lion_King_poster.jpg' WHERE Titulo = 'El Rey León';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('El Rey León', 'Un joven león debe superar la tragedia y asumir su lugar legítimo como rey.', 'Animación', 88, 1994, 'Inspirador', 'https://upload.wikimedia.org/wikipedia/en/3/3d/The_Lion_King_poster.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Jurassic Park')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/e/e7/Jurassic_Park_poster.jpg' WHERE Titulo = 'Jurassic Park';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Jurassic Park', 'Un parque temático con dinosaurios genéticamente clonados sufre una falla catastrófica.', 'Aventura', 127, 1993, 'Emocionante', 'https://upload.wikimedia.org/wikipedia/en/e/e7/Jurassic_Park_poster.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El silencio de los inocentes')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/7OFxU0bBO0HDL4klXmM1ahJPbv8.jpg' WHERE Titulo = 'El silencio de los inocentes';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('El silencio de los inocentes', 'Una novata del FBI busca la ayuda de un brillante asesino caníbal para capturar a otro criminal.', 'Suspenso', 118, 1991, 'Tenebroso', 'https://image.tmdb.org/t/p/w500/7OFxU0bBO0HDL4klXmM1ahJPbv8.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Volver al Futuro')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg' WHERE Titulo = 'Volver al Futuro';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Volver al Futuro', 'Un joven es enviado accidentalmente 30 años al pasado en una máquina del tiempo.', 'Aventura', 116, 1985, 'Divertido', 'https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Se7en')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/6/68/Seven_%28movie%29_poster.jpg' WHERE Titulo = 'Se7en';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Se7en', 'Dos detectives investigan una serie de crueles asesinatos basados en los siete pecados capitales.', 'Crimen', 127, 1995, 'Oscuro', 'https://upload.wikimedia.org/wikipedia/en/6/68/Seven_%28movie%29_poster.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'El Padrino')
+    UPDATE Peliculas SET PosterUrl = 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg' WHERE Titulo = 'El Padrino';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('El Padrino', 'El envejecido patriarca de una dinastía del crimen organizado transfiere el control a su hijo.', 'Crimen', 175, 1972, 'Intenso', 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Everything Everywhere All at Once')
+    UPDATE Peliculas SET PosterUrl = 'https://upload.wikimedia.org/wikipedia/en/1/1e/Everything_Everywhere_All_at_Once.jpg' WHERE Titulo = 'Everything Everywhere All at Once';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Everything Everywhere All at Once', 'Una mujer de mediana edad descubre que debe conectarse con versiones suyas en universos paralelos.', 'Ciencia ficción', 139, 2022, 'Inspirador', 'https://upload.wikimedia.org/wikipedia/en/1/1e/Everything_Everywhere_All_at_Once.jpg');
+
+-- AMELIE
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Amélie')
+    UPDATE Peliculas
+    SET PosterUrl = 'https://image.tmdb.org/t/p/w500/oTKduWL2tpIKEmkAqF4mFEAWAsv.jpg'
+    WHERE Titulo = 'Amélie';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Amélie', 'Una joven camarera parisina decide mejorar de forma orquestada la vida de quienes la rodean.', 'Comedia', 122, 2001, 'Alegre', 'https://image.tmdb.org/t/p/w500/oTKduWL2tpIKEmkAqF4mFEAWAsv.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Psicosis')
+    UPDATE Peliculas
+    SET PosterUrl = 'https://commons.wikimedia.org/wiki/Special:FilePath/Psycho_(1960)_theatrical_poster.jpg'
+    WHERE Titulo = 'Psicosis';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Psicosis', 'Una secretaria en fuga se hospeda en un siniestro motel regentado por Norman Bates.', 'Terror', 109, 1960, 'Tenebroso', 'https://commons.wikimedia.org/wiki/Special:FilePath/Psycho_(1960)_theatrical_poster.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Spider-Man: Into the Spider-Verse')
+    UPDATE Peliculas
+    SET PosterUrl = 'https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg'
+    WHERE Titulo = 'Spider-Man: Into the Spider-Verse';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Spider-Man: Into the Spider-Verse', 'El joven Miles Morales aprende a ser Spider-Man cruzándose con héroes de otros universos.', 'Animación', 117, 2018, 'Emocionante', 'https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Matrix')
+    UPDATE Peliculas
+    SET PosterUrl = 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg'
+    WHERE Titulo = 'The Matrix';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('The Matrix', 'Un programador descubre que la realidad es una simulación controlada por máquinas.', 'Ciencia ficción', 136, 1999, 'Emocionante', 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'WALL-E')
+    UPDATE Peliculas
+    SET PosterUrl = 'https://image.tmdb.org/t/p/w500/hbhFnRzzg6ZDmm8YAmxBnQpQIPh.jpg'
+    WHERE Titulo = 'WALL-E';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('WALL-E', 'Un pequeño robot compactador de basura en una Tierra abandonada emprende un viaje espacial.', 'Animación', 98, 2008, 'Tierno', 'https://image.tmdb.org/t/p/w500/hbhFnRzzg6ZDmm8YAmxBnQpQIPh.jpg');
+
+IF EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Whiplash')
+    UPDATE Peliculas
+    SET PosterUrl = 'https://image.tmdb.org/t/p/w500/7fn624j5lj3xTme2SgiLCeuedmO.jpg'
+    WHERE Titulo = 'Whiplash';
+ELSE
+    INSERT INTO Peliculas (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES ('Whiplash', 'Un joven e intempestivo baterista desafía sus límites con un profesor despiadado.', 'Drama', 106, 2014, 'Intenso', 'https://image.tmdb.org/t/p/w500/7fn624j5lj3xTme2SgiLCeuedmO.jpg');
 GO
