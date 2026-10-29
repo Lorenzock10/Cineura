@@ -9,6 +9,10 @@
         : "";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/Detalles.css" asp-append-version="true" />
+}
+
 <div class="detalles-pagina">
 
     <a asp-controller="Home" asp-action="Index" class="detalles-volver">
@@ -26,12 +30,22 @@
 
         @if (!string.IsNullOrWhiteSpace(poster))
         {
-            <img src="@poster"
-                 alt="Póster de @Model.Titulo"
-                 class="detalles-poster" />
+            <div class="detalles-poster-contenedor">
+                <img src="@poster"
+                     alt="Póster de @Model.Titulo"
+                     class="detalles-poster" />
+            </div>
+        }
+        else
+        {
+            <div class="detalles-poster-contenedor detalles-poster-vacio" aria-label="Póster no disponible">
+                <span aria-hidden="true">🎬</span>
+                <span>Póster no disponible</span>
+            </div>
         }
 
         <div class="detalles-info">
+            <span class="detalles-eyebrow">CINEURA <span>·</span> FICHA DE PELÍCULA</span>
             <h1>@Model.Titulo</h1>
 
             <div class="detalles-etiquetas">
@@ -48,23 +62,25 @@
                     : Model.Sinopsis)
             </p>
 
-            <p>
-                <strong>Director:</strong>
-                @ViewBag.Director
-            </p>
+            <div class="detalles-creditos">
+                <p>
+                    <strong>Director</strong>
+                    <span>@ViewBag.Director</span>
+                </p>
 
-            <p>
-                <strong>Actores:</strong>
+                <p>
+                    <strong>Reparto</strong>
 
-                @if (ViewBag.Actores != null && ViewBag.Actores.Count > 0)
-                {
-                    @string.Join(", ", ViewBag.Actores)
-                }
-                else
-                {
-                    <span>No hay actores cargados.</span>
-                }
-            </p>
+                    @if (ViewBag.Actores != null && ViewBag.Actores.Count > 0)
+                    {
+                        <span>@string.Join(", ", ViewBag.Actores)</span>
+                    }
+                    else
+                    {
+                        <span>No hay actores cargados.</span>
+                    }
+                </p>
+            </div>
 
             @if (ViewBag.UsuarioConectado == true)
             {

@@ -189,3 +189,22 @@
     gap: 8px;
     flex-wrap: nowrap;
 }
+.explorador-detalle {
+    display: block;
+    margin-top: auto;
+    padding: 11px;
+    background: #ef4444;
+    color: #ffffff;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+    transition: 0.2s;
+}
+
+.explorador-detalle:hover {
+    background: #dc2626;
+    color: #ffffff;
+}

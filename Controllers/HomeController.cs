@@ -25,8 +25,9 @@ namespace Cineura.Controllers
         {
             BD bd = new BD();
 
-            List<Peliculas> peliculas = bd.ObtenerPeliculas();
-
+            List<Peliculas> peliculas = bd.ObtenerPeliculasTendencia();
+            ViewBag.PeliculasTendencia = peliculas;
+            
             ViewBag.IdDune = BuscarId(peliculas, "Dune: Part Two");
             ViewBag.IdPoorThings = BuscarId(peliculas, "Poor Things");
             ViewBag.IdSubstance = BuscarId(peliculas, "The Substance");

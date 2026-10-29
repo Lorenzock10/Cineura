@@ -229,3 +229,145 @@ BEGIN
         );
 END
 GO
+USE Cineura;
+GO
+
+-- 11. AGREGAR LAS PELICULAS DESTACADAS
+
+IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Dune: Part Two')
+BEGIN
+    INSERT INTO Peliculas
+        (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES
+        (
+            'Dune: Part Two',
+            'Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.',
+            'Ciencia ficción',
+            166,
+            2024,
+            'Emocionante',
+            'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg'
+        );
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Poor Things')
+BEGIN
+    INSERT INTO Peliculas
+        (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES
+        (
+            'Poor Things',
+            'Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.',
+            'Fantasía',
+            141,
+            2023,
+            'Reflexivo',
+            'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg'
+        );
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'The Substance')
+BEGIN
+    INSERT INTO Peliculas
+        (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES
+        (
+            'The Substance',
+            'Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.',
+            'Terror',
+            141,
+            2024,
+            'Intenso',
+            'https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg'
+        );
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM Peliculas WHERE Titulo = 'Anatomy of a Fall')
+BEGIN
+    INSERT INTO Peliculas
+        (Titulo, Sinopsis, Genero, DuracionMinutos, Anio, Animo, PosterUrl)
+    VALUES
+        (
+            'Anatomy of a Fall',
+            'Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.',
+            'Drama',
+            151,
+            2023,
+            'Intrigante',
+            'https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg'
+        );
+END
+GO
+-- 12. AGREGAR LAS PELICULAS A TENDENCIAS
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM Tendencias T
+    INNER JOIN Peliculas P ON T.IdPelicula = P.IdPelicula
+    WHERE P.Titulo = 'Dune: Part Two'
+)
+BEGIN
+    INSERT INTO Tendencias
+        (IdPelicula, CantidadInteracciones, FechaActualizacion)
+    SELECT
+        IdPelicula,
+        1000,
+        SYSDATETIME()
+    FROM Peliculas
+    WHERE Titulo = 'Dune: Part Two';
+END
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM Tendencias T
+    INNER JOIN Peliculas P ON T.IdPelicula = P.IdPelicula
+    WHERE P.Titulo = 'Poor Things'
+)
+BEGIN
+    INSERT INTO Tendencias
+        (IdPelicula, CantidadInteracciones, FechaActualizacion)
+    SELECT
+        IdPelicula,
+        900,
+        SYSDATETIME()
+    FROM Peliculas
+    WHERE Titulo = 'Poor Things';
+END
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM Tendencias T
+    INNER JOIN Peliculas P ON T.IdPelicula = P.IdPelicula
+    WHERE P.Titulo = 'The Substance'
+)
+BEGIN
+    INSERT INTO Tendencias
+        (IdPelicula, CantidadInteracciones, FechaActualizacion)
+    SELECT
+        IdPelicula,
+        800,
+        SYSDATETIME()
+    FROM Peliculas
+    WHERE Titulo = 'The Substance';
+END
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM Tendencias T
+    INNER JOIN Peliculas P ON T.IdPelicula = P.IdPelicula
+    WHERE P.Titulo = 'Anatomy of a Fall'
+)
+BEGIN
+    INSERT INTO Tendencias
+        (IdPelicula, CantidadInteracciones, FechaActualizacion)
+    SELECT
+        IdPelicula,
+        700,
+        SYSDATETIME()
+    FROM Peliculas
+    WHERE Titulo = 'Anatomy of a Fall';
+END
+GO

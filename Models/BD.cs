@@ -7,7 +7,7 @@ namespace Cineura.Models;
 public class BD
 {
     private string _connectionString =
-    @"Server=localhost;Database=Cineura;Integrated Security=True;TrustServerCertificate=True;";
+    @"Server=localhost\SQLEXPRESS;Database=Cineura;Integrated Security=True;TrustServerCertificate=True;";
     public void AgregarUsuario(Usuarios usuario)
     {
         string query = @"
@@ -340,6 +340,30 @@ public class BD
             return connection.ExecuteScalar<int>(
                 query,
                 new { idUsuario, idPelicula }) > 0;
+        }
+    }
+    public List<Peliculas> ObtenerPeliculasTendencia()
+    {
+        using (SqlConnection connection =
+            new SqlConnection(_connectionString))
+        {
+            string query = @"
+                SELECT
+                    P.IdPelicula,
+                    P.Titulo,
+                    P.Sinopsis,
+                    P.Genero,
+                    P.DuracionMinutos,
+                    P.Anio,
+                    P.Animo,
+                    P.IdDirector,
+                    P.PosterUrl
+                FROM Peliculas P
+                INNER JOIN Tendencias T
+                    ON P.IdPelicula = T.IdPelicula
+                ORDER BY T.CantidadInteracciones DESC";
+
+            return connection.Query<Peliculas>(query).ToList();
         }
     }
 }

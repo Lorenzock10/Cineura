@@ -232,3 +232,144 @@ function configurarAccionesCineura() {
 }
 
 document.addEventListener("DOMContentLoaded", configurarAccionesCineura);
+"use strict";
+
+let ultimaBusqueda = "";
+let ultimaLista = [];
+let indiceActual = 0;
+
+const formulario = document.getElementById("formBusqueda");
+const campoBusqueda = document.getElementById("campoBusqueda");
+const resultado = document.getElementById("resultado");
+const recomendacion = document.getElementById("recomendacion");
+const botonBuscar = document.getElementById("botonBuscar");
+
+// Agregar texto al buscador al tocar los botones de mood o estilo
+function agregarTexto(texto) {
+    if (campoBusqueda.value.trim() !== "") {
+        campoBusqueda.value += " ";
+    }
+
+    campoBusqueda.value += texto;
+    campoBusqueda.focus();
+}
+
+// Botones de mood y estilo
+document.querySelectorAll(".btn-tag[data-text]").forEach((boton) => {
+    boton.addEventListener("click", () => {
+        agregarTexto(boton.dataset.text);
+    });
+});
+
+// Buscar películas
+formulario.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const busqueda = campoBusqueda.value.trim();
+
+    if (busqueda === "") {
+        alert("Escribí qué película estás buscando.");
+        return;
+    }
+
+    ultimaBusqueda = busqueda;
+
+    botonBuscar.disabled = true;
+    botonBuscar.textContent = "Buscando...";
+
+    resultado.innerHTML = "";
+    recomendacion.style.display = "none";
+
+    try {
+        const respuesta = await fetch(formulario.action, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                busqueda: busqueda
+            })
+        });
+
+        if (!respuesta.ok) {
+            throw new Error("Ocurrió un error al buscar películas.");
+        }
+
+        const datos = await respuesta.json();
+
+        ultimaLista = Array.isArray(datos) ? datos : [];
+        indiceActual = 0;
+
+        if (ultimaLista.length === 0) {
+            resultado.innerHTML =
+                "<p>No encontramos películas que coincidan con tu búsqueda.</p>";
+            return;
+        }
+
+        mostrarPelicula(ultimaLista[indiceActual]);
+
+    } catch (error) {
+        resultado.innerHTML =
+            "<p>Hubo un problema al buscar. Intentá nuevamente.</p>";
+
+        console.error(error);
+
+    } finally {
+        botonBuscar.disabled = false;
+        botonBuscar.textContent = "BUSCAR";
+    }
+});
+
+// Mostrar la película recomendada
+function mostrarPelicula(pelicula) {
+    if (!pelicula) {
+        return;
+    }
+
+    recomendacion.style.display = "block";
+
+    resultado.innerHTML = `
+        <div class="card-pelicula">
+            <div class="card-poster-wrap">
+                <img
+                    src="${pelicula.posterUrl || ""}"
+                    class="card-poster-img"
+                    alt="Póster de ${pelicula.titulo || "película"}"
+                />
+            </div>
+
+            <div class="card-info">
+                <h3 class="card-titulo">${pelicula.titulo || "Película recomendada"}</h3>
+
+                <p class="card-sinopsis">
+                    ${pelicula.sinopsis || "No hay sinopsis disponible."}
+                </p>
+
+                <div class="card-tags">
+                    <span class="mini-tag">
+                        ${pelicula.genero || ""}
+                    </span>
+
+                    <span class="mini-tag">
+                        ${pelicula.duracionMinutos || ""} min
+                    </span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Mostrar otra recomendación
+function mostrarOtraPelicula() {
+    if (ultimaLista.length <= 1) {
+        return;
+    }
+
+    indiceActual++;
+
+    if (indiceActual >= ultimaLista.length) {
+        indiceActual = 0;
+    }
+
+    mostrarPelicula(ultimaLista[indiceActual]);
+}

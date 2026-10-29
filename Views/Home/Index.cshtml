@@ -1,354 +1,237 @@
-﻿@{
+﻿@using Cineura.Models
+
+@{
     ViewData["Title"] = "Cineura | Buscador Inteligente";
-}
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/home-index.css" asp-append-version="true" />
-}
-
-@section Scripts {
-    <script src="~/js/home-index.js" asp-append-version="true"></script>
 }
 
 <div class="cineura-pagina">
     <div class="cineura-contenedor">
 
-        @if (TempData["Mensaje"] != null)
-        {
-            <div class="alert alert-success text-center mt-3" role="alert">
-                @TempData["Mensaje"]
+        <!-- BUSCADOR IA -->
+        <div class="cineura-hero text-center mb-5">
+            <div class="cineura-badge-neural mb-3">
+                <span class="punto-verde">●</span>
+                MOTOR NEURAL V4.2 ACTIVO &nbsp;•&nbsp; Calibrado a tu perfil cinematográfico
             </div>
-        }
 
-        <section class="cineura-seccion-ia" aria-labelledby="titulo-buscador-ia">
-            <div class="cineura-hero text-center mb-5">
-                <div class="cineura-badge-neural mb-3">
-                    <span class="punto-verde">●</span>
-                    MOTOR NEURAL V4.2 ACTIVO • Calibrado a tu perfil cinematográfico
+            <h1 class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
+
+            <p class="cineura-subtitulo hero-subtitulo">
+                Describí una trama difusa, un dilema moral, una atmósfera particular o un género y dejá que la IA encuentre la opción ideal.
+            </p>
+
+            <div class="cineura-buscador-box">
+                <form id="formBusqueda" class="w-100">
+                    <div class="buscador-input-group">
+                        <textarea id="busqueda"
+                                  name="busqueda"
+                                  class="form-control cineura-input-hero"
+                                  rows="2"
+                                  placeholder="Ej: Un thriller psicológico oscuro con giros inesperados..."
+                                  required></textarea>
+
+                        <button type="submit" id="botonBuscar" class="cineura-boton-ia">
+                            ✦ Generar Recomendación
+                        </button>
+                    </div>
+                </form>
+
+                <!-- MOODS -->
+                <div class="filtros-rapidos mt-3">
+                    <div class="grupo-tags">
+                        <span class="tag-label">MOODS:</span>
+
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cerebral & Tenso')">
+                            • Cerebral & Tenso
+                        </button>
+
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Melancolía Nórdica')">
+                            Melancolía Nórdica
+                        </button>
+
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Adrenalina Pura')">
+                            Adrenalina Pura
+                        </button>
+
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Existencialista')">
+                            Existencialista
+                        </button>
+                    </div>
+
+                    <div class="grupo-tags mt-2">
+                        <span class="tag-label">ESTÉTICAS:</span>
+
+                        <button type="button" class="btn-tag tag-destacado" onclick="agregarTexto('A24 Vibes')">
+                            ✦ A24 Vibes
+                        </button>
+
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cine de Autor')">
+                            Cine de Autor
+                        </button>
+
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Cyberpunk')">
+                            Cyberpunk
+                        </button>
+
+                        <button type="button" class="btn-tag" onclick="agregarTexto('Sci-Fi 70s')">
+                            Sci-Fi 70s
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MENSAJES DEL BUSCADOR -->
+        <div id="resultado"
+             class="cineura-estado text-center fs-5 my-4"
+             role="status">
+        </div>
+
+        <!-- RESULTADO DE LA RECOMENDACIÓN -->
+        <div id="recomendacion" class="cineura-recomendacion mb-5">
+            <div class="row g-0">
+
+                <div class="col-md-5" id="zonaPoster">
+                    <div class="cineura-poster-vacio">
+                        <span>✦ CINEURA</span>
+                    </div>
                 </div>
 
-                <h1 id="titulo-buscador-ia" class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
+                <div class="col-md-7">
+                    <div class="cineura-detalle">
 
-                <p class="cineura-subtitulo hero-subtitulo">
-                    Describí una trama, un dilema moral, una atmósfera o un género y dejá que Nova encuentre películas para vos.
-                </p>
+                        <div class="cineura-subtitulo mb-2">
+                            ✦ RECOMENDACIÓN PARA VOS
+                        </div>
 
-                <div class="cineura-buscador-box">
-                    <form id="formBusqueda" method="post">
-                        <div class="buscador-input-group">
-                            <textarea id="busqueda"
-                                      name="busqueda"
-                                      class="form-control cineura-input-hero"
-                                      rows="2"
-                                      placeholder="Ej: Un thriller psicológico oscuro de menos de dos horas..."
-                                      required></textarea>
+                        <h2 id="tituloPelicula">
+                            Tu próxima película
+                        </h2>
 
-                            <button type="submit" id="botonBuscar" class="cineura-boton-ia">
-                                ✦ Generar recomendación
+                        <div id="etiquetasPelicula" class="my-3"></div>
+
+                        <p id="datosPelicula" class="cineura-datos"></p>
+
+                        <h3 class="mt-4 fs-5 text-white">
+                            Sinopsis
+                        </h3>
+
+                        <p id="descripcionPelicula" class="cineura-descripcion"></p>
+
+                        <div class="cineura-motivo">
+                            <h3>¿Por qué la elegimos para vos?</h3>
+                            <p id="motivoPelicula"></p>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+
+                            <button type="button"
+                                    id="botonDetalles"
+                                    class="cineura-boton-ia py-2 px-4 w-auto">
+                                Ver detalles
                             </button>
-                        </div>
-                    </form>
 
-                    <div class="filtros-rapidos mt-3">
-                        <div class="grupo-tags">
-                            <span class="tag-label">MOODS:</span>
-                            <button type="button" class="btn-tag" data-busqueda="Cerebral y tenso">Cerebral y tenso</button>
-                            <button type="button" class="btn-tag" data-busqueda="Melancólico">Melancólico</button>
-                            <button type="button" class="btn-tag" data-busqueda="Adrenalina pura">Adrenalina pura</button>
-                            <button type="button" class="btn-tag" data-busqueda="Existencialista">Existencialista</button>
-                        </div>
+                            <button type="button"
+                                    id="botonOtra"
+                                    class="cineura-boton-secundario">
+                                ↻ Otra recomendación
+                            </button>
 
-                        <div class="grupo-tags mt-2">
-                            <span class="tag-label">ESTÉTICAS:</span>
-                            <button type="button" class="btn-tag" data-busqueda="Estilo A24">✦ A24 Vibes</button>
-                            <button type="button" class="btn-tag" data-busqueda="Cine de autor">Cine de autor</button>
-                            <button type="button" class="btn-tag" data-busqueda="Cyberpunk">Cyberpunk</button>
-                            <button type="button" class="btn-tag" data-busqueda="Ciencia ficción de los años 70">Sci-Fi 70s</button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div id="resultado" class="text-center my-4" role="status"></div>
-            <div id="resultadosBusqueda" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mb-5"></div>
-        </section>
+        <!-- PELÍCULAS EN TENDENCIA -->
+        <div class="seccion-tendencias mt-5 pt-4">
 
-        <section class="seccion-tendencias mt-5 pt-4" aria-labelledby="titulo-peliculas-destacadas">
-            <div class="mb-4">
-                <div class="cineura-badge-neural d-inline-block mb-1">
-                    ● TRENDING NOW
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+
+                    <div class="cineura-badge-neural d-inline-block mb-1">
+                        ● TRENDING NOW &nbsp;•&nbsp; ACTUALIZADO HOY
+                    </div>
+
+                    <h2 class="h3 fw-bold text-white mb-0">
+                        Películas en Tendencias Globales
+                    </h2>
+
+                    <p class="text-secondary small mb-0">
+                        Los estrenos más vistos y aclamados de la semana.
+                    </p>
+
                 </div>
-                <h2 id="titulo-peliculas-destacadas" class="h3 fw-bold text-white">Películas destacadas</h2>
-                <p class="text-secondary small">
-                    Explorá las películas y guardá las que te interesen.
-                </p>
             </div>
 
+            <!-- TARJETAS DINÁMICAS DESDE SQL -->
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
 
-                <!-- DUNE -->
-                <div class="col">
-                    <div class="card-pelicula" data-id="@ViewBag.IdDune" data-titulo="Dune: Part Two">
-                        <div class="card-poster-wrap">
-                            <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
-                                 class="card-poster-img"
-                                 alt="Dune: Part Two"
-                                 loading="lazy" />
-                            <div class="card-score">★ 8.7</div>
-                        </div>
+                @foreach (Peliculas pelicula in ViewBag.PeliculasTendencia)
+                {
+                    <div class="col">
 
-                        <div class="card-info">
-                            <div class="card-meta">2024 • 2h 46m</div>
-                            <h4 class="card-titulo">Dune: Part Two</h4>
-                            <div class="card-tags">
-                                <span class="mini-tag">Ciencia ficción</span>
-                                <span class="mini-tag">Aventura</span>
+                        <div class="card-pelicula">
+
+                            <!-- PÓSTER -->
+                            <div class="card-poster-wrap">
+
+                                <img src="@pelicula.PosterUrl"
+                                     class="card-poster-img"
+                                     alt="Póster de @pelicula.Titulo"
+                                     loading="lazy"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Cineura';" />
+
                             </div>
-                            <p class="card-sinopsis">
-                                Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.
-                            </p>
 
-                            <div class="mt-3 acciones-pelicula">
-                                <button type="button"
-                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoDune == true ? "active" : "")"
-                                        data-id="@ViewBag.IdDune"
-                                        data-type="favorito"
-                                        data-active="@(ViewBag.EsFavoritoDune == true ? "true" : "false")"
-                                        aria-label="Favoritos"
-                                        title="Favoritos">
-                                    <span class="favorito-icon">♥</span>
-                                    <span class="favorito-text">Favoritas</span>
-                                </button>
+                            <!-- INFORMACIÓN -->
+                            <div class="card-info">
 
-                                <button type="button"
-                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistDune == true ? "active" : "")"
-                                        data-id="@ViewBag.IdDune"
-                                        data-type="watchlist"
-                                        data-active="@(ViewBag.EstaEnWatchlistDune == true ? "true" : "false")"
-                                        aria-label="Watchlist"
-                                        title="Watchlist">
-                                    <span class="watchlist-icon">+</span>
-                                    <span class="watchlist-text">Watchlist</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <div class="card-meta">
+                                    @pelicula.Anio • @pelicula.DuracionMinutos min
+                                </div>
 
-                <!-- POOR THINGS -->
-                <div class="col">
-                    <div class="card-pelicula" data-id="@ViewBag.IdPoorThings" data-titulo="Poor Things">
-                        <div class="card-poster-wrap">
-                            <img src="https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg"
-                                 class="card-poster-img"
-                                 alt="Poor Things"
-                                 loading="lazy" />
-                            <div class="card-score">★ 8.4</div>
-                        </div>
+                                <h4 class="card-titulo">
+                                    @pelicula.Titulo
+                                </h4>
 
-                        <div class="card-info">
-                            <div class="card-meta">2023 • 2h 21m</div>
-                            <h4 class="card-titulo">Poor Things</h4>
-                            <div class="card-tags">
-                                <span class="mini-tag">Fantasía</span>
-                                <span class="mini-tag">Drama</span>
-                            </div>
-                            <p class="card-sinopsis">
-                                Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.
-                            </p>
+                                <!-- ETIQUETAS -->
+                                <div class="card-tags">
 
-                            <div class="mt-3 acciones-pelicula">
-                                <button type="button"
-                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoPoorThings == true ? "active" : "")"
-                                        data-id="@ViewBag.IdPoorThings"
-                                        data-type="favorito"
-                                        data-active="@(ViewBag.EsFavoritoPoorThings == true ? "true" : "false")"
-                                        aria-label="Favoritos"
-                                        title="Favoritos">
-                                    <span class="favorito-icon">♥</span>
-                                    <span class="favorito-text">Favoritas</span>
-                                </button>
+                                    @if (!string.IsNullOrEmpty(pelicula.Genero))
+                                    {
+                                        <span class="mini-tag">
+                                            @pelicula.Genero
+                                        </span>
+                                    }
 
-                                <button type="button"
-                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistPoorThings == true ? "active" : "")"
-                                        data-id="@ViewBag.IdPoorThings"
-                                        data-type="watchlist"
-                                        data-active="@(ViewBag.EstaEnWatchlistPoorThings == true ? "true" : "false")"
-                                        aria-label="Watchlist"
-                                        title="Watchlist">
-                                    <span class="watchlist-icon">+</span>
-                                    <span class="watchlist-text">Watchlist</span>
-                                </button>
+                                    @if (!string.IsNullOrEmpty(pelicula.Animo))
+                                    {
+                                        <span class="mini-tag">
+                                            @pelicula.Animo
+                                        </span>
+                                    }
+
+                                </div>
+
+                                <!-- SINOPSIS -->
+                                <p class="card-sinopsis">
+                                    @pelicula.Sinopsis
+                                </p>
+                                <a asp-controller="Home" asp-action="Detalles" asp-route-id="@pelicula.IdPelicula" class="explorador-detalle">VER DETALLE</a>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- THE SUBSTANCE -->
-                <div class="col">
-                    <div class="card-pelicula" data-id="@ViewBag.IdSubstance" data-titulo="The Substance">
-                        <div class="card-poster-wrap">
-                            <img src="https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg"
-                                 class="card-poster-img"
-                                 alt="The Substance"
-                                 loading="lazy" />
-                            <div class="card-score">★ 8.0</div>
-                        </div>
-
-                        <div class="card-info">
-                            <div class="card-meta">2024 • 2h 21m</div>
-                            <h4 class="card-titulo">The Substance</h4>
-                            <div class="card-tags">
-                                <span class="mini-tag">Terror</span>
-                                <span class="mini-tag">Suspenso</span>
-                            </div>
-                            <p class="card-sinopsis">
-                                Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.
-                            </p>
-
-                            <div class="mt-3 acciones-pelicula">
-                                <button type="button"
-                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoSubstance == true ? "active" : "")"
-                                        data-id="@ViewBag.IdSubstance"
-                                        data-type="favorito"
-                                        data-active="@(ViewBag.EsFavoritoSubstance == true ? "true" : "false")"
-                                        aria-label="Favoritos"
-                                        title="Favoritos">
-                                    <span class="favorito-icon">♥</span>
-                                    <span class="favorito-text">Favoritas</span>
-                                </button>
-
-                                <button type="button"
-                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistSubstance == true ? "active" : "")"
-                                        data-id="@ViewBag.IdSubstance"
-                                        data-type="watchlist"
-                                        data-active="@(ViewBag.EstaEnWatchlistSubstance == true ? "true" : "false")"
-                                        aria-label="Watchlist"
-                                        title="Watchlist">
-                                    <span class="watchlist-icon">+</span>
-                                    <span class="watchlist-text">Watchlist</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ANATOMY OF A FALL -->
-                <div class="col">
-                    <div class="card-pelicula" data-id="@ViewBag.IdAnatomy" data-titulo="Anatomy of a Fall">
-                        <div class="card-poster-wrap">
-                            <img src="https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg"
-                                 class="card-poster-img"
-                                 alt="Anatomy of a Fall"
-                                 loading="lazy" />
-                            <div class="card-score">★ 8.1</div>
-                        </div>
-
-                        <div class="card-info">
-                            <div class="card-meta">2023 • 2h 31m</div>
-                            <h4 class="card-titulo">Anatomy of a Fall</h4>
-                            <div class="card-tags">
-                                <span class="mini-tag">Drama</span>
-                                <span class="mini-tag">Misterio</span>
-                            </div>
-                            <p class="card-sinopsis">
-                                Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.
-                            </p>
-
-                            <div class="mt-3 acciones-pelicula">
-                                <button type="button"
-                                        class="btn btn-outline-danger btn-sm favorite-toggle @(ViewBag.EsFavoritoAnatomy == true ? "active" : "")"
-                                        data-id="@ViewBag.IdAnatomy"
-                                        data-type="favorito"
-                                        data-active="@(ViewBag.EsFavoritoAnatomy == true ? "true" : "false")"
-                                        aria-label="Favoritos"
-                                        title="Favoritos">
-                                    <span class="favorito-icon">♥</span>
-                                    <span class="favorito-text">Favoritas</span>
-                                </button>
-
-                                <button type="button"
-                                        class="btn btn-warning btn-sm watchlist-toggle @(ViewBag.EstaEnWatchlistAnatomy == true ? "active" : "")"
-                                        data-id="@ViewBag.IdAnatomy"
-                                        data-type="watchlist"
-                                        data-active="@(ViewBag.EstaEnWatchlistAnatomy == true ? "true" : "false")"
-                                        aria-label="Watchlist"
-                                        title="Watchlist">
-                                    <span class="watchlist-icon">+</span>
-                                    <span class="watchlist-text">Watchlist</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
 
             </div>
-        </section>
-    </div>
-</div>
-
-<!-- CARTELITOS DE DETALLES -->
-
-<div id="detalle-cineura-dune"
-     class="modal-cineura"
-     data-modal-id="dune">
-    <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="dune">×</button>
-        <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
-             alt="Póster de Dune: Part Two" class="modal-cineura-poster" />
-        <div class="modal-cineura-info">
-            <h2>Dune: Part Two</h2>
-            <p class="modal-cineura-meta">2024 · Ciencia ficción · 166 min</p>
-            <p>Paul Atreides se une a Chani y los Fremen en una aventura por el destino de Arrakis.</p>
-            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="dune">Cerrar</button>
         </div>
-    </div>
-</div>
 
-<div id="detalle-cineura-poor-things"
-     class="modal-cineura"
-     data-modal-id="poor-things">
-    <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="poor-things">×</button>
-        <img src="https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg"
-             alt="Póster de Poor Things" class="modal-cineura-poster" />
-        <div class="modal-cineura-info">
-            <h2>Poor Things</h2>
-            <p class="modal-cineura-meta">2023 · Fantasía · 141 min</p>
-            <p>Bella Baxter descubre el mundo y su propia libertad en una historia fantástica.</p>
-            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="poor-things">Cerrar</button>
-        </div>
     </div>
 </div>
-
-<div id="detalle-cineura-substance"
-     class="modal-cineura"
-     data-modal-id="substance">
-    <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="substance">×</button>
-        <img src="https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg"
-             alt="Póster de The Substance" class="modal-cineura-poster" />
-        <div class="modal-cineura-info">
-            <h2>The Substance</h2>
-            <p class="modal-cineura-meta">2024 · Terror · 141 min</p>
-            <p>Una celebridad recurre a un tratamiento extraordinario que cambiará su vida.</p>
-            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="substance">Cerrar</button>
-        </div>
-    </div>
-</div>
-
-<div id="detalle-cineura-anatomy"
-     class="modal-cineura"
-     data-modal-id="anatomy">
-    <div class="modal-cineura-tarjeta">
-        <button type="button" class="modal-cineura-cerrar" data-cerrar-modal="anatomy">×</button>
-        <img src="https://image.tmdb.org/t/p/w500/kQs6keheMwCxJxrzV83VUwFtHkB.jpg"
-             alt="Póster de Anatomy of a Fall" class="modal-cineura-poster" />
-        <div class="modal-cineura-info">
-            <h2>Anatomy of a Fall</h2>
-            <p class="modal-cineura-meta">2023 · Drama · 151 min</p>
-            <p>Una mujer es juzgada tras la muerte de su esposo y las pruebas dejan dudas sobre lo ocurrido.</p>
-            <button type="button" class="btn btn-warning btn-sm" data-cerrar-modal="anatomy">Cerrar</button>
-        </div>
-    </div>
-</div>
+@section Scripts {
+    <script src="~/js/home-index.js" asp-append-version="true"></script>
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/home-index.css" asp-append-version="true" />
+}
