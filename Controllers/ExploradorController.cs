@@ -8,7 +8,12 @@ namespace Cineura.Controllers
 {
     public class ExploradorController : Controller
     {
-        public IActionResult Index(string busqueda, string genero, int? anio, int? duracionMaxima, string ordenar)
+        public IActionResult Index(
+            string busqueda,
+            string genero,
+            int? anio,
+            int? duracionMaxima,
+            string ordenar)
         {
             BD bd = new BD();
 
@@ -22,7 +27,9 @@ namespace Cineura.Controllers
                 if (!string.IsNullOrWhiteSpace(busqueda))
                 {
                     if (pelicula.Titulo == null ||
-                        !pelicula.Titulo.ToLower().Contains(busqueda.ToLower()))
+                        !pelicula.Titulo.Contains(
+                            busqueda,
+                            System.StringComparison.OrdinalIgnoreCase))
                     {
                         coincide = false;
                     }
@@ -31,7 +38,9 @@ namespace Cineura.Controllers
                 if (!string.IsNullOrWhiteSpace(genero))
                 {
                     if (pelicula.Genero == null ||
-                        !pelicula.Genero.ToLower().Contains(genero.ToLower()))
+                        !pelicula.Genero.Contains(
+                            genero,
+                            System.StringComparison.OrdinalIgnoreCase))
                     {
                         coincide = false;
                     }
@@ -54,6 +63,29 @@ namespace Cineura.Controllers
                 }
             }
 
+            // Si el título coincide exactamente y no hay otros filtros,
+            // abrir directamente la ficha de la película.
+            if (!string.IsNullOrWhiteSpace(busqueda) &&
+                string.IsNullOrWhiteSpace(genero) &&
+                !anio.HasValue &&
+                !duracionMaxima.HasValue)
+            {
+                Peliculas peliculaExacta = peliculasEncontradas
+                    .FirstOrDefault(pelicula =>
+                        pelicula.Titulo != null &&
+                        pelicula.Titulo.Equals(
+                            busqueda.Trim(),
+                            System.StringComparison.OrdinalIgnoreCase));
+
+                if (peliculaExacta != null)
+                {
+                    return RedirectToAction(
+                        "Detalles",
+                        "Home",
+                        new { id = peliculaExacta.IdPelicula });
+                }
+            }
+
             if (ordenar == "anio")
             {
                 peliculasEncontradas = peliculasEncontradas
@@ -73,7 +105,9 @@ namespace Cineura.Controllers
             ViewBag.DuracionMaxima = duracionMaxima;
             ViewBag.Ordenar = ordenar;
 
-            return View("~/Views/Home/Explorador.cshtml", peliculasEncontradas);
+            return View(
+                "~/Views/Home/Explorador.cshtml",
+                peliculasEncontradas);
         }
     }
 }

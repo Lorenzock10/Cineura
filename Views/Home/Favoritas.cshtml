@@ -1,67 +1,87 @@
- @model List<Cineura.Models.Peliculas>
+
+@model List<Cineura.Models.Peliculas>
 
 @{
     ViewData["Title"] = "Mis favoritas";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/Listas.css" asp-append-version="true" />
+}
+
 <div class="listas-pagina">
-    <h1>♥ Mis películas favoritas</h1>
+    <div class="listas-encabezado">
+        <h1><span>♥</span> Mis películas favoritas</h1>
+        <p>Tus películas preferidas, siempre a mano.</p>
+    </div>
 
     @if (TempData["Mensaje"] != null)
     {
-        <div class="alert alert-success" role="alert">
+        <div class="listas-mensaje">
             @TempData["Mensaje"]
         </div>
     }
 
     @if (Model == null || Model.Count == 0)
     {
-        <p class="lista-vacia">
-            Todavía no agregaste películas a Favoritas.
-            Explorá las películas y tocá "Favoritas".
-        </p>
+        <div class="listas-vacia">
+            <span class="listas-vacia-icono">♥</span>
+            <h2>Tu colección está vacía</h2>
+            <p>Cuando agregues películas a Favoritas, aparecerán acá.</p>
+            <a asp-controller="Explorador" asp-action="Index" class="listas-explorar">
+                Explorar películas
+            </a>
+        </div>
     }
     else
     {
-        @foreach (var pelicula in Model)
-        {
-            <div class="lista-pelicula">
-                @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
-                {
-                    <img src="@pelicula.PosterUrl"
-                         alt="Póster de @pelicula.Titulo"
-                         style="width:140px;max-width:100%;border-radius:8px;" />
-                }
-
-                <h2>
+        <div class="listas-grid">
+            @foreach (Cineura.Models.Peliculas pelicula in Model)
+            {
+                <div class="listas-poster-tarjeta">
                     <a asp-controller="Home"
                        asp-action="Detalles"
-                       asp-route-id="@pelicula.IdPelicula">
-                        @pelicula.Titulo
+                       asp-route-id="@pelicula.IdPelicula"
+                       class="listas-poster-enlace"
+                       aria-label="Ver detalles de @pelicula.Titulo">
+
+                        @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
+                        {
+                            <img src="@pelicula.PosterUrl"
+                                 alt="Póster de @pelicula.Titulo"
+                                 class="listas-poster" />
+                        }
+                        else
+                        {
+                            <div class="listas-poster listas-poster-sin-imagen">
+                                <span>🎬</span>
+                                <p>Ver película</p>
+                            </div>
+                        }
                     </a>
-                </h2>
 
-                <p>@pelicula.Anio · @pelicula.Genero · @pelicula.DuracionMinutos minutos</p>
+                    <form asp-controller="Home"
+                          asp-action="QuitarFavorito"
+                          method="post"
+                          class="listas-form-quitar">
 
-                <details>
-                    <summary>Ver detalles</summary>
-                    <p>@pelicula.Sinopsis</p>
-                    <p>
-                        Año: @pelicula.Anio<br />
-                        Género: @pelicula.Genero<br />
-                        Duración: @pelicula.DuracionMinutos minutos
-                    </p>
-                </details>
+                        <input type="hidden"
+                               name="idPelicula"
+                               value="@pelicula.IdPelicula" />
 
-                <form asp-controller="Home" asp-action="QuitarFavorito" method="post">
-                    <input type="hidden" name="idPelicula" value="@pelicula.IdPelicula" />
-                    <input type="hidden" name="returnUrl" value="/Home/Favoritas" />
+                        <input type="hidden"
+                               name="returnUrl"
+                               value="/Home/Favoritas" />
 
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        Quitar de Favoritas
-                    </button>
-                </form>
-            </div>
-        }
+                        <button type="submit"
+                                class="listas-quitar listas-quitar-favorita"
+                                aria-label="Quitar de Favoritas"
+                                title="Quitar de Favoritas">
+                            ♥
+                        </button>
+                    </form>
+                </div>
+            }
+        </div>
     }
 </div>

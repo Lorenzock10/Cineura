@@ -958,3 +958,221 @@ body {
         color: #cccccc;
     }
 } 
+
+
+/* Páginas de Favoritas y Watchlist */
+
+.listas-pagina {
+    width: min(1400px, 94%);
+    margin: 45px auto 70px;
+    color: #ffffff;
+    min-height: 60vh;
+}
+
+.listas-encabezado {
+    margin-bottom: 32px;
+}
+
+.listas-encabezado h1 {
+    color: #ffffff;
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 800;
+    margin: 0 0 10px;
+}
+
+.listas-encabezado h1 span {
+    color: #FBBF24;
+    margin-right: 8px;
+}
+
+.listas-encabezado > p {
+    color: #9CA3AF;
+    font-size: 15px;
+    margin: 0;
+}
+
+.listas-mensaje {
+    padding: 13px 17px;
+    margin-bottom: 24px;
+    background: #18251f;
+    border: 1px solid #315b43;
+    color: #b7f7cd;
+    border-radius: 10px;
+}
+
+/* Cuadrícula de pósters */
+
+.listas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 28px 22px;
+}
+
+.listas-poster-tarjeta {
+    position: relative;
+    min-width: 0;
+    border-radius: 12px;
+}
+
+.listas-poster-enlace {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #1F2937;
+    outline-offset: 4px;
+}
+
+.listas-poster {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.listas-poster-enlace:hover .listas-poster {
+    transform: scale(1.06);
+    filter: brightness(1.08);
+}
+
+.listas-poster-sin-imagen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #FBBF24;
+}
+
+.listas-poster-sin-imagen span {
+    font-size: 48px;
+}
+
+.listas-poster-sin-imagen p {
+    color: #D1D5DB;
+    margin: 0;
+}
+
+/* Botón para quitar una película */
+
+.listas-form-quitar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    margin: 0;
+}
+
+.listas-quitar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 23px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.listas-quitar-favorita {
+    background: #EF4444;
+}
+
+.listas-quitar-watchlist {
+    background: #111827;
+    font-size: 28px;
+}
+
+.listas-quitar:hover {
+    transform: scale(1.1);
+    background: #B91C1C;
+}
+
+/* Estado vacío */
+
+.listas-vacia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 65px 20px;
+    background: #151b27;
+    border: 1px solid #293244;
+    border-radius: 16px;
+}
+
+.listas-vacia-icono {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 66px;
+    height: 66px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: #29251a;
+    color: #FBBF24;
+    font-size: 32px;
+}
+
+.listas-vacia h2 {
+    color: #ffffff;
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.listas-vacia p {
+    color: #9CA3AF;
+    margin-bottom: 22px;
+}
+
+.listas-explorar {
+    display: inline-block;
+    padding: 11px 22px;
+    border-radius: 8px;
+    background: #FBBF24;
+    color: #111827;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.listas-explorar:hover {
+    background: #F59E0B;
+    color: #111827;
+    transform: translateY(-2px);
+}
+
+/* Adaptación a pantallas chicas */
+
+@media (max-width: 600px) {
+    .listas-pagina {
+        width: 92%;
+        margin-top: 30px;
+    }
+
+    .listas-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px 12px;
+    }
+
+    .listas-form-quitar {
+        top: 7px;
+        right: 7px;
+    }
+
+    .listas-quitar {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+    }
+}
