@@ -125,9 +125,7 @@
     font-weight: 900;
 }
 
-/* =========================================
-   PORTADA E INFORMACION
-   ========================================= */
+/* PORTADA E INFORMACION */
 
 .cine-portada {
     display: grid;
@@ -213,6 +211,65 @@
     background: var(--cine-rojo);
     border-radius: 50%;
     box-shadow: 0 0 12px rgba(239, 68, 68, 0.65);
+}
+
+/* PUNTUACION CINEURA */
+
+.cine-calificacion {
+    margin-top: 20px;
+    padding: 16px 10px;
+    text-align: center;
+    background: rgba(21, 26, 38, 0.75);
+    border: 1px solid rgba(251, 191, 36, 0.18);
+    border-radius: 12px;
+}
+
+.cine-calificacion-titulo {
+    margin: 0 0 10px;
+    color: #a6afc0;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.cine-estrellas {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+}
+
+.cine-estrella {
+    padding: 2px;
+    color: #4b5563;
+    background: transparent;
+    border: 0;
+    font-family: inherit;
+    font-size: 29px;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.cine-estrella:hover,
+.cine-estrella.activa {
+    color: #fbbf24;
+    text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+}
+
+.cine-estrella:hover {
+    transform: scale(1.15);
+}
+
+.cine-estrella:focus-visible {
+    outline: 2px solid #ef4444;
+    outline-offset: 3px;
+    border-radius: 5px;
+}
+
+.cine-calificacion-texto {
+    margin: 10px 0 0;
+    color: #9ca3af;
+    font-size: 11px;
 }
 
 .cine-informacion {
@@ -314,9 +371,7 @@
     background: var(--cine-rojo);
 }
 
-/* =========================================
-   SINOPSIS
-   ========================================= */
+/* SINOPSIS */
 
 .cine-seccion-mini {
     display: inline-block;
@@ -344,9 +399,7 @@
     overflow-wrap: anywhere;
 }
 
-/* =========================================
-   DIRECTOR Y REPARTO
-   ========================================= */
+/* DIRECTOR Y REPARTO */
 
 .cine-creditos {
     display: grid;
@@ -402,9 +455,7 @@
     color: var(--cine-secundario);
 }
 
-/* =========================================
-   BOTONES
-   ========================================= */
+/* BOTONES */
 
 .cine-acciones {
     display: flex;
@@ -486,9 +537,7 @@
     line-height: 1.7;
 }
 
-/* =========================================
-   PANEL INFERIOR
-   ========================================= */
+/* PANEL INFERIOR */
 
 .cine-panel-extra {
     margin-top: 14px;
@@ -648,9 +697,7 @@
     line-height: 0.6;
 }
 
-/* =========================================
-   TABLETS
-   ========================================= */
+/* TABLETS */
 
 @media (max-width: 900px) {
     .cine-portada {
@@ -672,9 +719,7 @@
     }
 }
 
-/* =========================================
-   CELULARES
-   ========================================= */
+/* CELULARES */
 
 @media (max-width: 620px) {
     .cine-detalle {
@@ -822,9 +867,7 @@
     }
 }
 
-/* =========================================
-   ACCESIBILIDAD
-   ========================================= */
+/* ACCESIBILIDAD */
 
 @media (prefers-reduced-motion: reduce) {
     .cine-detalle *,

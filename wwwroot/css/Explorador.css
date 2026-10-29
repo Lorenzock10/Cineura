@@ -25,9 +25,7 @@
     box-sizing: border-box;
 }
 
-/* ==============================
-   HERO
-============================== */
+/* HERO */
 
 .explorador-hero {
     position: relative;
@@ -39,9 +37,9 @@
     display: flex;
     align-items: center;
     background:
-        radial-gradient(ellipse at 85% 45%, rgba(239, 68, 68, 0.16), transparent 35%),
+        radial-gradient(ellipse at 85% 45%, rgba(239,68,68,.16), transparent 35%),
         linear-gradient(120deg, #1f2937 0%, #171d2a 55%, #111827 100%);
-    border: 1px solid rgba(251, 191, 36, 0.14);
+    border: 1px solid rgba(251,191,36,.14);
     border-radius: 22px;
 }
 
@@ -67,7 +65,7 @@
 }
 
 .explorador-hero h1 {
-    color: #ffffff;
+    color: #fff;
     font-size: clamp(35px, 5vw, 58px);
     line-height: 1.1;
     letter-spacing: -2px;
@@ -93,27 +91,25 @@
     gap: 20px;
     padding: 13px 19px;
     background: var(--explorador-rojo);
-    color: #ffffff;
+    color: #fff;
     border: 1px solid var(--explorador-rojo);
     border-radius: 8px;
     font-size: 13px;
     font-weight: 800;
     text-decoration: none;
-    transition: 0.25s ease;
+    transition: .25s ease;
 }
 
 .explorador-hero-boton:hover {
     background: #dc2626;
-    color: #ffffff;
+    color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+    box-shadow: 0 8px 25px rgba(239,68,68,.2);
 }
 
 .explorador-hero-boton span {
     font-size: 18px;
 }
-
-/* Decoración cinematográfica */
 
 .explorador-hero-decoracion {
     position: absolute;
@@ -127,7 +123,7 @@
 .explorador-hero-circulo {
     position: absolute;
     border-radius: 50%;
-    border: 1px solid rgba(251, 191, 36, 0.2);
+    border: 1px solid rgba(251,191,36,.2);
 }
 
 .explorador-hero-circulo-uno {
@@ -135,7 +131,7 @@
     height: 310px;
     top: 15px;
     right: 35px;
-    background: radial-gradient(circle, rgba(239, 68, 68, 0.13), transparent 68%);
+    background: radial-gradient(circle, rgba(239,68,68,.13), transparent 68%);
 }
 
 .explorador-hero-circulo-dos {
@@ -143,7 +139,7 @@
     height: 220px;
     top: 60px;
     right: 80px;
-    border-color: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239,68,68,.3);
 }
 
 .explorador-hero-estrella {
@@ -159,15 +155,13 @@
     position: absolute;
     bottom: 35px;
     right: 65px;
-    color: rgba(255, 255, 255, 0.05);
+    color: rgba(255,255,255,.05);
     font-size: 40px;
     font-weight: 900;
     letter-spacing: 8px;
 }
 
-/* ==============================
-   TÍTULOS DE SECCIÓN
-============================== */
+/* TÍTULOS */
 
 .explorador-buscador-seccion,
 .explorador-resultados {
@@ -190,10 +184,10 @@
 
 .explorador-seccion-titulo h2,
 .explorador-resultados-titulo h2 {
-    color: #ffffff;
+    color: #fff;
     font-size: 25px;
     font-weight: 900;
-    letter-spacing: -0.5px;
+    letter-spacing: -.5px;
     margin: 0;
 }
 
@@ -203,9 +197,7 @@
     margin: 9px 0 0;
 }
 
-/* ==============================
-   BUSCADOR
-============================== */
+/* BUSCADOR */
 
 .explorador-buscador {
     margin: 0 0 55px;
@@ -213,7 +205,7 @@
     background: linear-gradient(145deg, #1f2937, #192230);
     border: 1px solid var(--explorador-borde);
     border-radius: 16px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 15px 35px rgba(0,0,0,.12);
 }
 
 .explorador-busqueda-principal {
@@ -225,7 +217,7 @@
     background: #111827;
     border: 1px solid #4b5563;
     border-radius: 10px;
-    transition: border-color 0.2s ease;
+    transition: border-color .2s ease;
 }
 
 .explorador-busqueda-principal:focus-within {
@@ -244,14 +236,15 @@
     height: 43px;
     padding: 10px 0;
     background: transparent;
-    color: #ffffff;
+    color: #fff;
     border: none;
     outline: none;
     font-family: inherit;
     font-size: 14px;
 }
 
-.explorador-busqueda-principal input::placeholder {
+.explorador-busqueda-principal input::placeholder,
+.explorador-campo input::placeholder {
     color: #7f8a9d;
 }
 
@@ -259,14 +252,14 @@
     min-width: 110px;
     padding: 12px 18px;
     background: var(--explorador-rojo);
-    color: #ffffff;
+    color: #fff;
     border: none;
     border-radius: 7px;
     font-family: inherit;
     font-size: 13px;
     font-weight: 800;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: .2s ease;
 }
 
 .explorador-boton-buscar:hover {
@@ -307,11 +300,7 @@
     outline: none;
     font-family: inherit;
     font-size: 12px;
-    transition: border-color 0.2s ease;
-}
-
-.explorador-campo input::placeholder {
-    color: #7f8a9d;
+    transition: border-color .2s ease;
 }
 
 .explorador-campo input:focus,
@@ -330,7 +319,7 @@
     gap: 15px;
     margin-top: 22px;
     padding-top: 17px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(255,255,255,.06);
 }
 
 .explorador-buscador-pie > span {
@@ -346,7 +335,7 @@
     font-size: 12px;
     font-weight: 700;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color .2s ease;
 }
 
 .explorador-limpiar:hover {
@@ -357,9 +346,7 @@
     font-size: 17px;
 }
 
-/* ==============================
-   RESULTADOS
-============================== */
+/* RESULTADOS Y CONTADOR */
 
 .explorador-resultados-titulo {
     display: flex;
@@ -398,241 +385,111 @@
 }
 
 /* ==============================
-   TARJETAS DE PELÍCULAS
+   CARRUSEL DE PELÍCULAS
 ============================== */
 
-.explorador-peliculas {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 22px;
-}
-
-.explorador-tarjeta {
-    min-width: 0;
-    overflow: hidden;
+.explorador-carrusel {
     display: flex;
-    flex-direction: column;
-    background: #1f2937;
-    border: 1px solid #303b4c;
-    border-radius: 13px;
-    transition:
-        transform 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-    animation: exploradorAparecer 0.5s ease both;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
 }
 
-.explorador-tarjeta:hover {
-    transform: translateY(-7px);
-    border-color: rgba(251, 191, 36, 0.6);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+.explorador-peliculas-carrusel {
+    display: flex;
+    flex: 1;
+    gap: 12px;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 8px 2px 14px;
 }
 
-/* Póster */
+.explorador-peliculas-carrusel::-webkit-scrollbar {
+    display: none;
+}
 
-.explorador-poster-contenedor {
-    position: relative;
-    height: 310px;
+/* Cuatro pósteres visibles en computadora */
+.explorador-peliculas-carrusel .explorador-poster-link {
+    display: block;
+    flex: 0 0 calc((100% - 36px) / 4);
+    min-width: 0;
+    aspect-ratio: 2 / 3;
     overflow: hidden;
-    background: #111827;
+    border-radius: 8px;
+    background: #1f2937;
+    text-decoration: none;
+    outline-offset: 3px;
 }
 
-.explorador-poster {
+.explorador-peliculas-carrusel .explorador-poster-link:focus-visible {
+    outline: 2px solid var(--explorador-dorado);
+}
+
+.explorador-peliculas-carrusel .explorador-poster {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform .25s ease;
 }
 
-.explorador-tarjeta:hover .explorador-poster {
-    transform: scale(1.06);
+.explorador-peliculas-carrusel .explorador-poster-link:hover .explorador-poster {
+    transform: scale(1.04);
 }
 
-.explorador-poster-anio {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    z-index: 2;
-    padding: 6px 10px;
-    color: #ffffff;
-    background: rgba(17, 24, 39, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 800;
-    backdrop-filter: blur(8px);
-}
-
-.explorador-poster-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: linear-gradient(
-        to top,
-        rgba(17, 24, 39, 0.92),
-        rgba(17, 24, 39, 0.15)
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.explorador-tarjeta:hover .explorador-poster-overlay {
-    opacity: 1;
-}
-
-.explorador-poster-boton {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 17px;
-    background: var(--explorador-rojo);
-    color: #ffffff;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 800;
-    text-decoration: none;
-    transform: translateY(10px);
-    transition: transform 0.3s ease, background 0.2s ease;
-}
-
-.explorador-tarjeta:hover .explorador-poster-boton {
-    transform: translateY(0);
-}
-
-.explorador-poster-boton:hover {
-    background: #dc2626;
-    color: #ffffff;
-}
-
-.explorador-poster-boton span {
-    font-size: 16px;
-}
-
-/* Sin póster */
-
-.explorador-poster-vacio {
+/* Póster de reemplazo si falta una imagen */
+.explorador-carrusel .explorador-poster-vacio {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background:
-        radial-gradient(circle at center, #283548, #111827);
+    background: radial-gradient(circle, #283548, #111827);
     color: #9ca3af;
 }
 
-.explorador-poster-vacio span {
+.explorador-carrusel .explorador-poster-vacio span {
     color: var(--explorador-dorado);
-    font-size: 45px;
+    font-size: 30px;
 }
 
-.explorador-poster-vacio p {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: 3px;
-    margin: 10px 0;
-}
-
-.explorador-poster-vacio small {
-    color: #9ca3af;
-    font-size: 11px;
-}
-
-/* Información */
-
-.explorador-informacion {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 17px;
-}
-
-.explorador-informacion h3 {
-    overflow: hidden;
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 800;
-    line-height: 1.5;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin: 0 0 14px;
-}
-
-.explorador-datos {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    min-height: 27px;
-    margin-bottom: 18px;
-}
-
-.explorador-genero {
-    max-width: 100%;
-    overflow: hidden;
-    padding: 5px 9px;
-    color: #fca5a5;
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.15);
-    border-radius: 5px;
+.explorador-carrusel .explorador-poster-vacio p {
+    color: #fff;
     font-size: 10px;
-    font-weight: 700;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    font-weight: 900;
+    letter-spacing: 2px;
 }
 
-.explorador-duracion {
-    color: #9ca3af;
-    font-size: 11px;
-    white-space: nowrap;
-}
-
-.explorador-detalle {
+/* Flechas */
+.explorador-carrusel .explorador-flecha {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 42px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: auto;
-    padding: 11px 13px;
-    color: #ffffff;
-    background: rgba(239, 68, 68, 0.09);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    border-radius: 7px;
-    font-size: 12px;
-    font-weight: 800;
-    text-decoration: none;
-    transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.explorador-detalle span {
+    justify-content: center;
+    padding: 0;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    background: #1f2937;
     color: var(--explorador-dorado);
-    font-size: 17px;
-    transition: transform 0.2s ease;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
 }
 
-.explorador-detalle:hover {
-    color: #ffffff;
-    background: var(--explorador-rojo);
-    border-color: var(--explorador-rojo);
+.explorador-carrusel .explorador-flecha:hover {
+    background: var(--explorador-dorado);
+    color: #111827;
 }
 
-.explorador-detalle:hover span {
-    color: #ffffff;
-    transform: translateX(3px);
-}
-
-/* ==============================
-   SIN RESULTADOS
-============================== */
+/* SIN RESULTADOS */
 
 .explorador-sin-resultados {
-    grid-column: 1 / -1;
     padding: 55px 20px;
     text-align: center;
     background: #1f2937;
@@ -655,7 +512,7 @@
 }
 
 .explorador-sin-resultados h3 {
-    color: #ffffff;
+    color: #fff;
     font-size: 20px;
     font-weight: 900;
     margin: 0 0 10px;
@@ -670,7 +527,7 @@
 .explorador-sin-resultados a {
     display: inline-block;
     padding: 12px 18px;
-    color: #ffffff;
+    color: #fff;
     background: var(--explorador-rojo);
     border-radius: 7px;
     font-size: 12px;
@@ -682,9 +539,7 @@
     background: #dc2626;
 }
 
-/* ==============================
-   CIERRE
-============================== */
+/* CIERRE */
 
 .explorador-final {
     display: flex;
@@ -707,25 +562,11 @@
     margin: 0;
 }
 
-/* ==============================
-   ANIMACIONES
-============================== */
-
-@keyframes exploradorAparecer {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* ANIMACIONES */
 
 @keyframes exploradorBrillo {
     0%, 100% {
-        opacity: 0.7;
+        opacity: .7;
         transform: scale(1);
     }
 
@@ -735,9 +576,7 @@
     }
 }
 
-/* ==============================
-   RESPONSIVE
-============================== */
+/* RESPONSIVE */
 
 @media (max-width: 1050px) {
     .explorador-hero {
@@ -748,12 +587,13 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .explorador-peliculas {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+    .explorador-hero-decoracion {
+        opacity: .65;
     }
 
-    .explorador-hero-decoracion {
-        opacity: 0.65;
+    /* Cuatro pósteres visibles en pantallas medianas */
+    .explorador-peliculas-carrusel .explorador-poster-link {
+        flex-basis: calc((100% - 36px) / 4);
     }
 }
 
@@ -779,7 +619,7 @@
 
     .explorador-hero-decoracion {
         right: -80px;
-        opacity: 0.3;
+        opacity: .3;
     }
 
     .explorador-seccion-titulo h2,
@@ -818,36 +658,6 @@
         flex-direction: column;
     }
 
-    .explorador-peliculas {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 13px;
-    }
-
-    .explorador-poster-contenedor {
-        height: 240px;
-    }
-
-    .explorador-informacion {
-        padding: 12px;
-    }
-
-    .explorador-informacion h3 {
-        font-size: 13px;
-    }
-
-    .explorador-datos {
-        gap: 6px;
-    }
-
-    .explorador-detalle {
-        padding: 10px;
-        font-size: 11px;
-    }
-
-    .explorador-poster-overlay {
-        display: none;
-    }
-
     .explorador-resultados-titulo {
         align-items: flex-start;
     }
@@ -865,6 +675,26 @@
     .explorador-cantidad-texto {
         font-size: 8px;
     }
+
+    .explorador-carrusel {
+        gap: 6px;
+    }
+
+    .explorador-peliculas-carrusel {
+        gap: 8px;
+    }
+
+    /* Tres pósteres visibles en celular */
+    .explorador-peliculas-carrusel .explorador-poster-link {
+        flex-basis: calc((100% - 16px) / 3);
+    }
+
+    .explorador-carrusel .explorador-flecha {
+        flex-basis: 28px;
+        width: 28px;
+        height: 36px;
+        font-size: 16px;
+    }
 }
 
 @media (max-width: 380px) {
@@ -872,11 +702,19 @@
         font-size: 32px;
     }
 
-    .explorador-peliculas {
-        grid-template-columns: 1fr;
+    .explorador-peliculas-carrusel .explorador-poster-link {
+        flex-basis: calc((100% - 8px) / 2);
     }
+}
 
-    .explorador-poster-contenedor {
-        height: 330px;
-    }
+.explorador-hero-logo {
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 150px);
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    width: 220px;
+    max-width: 70%;
+    height: auto;
+    object-fit: contain;
 }

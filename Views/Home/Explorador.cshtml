@@ -3,6 +3,11 @@
 
 @{
     ViewData["Title"] = "Explorador | Cineura";
+
+    var peliculasCarrusel = Model
+        .Where(p => !p.Titulo.Contains("Toy Story", StringComparison.OrdinalIgnoreCase))
+        .Take(36)
+        .ToList();
 }
 
 <link rel="stylesheet" href="~/css/Explorador.css" asp-append-version="true" />
@@ -10,17 +15,13 @@
 <main class="explorador">
 
     <section class="explorador-hero">
-
         <div class="explorador-hero-contenido">
             <span class="explorador-etiqueta">
                 <span class="explorador-etiqueta-icono">✦</span>
                 TU PRÓXIMA PELÍCULA TE ESPERA
             </span>
 
-            <h1>
-                El próximo gran<br />
-                <span>descubrimiento</span>
-            </h1>
+            <h1>El próximo gran<br /><span>descubrimiento</span></h1>
 
             <p>
                 Historias que te atrapan. Mundos que te sorprenden.
@@ -28,22 +29,21 @@
             </p>
 
             <a href="#peliculas" class="explorador-hero-boton">
-                Explorar películas
-                <span>↓</span>
+                Explorar películas <span>↓</span>
             </a>
         </div>
 
         <div class="explorador-hero-decoracion">
-            <div class="explorador-hero-circulo explorador-hero-circulo-uno"></div>
-            <div class="explorador-hero-circulo explorador-hero-circulo-dos"></div>
-            <div class="explorador-hero-estrella">✦</div>
-            <div class="explorador-hero-texto">CINEURA</div>
-        </div>
+    <div class="explorador-hero-circulo explorador-hero-circulo-uno"></div>
+    <div class="explorador-hero-circulo explorador-hero-circulo-dos"></div>
 
+    <img src="/imagenes/cineura.jpg"
+         alt="Logo de Cineura"
+         style="display:block; width:280px; height:auto; object-fit:contain;" />
+</div>
     </section>
 
     <section class="explorador-buscador-seccion">
-
         <div class="explorador-seccion-titulo">
             <div>
                 <span class="explorador-mini-etiqueta">ENCONTRÁ TU PRÓXIMA HISTORIA</span>
@@ -52,9 +52,7 @@
         </div>
 
         <form method="get" action="/Explorador/Index" class="explorador-buscador">
-
             <div class="explorador-busqueda-principal">
-
                 <span class="explorador-icono-busqueda">⌕</span>
 
                 <input type="text"
@@ -66,14 +64,11 @@
                 <button type="submit" class="explorador-boton-buscar">
                     Buscar
                 </button>
-
             </div>
 
             <div class="explorador-filtros">
-
                 <div class="explorador-campo">
                     <label for="genero">GÉNERO</label>
-
                     <select id="genero" name="genero">
                         <option value="">Todos los géneros</option>
                         <option value="Acción" selected="@(ViewBag.Genero == "Acción" ? "selected" : null)">Acción</option>
@@ -89,7 +84,6 @@
 
                 <div class="explorador-campo">
                     <label for="anio">AÑO</label>
-
                     <input type="number"
                            id="anio"
                            name="anio"
@@ -99,7 +93,6 @@
 
                 <div class="explorador-campo">
                     <label for="duracionMaxima">DURACIÓN</label>
-
                     <select id="duracionMaxima" name="duracionMaxima">
                         <option value="">Cualquier duración</option>
                         <option value="90" selected="@(ViewBag.DuracionMaxima?.ToString() == "90" ? "selected" : null)">Hasta 90 min</option>
@@ -111,32 +104,24 @@
 
                 <div class="explorador-campo">
                     <label for="ordenar">ORDENAR POR</label>
-
                     <select id="ordenar" name="ordenar">
                         <option value="titulo" selected="@(ViewBag.Ordenar != "anio" ? "selected" : null)">Título</option>
                         <option value="anio" selected="@(ViewBag.Ordenar == "anio" ? "selected" : null)">Año más reciente</option>
                     </select>
                 </div>
-
             </div>
 
             <div class="explorador-buscador-pie">
                 <span>✦ Personalizá tu búsqueda con los filtros</span>
-
                 <a href="/Explorador/Index" class="explorador-limpiar">
-                    Limpiar filtros
-                    <span>↺</span>
+                    Limpiar filtros <span>↺</span>
                 </a>
             </div>
-
         </form>
-
     </section>
 
     <section class="explorador-resultados" id="peliculas">
-
         <div class="explorador-resultados-titulo">
-
             <div>
                 <span class="explorador-mini-etiqueta">EL CATÁLOGO DE CINEURA</span>
                 <h2>Películas para descubrir</h2>
@@ -144,101 +129,64 @@
             </div>
 
             <div class="explorador-cantidad">
-                <span class="explorador-cantidad-numero">@Model.Count</span>
+                <span class="explorador-cantidad-numero">@peliculasCarrusel.Count</span>
                 <span class="explorador-cantidad-texto">PELÍCULAS</span>
             </div>
-
         </div>
 
-        <div class="explorador-peliculas">
+        @if (peliculasCarrusel.Count > 0)
+        {
+            <div class="explorador-carrusel">
+                <button type="button"
+                        class="explorador-flecha"
+                        onclick="moverCarrusel(-1)"
+                        aria-label="Películas anteriores">
+                    &#10094;
+                </button>
 
-            @if (Model.Count > 0)
-            {
-                @foreach (Cineura.Models.Peliculas pelicula in Model)
-                {
-                    <article class="explorador-tarjeta">
-
-                        <div class="explorador-poster-contenedor">
+                <div class="explorador-peliculas-carrusel" id="carruselPeliculas">
+                    @foreach (Cineura.Models.Peliculas pelicula in peliculasCarrusel)
+                    {
+                        <a href="/Home/Detalles/@pelicula.IdPelicula"
+                           class="explorador-poster-link"
+                           title="@pelicula.Titulo"
+                           aria-label="Ver detalle de @pelicula.Titulo">
 
                             @if (!string.IsNullOrEmpty(pelicula.PosterUrl))
                             {
                                 <img class="explorador-poster"
                                      src="@pelicula.PosterUrl"
-                                     alt="Póster de @pelicula.Titulo" />
+                                     alt="Póster de @pelicula.Titulo"
+                                     loading="lazy" />
                             }
                             else
                             {
                                 <div class="explorador-poster-vacio">
                                     <span>✦</span>
                                     <p>CINEURA</p>
-                                    <small>Póster no disponible</small>
                                 </div>
                             }
-
-                            <div class="explorador-poster-overlay">
-                                <a href="/Home/Detalles/@pelicula.IdPelicula"
-                                   class="explorador-poster-boton">
-                                    Ver película
-                                    <span>↗</span>
-                                </a>
-                            </div>
-
-                            <span class="explorador-poster-anio">
-                                @pelicula.Anio
-                            </span>
-
-                        </div>
-
-                        <div class="explorador-informacion">
-
-                            <h3 title="@pelicula.Titulo">
-                                @pelicula.Titulo
-                            </h3>
-
-                            <div class="explorador-datos">
-
-                                <span class="explorador-genero">
-                                    @pelicula.Genero
-                                </span>
-
-                                <span class="explorador-duracion">
-                                    ◷ @pelicula.DuracionMinutos min
-                                </span>
-
-                            </div>
-
-                            <a href="/Home/Detalles/@pelicula.IdPelicula"
-                               class="explorador-detalle">
-                                Ver detalle
-                                <span>→</span>
-                            </a>
-
-                        </div>
-
-                    </article>
-                }
-            }
-            else
-            {
-                <div class="explorador-sin-resultados">
-
-                    <div class="explorador-sin-resultados-icono">⌕</div>
-
-                    <h3>No encontramos películas</h3>
-
-                    <p>
-                        Probá cambiando la búsqueda o quitando alguno de los filtros.
-                    </p>
-
-                    <a href="/Explorador/Index">
-                        Ver todas las películas
-                    </a>
-
+                        </a>
+                    }
                 </div>
-            }
 
-        </div>
-
+                <button type="button"
+                        class="explorador-flecha"
+                        onclick="moverCarrusel(1)"
+                        aria-label="Películas siguientes">
+                    &#10095;
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="explorador-sin-resultados">
+                <div class="explorador-sin-resultados-icono">⌕</div>
+                <h3>No encontramos películas</h3>
+                <p>Probá cambiando la búsqueda o quitando alguno de los filtros.</p>
+                <a href="/Explorador/Index">Ver todas las películas</a>
+            </div>
+        }
     </section>
 
     <div class="explorador-final">
@@ -246,5 +194,23 @@
         <p>Hay una historia esperando ser descubierta.</p>
         <span>✦</span>
     </div>
-
 </main>
+
+<script>
+    function moverCarrusel(direccion) {
+        const carrusel = document.getElementById("carruselPeliculas");
+        if (!carrusel) return;
+
+        const poster = carrusel.querySelector(".explorador-poster-link");
+        if (!poster) return;
+
+        const estilos = window.getComputedStyle(carrusel);
+        const espacio = parseFloat(estilos.gap) || 0;
+        const anchoPoster = poster.getBoundingClientRect().width + espacio;
+
+        carrusel.scrollBy({
+            left: direccion * anchoPoster * 4,
+            behavior: "smooth"
+        });
+    }
+</script>

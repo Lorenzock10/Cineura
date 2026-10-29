@@ -62,6 +62,7 @@
         <section class="cine-portada">
 
             <div class="cine-poster-columna">
+
                 @if (!string.IsNullOrWhiteSpace(poster))
                 {
                     <div class="cine-poster-marco">
@@ -82,6 +83,52 @@
                     <span class="cine-punto"></span>
                     FICHA DE CINEURA
                 </span>
+
+                <!-- PUNTUACIÓN DE CINEURA -->
+                <div class="cine-calificacion">
+                    <p class="cine-calificacion-titulo">TU PUNTUACIÓN</p>
+
+                    <div class="cine-estrellas"
+                         role="group"
+                         aria-label="Puntuar película">
+
+                        <button type="button"
+                                class="cine-estrella"
+                                data-valor="1"
+                                aria-label="1 de 5"
+                                aria-pressed="false">✦</button>
+
+                        <button type="button"
+                                class="cine-estrella"
+                                data-valor="2"
+                                aria-label="2 de 5"
+                                aria-pressed="false">✦</button>
+
+                        <button type="button"
+                                class="cine-estrella"
+                                data-valor="3"
+                                aria-label="3 de 5"
+                                aria-pressed="false">✦</button>
+
+                        <button type="button"
+                                class="cine-estrella"
+                                data-valor="4"
+                                aria-label="4 de 5"
+                                aria-pressed="false">✦</button>
+
+                        <button type="button"
+                                class="cine-estrella"
+                                data-valor="5"
+                                aria-label="5 de 5"
+                                aria-pressed="false">✦</button>
+
+                    </div>
+
+                    <p class="cine-calificacion-texto" aria-live="polite">
+                        Elegí tu puntuación
+                    </p>
+                </div>
+
             </div>
 
             <div class="cine-informacion">
@@ -96,6 +143,7 @@
                 <h1 class="cine-titulo">@titulo</h1>
 
                 <div class="cine-datos-principales">
+
                     @if (Model.Anio > 0)
                     {
                         <span class="cine-dato">
@@ -125,6 +173,7 @@
                             ✦ @Model.Animo
                         </span>
                     }
+
                 </div>
 
                 <div class="cine-linea-decorativa">
@@ -355,3 +404,31 @@
 
     </div>
 </main>
+
+<script>
+    document.querySelectorAll(".cine-calificacion").forEach(function (calificacion) {
+        const estrellas = calificacion.querySelectorAll(".cine-estrella");
+        const texto = calificacion.querySelector(".cine-calificacion-texto");
+
+        estrellas.forEach(function (estrella) {
+            estrella.addEventListener("click", function () {
+                const valor = Number(estrella.dataset.valor);
+
+                estrellas.forEach(function (otra) {
+                    const valorOtra = Number(otra.dataset.valor);
+                    const seleccionada = valorOtra <= valor;
+
+                    otra.classList.toggle("activa", seleccionada);
+                    otra.setAttribute(
+                        "aria-pressed",
+                        valorOtra === valor ? "true" : "false"
+                    );
+                });
+
+                texto.textContent = valor + (valor === 1
+                    ? " estrella de 5"
+                    : " estrellas de 5");
+            });
+        });
+    });
+</script>
