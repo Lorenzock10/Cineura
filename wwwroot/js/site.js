@@ -177,3 +177,75 @@ if (botonOtra) {
 }
 
 window.agregarTexto = agregarTexto;
+
+document.addEventListener("DOMContentLoaded", function () {
+    const calificacion = document.querySelector(".cine-calificacion");
+
+    if (calificacion) {
+        const estrellas = calificacion.querySelectorAll(".cine-estrella");
+        const formulario = document.getElementById("form-puntuacion");
+        const puntuacion = document.getElementById("puntuacion-seleccionada");
+        const textos = calificacion.querySelectorAll(".cine-calificacion-texto");
+
+        if (formulario && puntuacion) {
+            function actualizarEstrellas(valor) {
+                estrellas.forEach(function (estrella) {
+                    const numero = Number(estrella.dataset.valor);
+
+                    if (numero <= valor) {
+                        estrella.classList.add("activa");
+                    } else {
+                        estrella.classList.remove("activa");
+                    }
+
+                    if (numero === valor) {
+                        estrella.setAttribute("aria-pressed", "true");
+                    } else {
+                        estrella.setAttribute("aria-pressed", "false");
+                    }
+                });
+            }
+
+            const inicial = Number(puntuacion.value);
+            actualizarEstrellas(inicial);
+
+            if (inicial > 0 && textos.length > 0) {
+                textos[0].textContent = "Tu puntuación: " + inicial + " de 5";
+            }
+
+            estrellas.forEach(function (estrella) {
+                estrella.addEventListener("click", function () {
+                    const valor = Number(estrella.dataset.valor);
+
+                    puntuacion.value = valor;
+                    actualizarEstrellas(valor);
+                    formulario.submit();
+                });
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const botonesLeerMas = document.querySelectorAll(".cine-review-leer-mas");
+
+    botonesLeerMas.forEach(function (boton) {
+
+        boton.addEventListener("click", function () {
+
+            const texto = boton.previousElementSibling;
+
+            texto.classList.toggle("expandido");
+
+            if (texto.classList.contains("expandido")) {
+                boton.textContent = "Leer menos";
+            } else {
+                boton.textContent = "Leer más";
+            }
+
+        });
+
+    });
+
+});
+});

@@ -23,6 +23,13 @@
     bool usuarioConectado = ViewBag.UsuarioConectado == true;
     bool esFavorito = ViewBag.EsFavorito == true;
     bool estaEnWatchlist = ViewBag.EstaEnWatchlist == true;
+
+    int cantidadComentarios = 0;
+
+    if (ViewBag.Comentarios != null)
+    {
+        cantidadComentarios = ViewBag.Comentarios.Count;
+    }
 }
 
 @section Styles {
@@ -86,47 +93,53 @@
 
                 <!-- PUNTUACIÓN DE CINEURA -->
                 <div class="cine-calificacion">
+
                     <p class="cine-calificacion-titulo">TU PUNTUACIÓN</p>
 
-                    <div class="cine-estrellas"
-                         role="group"
-                         aria-label="Puntuar película">
+                    <form asp-controller="Home"
+                          asp-action="GuardarPuntuacion"
+                          method="post"
+                          id="form-puntuacion">
 
-                        <button type="button"
-                                class="cine-estrella"
-                                data-valor="1"
-                                aria-label="1 de 5"
-                                aria-pressed="false">✦</button>
+                        <input type="hidden"
+                               name="idPelicula"
+                               value="@Model.IdPelicula" />
 
-                        <button type="button"
-                                class="cine-estrella"
-                                data-valor="2"
-                                aria-label="2 de 5"
-                                aria-pressed="false">✦</button>
+                        <input type="hidden"
+                               name="puntuacion"
+                               id="puntuacion-seleccionada"
+                               value="@ViewBag.MiPuntuacion" />
 
-                        <button type="button"
-                                class="cine-estrella"
-                                data-valor="3"
-                                aria-label="3 de 5"
-                                aria-pressed="false">✦</button>
+                        <div class="cine-estrellas"
+                             role="group"
+                             aria-label="Puntuar película">
 
-                        <button type="button"
-                                class="cine-estrella"
-                                data-valor="4"
-                                aria-label="4 de 5"
-                                aria-pressed="false">✦</button>
+                            <button type="button" class="cine-estrella" data-valor="1" aria-label="1 de 5">✦</button>
+                            <button type="button" class="cine-estrella" data-valor="2" aria-label="2 de 5">✦</button>
+                            <button type="button" class="cine-estrella" data-valor="3" aria-label="3 de 5">✦</button>
+                            <button type="button" class="cine-estrella" data-valor="4" aria-label="4 de 5">✦</button>
+                            <button type="button" class="cine-estrella" data-valor="5" aria-label="5 de 5">✦</button>
 
-                        <button type="button"
-                                class="cine-estrella"
-                                data-valor="5"
-                                aria-label="5 de 5"
-                                aria-pressed="false">✦</button>
-
-                    </div>
+                        </div>
+                    </form>
 
                     <p class="cine-calificacion-texto" aria-live="polite">
-                        Elegí tu puntuación
+                        Tu puntuación: @ViewBag.MiPuntuacion de 5
                     </p>
+
+                    <p class="cine-calificacion-texto">
+                        Promedio de usuarios: @ViewBag.PromedioPuntuacion / 5
+                    </p>
+
+                    @if (!usuarioConectado)
+                    {
+                        <p>
+                            <a asp-controller="Home" asp-action="Login">
+                                Iniciá sesión para puntuar
+                            </a>
+                        </p>
+                    }
+
                 </div>
 
             </div>
@@ -324,8 +337,206 @@
                 </p>
 
             </div>
+
         </section>
 
+        <!-- REVIEWS DE LA COMUNIDAD -->
+        <section class="cine-reviews">
+
+            <div class="cine-reviews-titulo">
+
+                <div>
+                    <span class="cine-seccion-mini">OPINIONES DE LA COMUNIDAD</span>
+                    <h2>Reviews</h2>
+                </div>
+
+                <span class="cine-reviews-total">
+                    @cantidadComentarios opiniones
+                </span>
+
+            </div>
+
+            <!-- BOTÓN PARA ESCRIBIR REVIEW -->
+            @if (usuarioConectado)
+            {
+                <details class="cine-review-nueva">
+
+                    <summary>＋ Escribir una review</summary>
+
+                    <form asp-controller="Home"
+                          asp-action="AgregarComentario"
+                          method="post"
+                          class="cine-review-form">
+
+                        <input type="hidden"
+                               name="idPelicula"
+                               value="@Model.IdPelicula" />
+
+                        <textarea name="texto"
+                                  maxlength="1000"
+                                  required
+                                  placeholder="¿Qué te pareció esta película?"></textarea>
+
+                        <button type="submit"
+                                class="cine-boton cine-boton-principal">
+                            Publicar review
+                        </button>
+
+                    </form>
+
+                </details>
+            }
+            else
+            {
+                <a asp-controller="Home"
+                   asp-action="Login"
+                   class="cine-boton cine-boton-principal cine-review-login">
+                    Iniciá sesión para escribir una review
+                </a>
+            }
+
+            <!-- BOTÓN PARA MOSTRAR Y OCULTAR REVIEWS -->
+            @if (cantidadComentarios > 0)
+            {
+                <details class="cine-reviews-desplegable">
+
+                    <summary>
+                        Reviews (@cantidadComentarios)
+                    </summary>
+
+                    <div class="cine-reviews-lista">
+
+                        @foreach (Cineura.Models.Comentarios comentario in ViewBag.Comentarios)
+                        {
+                            <article class="cine-review">
+
+                                <div class="cine-review-encabezado">
+
+                                    <div class="cine-review-usuario">
+
+                                        <div class="cine-review-avatar">
+                                            @if (!string.IsNullOrWhiteSpace(comentario.NombreUsuario))
+                                            {
+                                                @comentario.NombreUsuario.Substring(0, 1).ToUpper()
+                                            }
+                                            else
+                                            {
+                                                <span>U</span>
+                                            }
+                                        </div>
+
+                                        <div>
+                                            <strong>@comentario.NombreUsuario</strong>
+
+                                            <span class="cine-review-fecha">
+                                                @comentario.Fecha.ToString("dd/MM/yyyy")
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- MENÚ DE OPCIONES DEL USUARIO -->
+                                    @if (usuarioConectado &&
+                                         comentario.IdUsuario == (int)ViewBag.IdUsuario)
+                                    {
+                                        <details class="cine-review-menu">
+
+                                            <summary>⋯</summary>
+
+                                            <div class="cine-review-menu-contenido">
+
+                                                <!-- EDITAR REVIEW -->
+                                                <details>
+                                                    <summary>Editar review</summary>
+
+                                                    <form asp-controller="Home"
+                                                          asp-action="EditarComentario"
+                                                          method="post"
+                                                          class="cine-review-form">
+
+                                                        <input type="hidden"
+                                                               name="idComentario"
+                                                               value="@comentario.IdComentario" />
+
+                                                        <input type="hidden"
+                                                               name="idPelicula"
+                                                               value="@Model.IdPelicula" />
+
+                                                        <textarea name="texto"
+                                                                  maxlength="1000"
+                                                                  required>@comentario.Texto</textarea>
+
+                                                        <button type="submit"
+                                                                class="cine-boton cine-boton-principal">
+                                                            Guardar cambios
+                                                        </button>
+
+                                                    </form>
+                                                </details>
+
+                                                <!-- ELIMINAR REVIEW -->
+                                                <form asp-controller="Home"
+                                                      asp-action="EliminarComentario"
+                                                      method="post"
+                                                      onsubmit="return confirm('¿Querés eliminar esta review?');">
+
+                                                    <input type="hidden"
+                                                           name="idComentario"
+                                                           value="@comentario.IdComentario" />
+
+                                                    <input type="hidden"
+                                                           name="idPelicula"
+                                                           value="@Model.IdPelicula" />
+
+                                                    <button type="submit">
+                                                        Eliminar review
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
+
+                                        </details>
+                                    }
+
+                                </div>
+
+                                <!-- TEXTO DE LA REVIEW -->
+                                <div class="cine-review-contenido">
+
+                                    <p class="cine-review-texto cine-review-corto">
+                                        @comentario.Texto
+                                    </p>
+
+                                    @if (!string.IsNullOrEmpty(comentario.Texto) &&
+                                         comentario.Texto.Length > 180)
+                                    {
+                                        <button type="button"
+                                                class="cine-review-leer-mas">
+                                            Leer más
+                                        </button>
+                                    }
+
+                                </div>
+
+                            </article>
+                        }
+
+                    </div>
+
+                </details>
+            }
+            else
+            {
+                <p class="cine-reviews-vacias">
+                    Todavía no hay reviews para esta película.
+                    ¡Sé el primero en compartir tu opinión!
+                </p>
+            }
+
+        </section>
+
+        <!-- PANEL INFERIOR -->
         <section class="cine-panel-extra">
 
             <div class="cine-panel-encabezado">
@@ -403,32 +614,5 @@
         </section>
 
     </div>
+
 </main>
-
-<script>
-    document.querySelectorAll(".cine-calificacion").forEach(function (calificacion) {
-        const estrellas = calificacion.querySelectorAll(".cine-estrella");
-        const texto = calificacion.querySelector(".cine-calificacion-texto");
-
-        estrellas.forEach(function (estrella) {
-            estrella.addEventListener("click", function () {
-                const valor = Number(estrella.dataset.valor);
-
-                estrellas.forEach(function (otra) {
-                    const valorOtra = Number(otra.dataset.valor);
-                    const seleccionada = valorOtra <= valor;
-
-                    otra.classList.toggle("activa", seleccionada);
-                    otra.setAttribute(
-                        "aria-pressed",
-                        valorOtra === valor ? "true" : "false"
-                    );
-                });
-
-                texto.textContent = valor + (valor === 1
-                    ? " estrella de 5"
-                    : " estrellas de 5");
-            });
-        });
-    });
-</script>

@@ -879,3 +879,268 @@
         transition-duration: 0.01ms !important;
     }
 }
+
+/* Puntuación */
+.cine-estrella {
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.8rem;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.cine-estrella:hover {
+    transform: scale(1.15);
+}
+
+.cine-estrella.activa {
+    color: #fbbf24;
+}
+
+/* Reviews */
+.cine-reviews {
+    margin: 50px 0;
+    padding: 30px;
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 18px;
+    background: rgba(17, 24, 39, 0.85);
+    color: white;
+}
+
+.cine-review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.cine-review-form textarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 14px;
+    border: 1px solid #6b7280;
+    border-radius: 10px;
+    background: #111827;
+    color: white;
+    resize: vertical;
+}
+
+.cine-review {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    overflow-wrap: anywhere;
+}
+
+.cine-review-encabezado {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #fbbf24;
+}
+
+.cine-review-encabezado span {
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+.cine-review-texto {
+    margin-top: 15px;
+    white-space: pre-wrap;
+}
+
+.cine-review summary {
+    cursor: pointer;
+    color: #fbbf24;
+    margin: 12px 0;
+}
+
+
+/* SECCIÓN DE REVIEWS */
+
+.cine-reviews {
+    margin: 45px 0;
+    padding: 25px;
+    background: #111827;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 18px;
+    color: white;
+}
+
+.cine-reviews-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.cine-reviews-titulo h2 {
+    margin: 5px 0 0;
+}
+
+.cine-reviews-total {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* NUEVA REVIEW */
+
+.cine-review-nueva {
+    margin-bottom: 25px;
+}
+
+.cine-review-nueva > summary {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #fbbf24;
+    color: #111827;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cine-review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.cine-review-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 14px;
+    background: #1f2937;
+    color: white;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    resize: vertical;
+}
+
+/* LISTA DE REVIEWS */
+
+.cine-reviews-lista {
+    display: flex;
+    flex-direction: column;
+}
+
+.cine-review {
+    padding: 20px 0;
+    border-top: 1px solid #374151;
+}
+
+.cine-review-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.cine-review-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cine-review-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fbbf24;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.cine-review-fecha {
+    display: block;
+    margin-top: 3px;
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+.cine-review-texto {
+    margin: 15px 0 5px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+}
+
+/* TEXTO LARGO */
+
+.cine-review-corto {
+    max-height: 100px;
+    overflow: hidden;
+    position: relative;
+}
+
+.cine-review-corto.expandido {
+    max-height: none;
+}
+
+.cine-review-leer-mas {
+    padding: 0;
+    border: none;
+    background: none;
+    color: #fbbf24;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* MENU DE OPCIONES */
+
+.cine-review-menu {
+    position: relative;
+}
+
+.cine-review-menu > summary {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #9ca3af;
+    list-style: none;
+}
+
+.cine-review-menu-contenido {
+    position: absolute;
+    right: 0;
+    top: 25px;
+    z-index: 10;
+    min-width: 150px;
+    padding: 10px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 10px;
+}
+
+.cine-review-menu-contenido summary,
+.cine-review-menu-contenido button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    color: white;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.cine-review-menu-contenido button:hover,
+.cine-review-menu-contenido summary:hover {
+    color: #fbbf24;
+}
+
+@media (max-width: 600px) {
+    .cine-reviews {
+        padding: 16px;
+    }
+
+    .cine-review {
+        padding: 16px 0;
+    }
+}

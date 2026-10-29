@@ -366,4 +366,164 @@ public class BD
             return connection.Query<Peliculas>(query).ToList();
         }
     }
+public void GuardarPuntuacion(int idUsuario, int idPelicula, int puntuacion)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            IF EXISTS (
+                SELECT 1
+                FROM Valoraciones
+                WHERE IdUsuario = @idUsuario
+                  AND IdPelicula = @idPelicula
+            )
+            BEGIN
+                UPDATE Valoraciones
+                SET Puntuacion = @puntuacion
+                WHERE IdUsuario = @idUsuario
+                  AND IdPelicula = @idPelicula
+            END
+            ELSE
+            BEGIN
+                INSERT INTO Valoraciones (IdUsuario, IdPelicula, Puntuacion)
+                VALUES (@idUsuario, @idPelicula, @puntuacion)
+            END";
+
+        connection.Execute(query, new
+        {
+            idUsuario,
+            idPelicula,
+            puntuacion
+        });
+    }
+}
+
+public List<Comentarios> ObtenerComentarios(int idPelicula)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            SELECT IdComentario, IdUsuario, IdPelicula, Texto, Fecha
+            FROM Comentarios
+            WHERE IdPelicula = @idPelicula
+            ORDER BY Fecha DESC";
+
+        return connection.Query<Comentarios>(
+            query, new { idPelicula }).ToList();
+    }
+}
+
+public void AgregarComentario(int idUsuario, int idPelicula, string texto)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            INSERT INTO Comentarios (IdUsuario, IdPelicula, Texto)
+            VALUES (@idUsuario, @idPelicula, @texto)";
+
+        connection.Execute(query, new { idUsuario, idPelicula, texto });
+    }
+}
+
+public bool EditarComentario(int idComentario, int idUsuario, string texto)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            UPDATE Comentarios
+            SET Texto = @texto
+            WHERE IdComentario = @idComentario
+              AND IdUsuario = @idUsuario";
+
+        int filas = connection.Execute(
+            query, new { idComentario, idUsuario, texto });
+
+        if (filas > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+public bool EliminarComentario(int idComentario, int idUsuario)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            DELETE FROM Comentarios
+            WHERE IdComentario = @idComentario
+              AND IdUsuario = @idUsuario";
+
+        int filas = connection.Execute(
+            query, new { idComentario, idUsuario });
+
+        if (filas > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+public int ObtenerPuntuacionUsuario(int idUsuario, int idPelicula)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            SELECT ISNULL(
+                (SELECT Puntuacion
+                 FROM Valoraciones
+                 WHERE IdUsuario = @idUsuario
+                   AND IdPelicula = @idPelicula),
+                0
+            )";
+
+        int puntuacion = connection.QueryFirstOrDefault<int>(
+            query,
+            new { idUsuario, idPelicula }
+        );
+
+        return puntuacion;
+    }
+}
+
+public double ObtenerPromedioPuntuacion(int idPelicula)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            SELECT ISNULL(AVG(CAST(Puntuacion AS FLOAT)), 0)
+            FROM Valoraciones
+            WHERE IdPelicula = @idPelicula";
+
+        double promedio = connection.QueryFirstOrDefault<double>(
+            query,
+            new { idPelicula }
+        );
+
+        return promedio;
+    }
+}
+
+public string ObtenerNombreUsuario(int idUsuario)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"
+            SELECT NombreUsuario
+            FROM Usuarios
+            WHERE IdUsuario = @idUsuario";
+
+        string nombreUsuario = connection.QueryFirstOrDefault<string>(
+            query,
+            new { idUsuario }
+        );
+
+        return nombreUsuario;
+    }
+}
+
 }
