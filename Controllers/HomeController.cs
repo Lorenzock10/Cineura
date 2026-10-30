@@ -1,6 +1,4 @@
-
 using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Cineura.Models;
@@ -24,10 +22,9 @@ namespace Cineura.Controllers
         public IActionResult Index()
         {
             BD bd = new BD();
-
             List<Peliculas> peliculas = bd.ObtenerPeliculasTendencia();
             ViewBag.PeliculasTendencia = peliculas;
-            
+
             ViewBag.IdDune = BuscarId(peliculas, "Dune: Part Two");
             ViewBag.IdPoorThings = BuscarId(peliculas, "Poor Things");
             ViewBag.IdSubstance = BuscarId(peliculas, "The Substance");
@@ -37,16 +34,20 @@ namespace Cineura.Controllers
 
             ViewBag.EsFavoritoDune = false;
             ViewBag.EstaEnWatchlistDune = false;
+
             ViewBag.EsFavoritoPoorThings = false;
             ViewBag.EstaEnWatchlistPoorThings = false;
+
             ViewBag.EsFavoritoSubstance = false;
             ViewBag.EstaEnWatchlistSubstance = false;
+
             ViewBag.EsFavoritoAnatomy = false;
             ViewBag.EstaEnWatchlistAnatomy = false;
 
             if (!string.IsNullOrEmpty(usuario))
             {
                 int idUsuario = bd.ObtenerIdUsuario(usuario);
+
                 if (idUsuario > 0)
                 {
                     int idDune = ViewBag.IdDune;
@@ -79,7 +80,6 @@ namespace Cineura.Controllers
                     }
                 }
             }
-
             return View();
         }
 
@@ -87,9 +87,12 @@ namespace Cineura.Controllers
         {
             foreach (Peliculas pelicula in peliculas)
             {
-                if (pelicula.Titulo.ToLower() == titulo.ToLower())
+                if (pelicula.Titulo != null)
                 {
-                    return pelicula.IdPelicula;
+                    if (pelicula.Titulo.ToLower() == titulo.ToLower())
+                    {
+                        return pelicula.IdPelicula;
+                    }
                 }
             }
             return 0;
@@ -97,10 +100,7 @@ namespace Cineura.Controllers
 
         private string Normalizar(string texto)
         {
-            string resultado = texto.ToLower();
-            resultado = resultado.Trim();
-
-            return resultado;
+            return texto.Trim().ToLower();
         }
 
         private string LimpiarJson(string texto)
@@ -115,12 +115,10 @@ namespace Cineura.Controllers
                     texto = texto.Substring(inicio + 1);
                 }
             }
-
             if (texto.EndsWith("```"))
             {
                 texto = texto.Substring(0, texto.Length - 3);
             }
-
             texto = texto.Trim();
             int inicioJson = texto.IndexOf('{');
             int finalJson = texto.LastIndexOf('}');
@@ -132,7 +130,6 @@ namespace Cineura.Controllers
                     finalJson - inicioJson + 1
                 );
             }
-
             return texto.Trim();
         }
 
@@ -143,13 +140,11 @@ namespace Cineura.Controllers
             {
                 return BadRequest("Escribí qué tipo de película querés ver.");
             }
-
             string respuesta = _buscadorIA.InterpretarBusqueda(busqueda);
             string json = LimpiarJson(respuesta);
-
-            JsonDocument documento = JsonDocument.Parse(json);
-            documento.Dispose();
-
+            using (JsonDocument documento = JsonDocument.Parse(json))
+            {
+            }
             return Content(json, "application/json");
         }
 
@@ -164,50 +159,48 @@ namespace Cineura.Controllers
             string respuesta = _buscadorIA.InterpretarBusqueda(busqueda);
             string json = LimpiarJson(respuesta);
 
-            JsonDocument documento = JsonDocument.Parse(json);
-            JsonElement datos = documento.RootElement;
-
             string genero = "";
             string animo = "";
             int duracionMaxima = 0;
             bool tieneDuracion = false;
 
-            if (datos.TryGetProperty("genero", out JsonElement datoGenero))
+            using (JsonDocument documento = JsonDocument.Parse(json))
             {
-                if (datoGenero.ValueKind == JsonValueKind.String)
+                JsonElement datos = documento.RootElement;
+
+                if (datos.TryGetProperty("genero", out JsonElement datoGenero))
                 {
-                    genero = datoGenero.GetString();
+                    if (datoGenero.ValueKind == JsonValueKind.String)
+                    {
+                        genero = datoGenero.GetString();
+                    }
+                }
+
+                if (datos.TryGetProperty("animo", out JsonElement datoAnimo))
+                {
+                    if (datoAnimo.ValueKind == JsonValueKind.String)
+                    {
+                        animo = datoAnimo.GetString();
+                    }
+                }
+
+                if (datos.TryGetProperty("duracionMaxima", out JsonElement datoDuracion))
+                {
+                    if (datoDuracion.ValueKind == JsonValueKind.Number)
+                    {
+                        duracionMaxima = datoDuracion.GetInt32();
+                        tieneDuracion = true;
+                    }
                 }
             }
 
-            if (datos.TryGetProperty("animo", out JsonElement datoAnimo))
-            {
-                if (datoAnimo.ValueKind == JsonValueKind.String)
-                {
-                    animo = datoAnimo.GetString();
-                }
-            }
-
-            if (datos.TryGetProperty("duracionMaxima", out JsonElement datoDuracion))
-            {
-                if (datoDuracion.ValueKind == JsonValueKind.Number)
-                {
-                    duracionMaxima = datoDuracion.GetInt32();
-                    tieneDuracion = true;
-                }
-            }
-
-            documento.Dispose();
-
-            if (string.IsNullOrWhiteSpace(genero)
-                && string.IsNullOrWhiteSpace(animo)
-                && !tieneDuracion)
+            if (string.IsNullOrWhiteSpace(genero) &&
+                string.IsNullOrWhiteSpace(animo) &&
+                !tieneDuracion)
             {
                 return Json(new List<object>());
             }
-
             BD bd = new BD();
-
             List<Peliculas> peliculas = bd.ObtenerPeliculas();
             List<Peliculas> peliculasFiltradas = new List<Peliculas>();
 
@@ -221,9 +214,12 @@ namespace Cineura.Controllers
                     {
                         coincide = false;
                     }
-                    else if (!Normalizar(pelicula.Genero).Contains(Normalizar(genero)))
+                    else
                     {
-                        coincide = false;
+                        if (!Normalizar(pelicula.Genero).Contains(Normalizar(genero)))
+                        {
+                            coincide = false;
+                        }
                     }
                 }
 
@@ -233,10 +229,13 @@ namespace Cineura.Controllers
                     {
                         coincide = false;
                     }
-                    else if (pelicula.DuracionMinutos <= 0
-                        || pelicula.DuracionMinutos > duracionMaxima)
+                    else
                     {
-                        coincide = false;
+                        if (pelicula.DuracionMinutos <= 0 ||
+                            pelicula.DuracionMinutos > duracionMaxima)
+                        {
+                            coincide = false;
+                        }
                     }
                 }
 
@@ -246,10 +245,16 @@ namespace Cineura.Controllers
                     {
                         coincide = false;
                     }
-                    else if (!Normalizar(pelicula.Animo).Contains(Normalizar(animo))
-                        && !Normalizar(animo).Contains(Normalizar(pelicula.Animo)))
+                    else
                     {
-                        coincide = false;
+                        string animoPelicula = Normalizar(pelicula.Animo);
+                        string animoBuscado = Normalizar(animo);
+
+                        if (!animoPelicula.Contains(animoBuscado) &&
+                            !animoBuscado.Contains(animoPelicula))
+                        {
+                            coincide = false;
+                        }
                     }
                 }
 
@@ -260,7 +265,6 @@ namespace Cineura.Controllers
             }
 
             List<object> resultados = new List<object>();
-
             foreach (Peliculas pelicula in peliculasFiltradas)
             {
                 string poster = "";
@@ -268,7 +272,6 @@ namespace Cineura.Controllers
                 {
                     poster = pelicula.PosterUrl;
                 }
-
                 object resultado = new
                 {
                     idPelicula = pelicula.IdPelicula,
@@ -286,51 +289,45 @@ namespace Cineura.Controllers
             return Json(resultados);
         }
 
-    public IActionResult Detalles(int id){
-        BD bd = new BD();
-        Peliculas pelicula = bd.ObtenerPeliculaPorId(id);
-
-        if (pelicula == null)
+        public IActionResult Detalles(int id)
         {
-            return RedirectToAction("Index");
+            BD bd = new BD();
+            Peliculas pelicula = bd.ObtenerPeliculaPorId(id);
+            if (pelicula == null)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewBag.Director = "No disponible";
+            ViewBag.IdUsuario = 0;
+
+            if (pelicula.IdDirector > 0)
+            {
+                ViewBag.Director = bd.ObtenerNombreDirector(pelicula.IdDirector);
+            }
+            ViewBag.Actores = bd.ObtenerActores(id);
+            ViewBag.Comentarios = bd.ObtenerComentarios(id);
+
+            foreach (Comentarios comentario in ViewBag.Comentarios)
+            {
+                comentario.NombreUsuario = bd.ObtenerNombreUsuario(comentario.IdUsuario);
+            }
+            ViewBag.PromedioPuntuacion = bd.ObtenerPromedioPuntuacion(id);
+            string usuario = HttpContext.Session.GetString("usuario");
+            ViewBag.UsuarioConectado = false;
+            ViewBag.EsFavorito = false;
+            ViewBag.EstaEnWatchlist = false;
+            ViewBag.MiPuntuacion = 0;
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                ViewBag.UsuarioConectado = true;
+                int idUsuario = bd.ObtenerIdUsuario(usuario);
+                ViewBag.IdUsuario = idUsuario;
+                ViewBag.EsFavorito = bd.EsFavorito(idUsuario, id);
+                ViewBag.EstaEnWatchlist = bd.EstaEnWatchlist(idUsuario, id);
+                ViewBag.MiPuntuacion = bd.ObtenerPuntuacionUsuario(idUsuario, id);
+            }
+            return View(pelicula);
         }
-
-        ViewBag.Director = "No disponible";
-        ViewBag.IdUsuario = 0;
-
-        if (pelicula.IdDirector > 0)
-        {
-            ViewBag.Director = bd.ObtenerNombreDirector(pelicula.IdDirector);
-        }
-
-        ViewBag.Actores = bd.ObtenerActores(id);
-
-        ViewBag.Comentarios = bd.ObtenerComentarios(id);
-
-        foreach (Comentarios comentario in ViewBag.Comentarios)
-        {
-            comentario.NombreUsuario = bd.ObtenerNombreUsuario(comentario.IdUsuario);
-        }
-        ViewBag.PromedioPuntuacion = bd.ObtenerPromedioPuntuacion(id);
-
-        string usuario = HttpContext.Session.GetString("usuario");
-        ViewBag.UsuarioConectado = false;
-        ViewBag.EsFavorito = false;
-        ViewBag.EstaEnWatchlist = false;
-        ViewBag.MiPuntuacion = 0;
-
-        if (!string.IsNullOrEmpty(usuario))
-        {
-            ViewBag.UsuarioConectado = true;
-            int idUsuario = bd.ObtenerIdUsuario(usuario);
-            ViewBag.IdUsuario = idUsuario;
-            ViewBag.EsFavorito = bd.EsFavorito(idUsuario, id);
-            ViewBag.EstaEnWatchlist = bd.EstaEnWatchlist(idUsuario, id);
-            ViewBag.MiPuntuacion = bd.ObtenerPuntuacionUsuario(idUsuario, id);
-        }
-
-        return View(pelicula);
-}
 
         [HttpPost]
         public IActionResult AgregarFavorito(int idPelicula, string returnUrl = "")
@@ -341,7 +338,6 @@ namespace Cineura.Controllers
                 TempData["Mensaje"] = "Iniciá sesión para guardar películas en Favoritas.";
                 return RedirectToAction("Login");
             }
-
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
             if (idUsuario == 0)
@@ -379,79 +375,14 @@ namespace Cineura.Controllers
         public IActionResult Favoritas()
         {
             string usuario = HttpContext.Session.GetString("usuario");
-
             if (string.IsNullOrEmpty(usuario))
             {
                 TempData["Mensaje"] = "Iniciá sesión para ver tus Favoritas.";
                 return RedirectToAction("Login");
             }
-
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
-
             return View(bd.ObtenerFavoritos(idUsuario));
-        }
-
-        [HttpPost]
-        public IActionResult AgregarWatchlist(int idPelicula, string returnUrl = "")
-        {
-            string usuario = HttpContext.Session.GetString("usuario");
-            if (string.IsNullOrEmpty(usuario))
-            {
-                TempData["Mensaje"] = "Iniciá sesión para guardar películas en tu Watchlist.";
-                return RedirectToAction("Login");
-            }
-            BD bd = new BD();
-            int idUsuario = bd.ObtenerIdUsuario(usuario);
-            if (idUsuario == 0)
-            {
-                return RedirectToAction("Login");
-            }
-
-            if (bd.EstaEnWatchlist(idUsuario, idPelicula))
-            {
-                TempData["Mensaje"] = "Esta película ya está en tu Watchlist.";
-            }
-            else
-            {
-                bd.AgregarWatchlist(idUsuario, idPelicula);
-                TempData["Mensaje"] = "¡Película agregada a tu Watchlist!";
-            }
-
-            return VolverA(returnUrl, "Index");
-        }
-
-        [HttpPost]
-        public IActionResult QuitarWatchlist(int idPelicula, string returnUrl = "")
-        {
-            string usuario = HttpContext.Session.GetString("usuario");
-
-            if (string.IsNullOrEmpty(usuario))
-            {
-                return RedirectToAction("Login");
-            }
-
-            BD bd = new BD();
-            int idUsuario = bd.ObtenerIdUsuario(usuario);
-
-            bd.QuitarWatchlist(idUsuario, idPelicula);
-
-            TempData["Mensaje"] = "Película quitada de tu Watchlist.";
-
-            return VolverA(returnUrl, "Watchlist");
-        }
-
-        public IActionResult Watchlist()
-        {
-            string usuario = HttpContext.Session.GetString("usuario");
-            if (string.IsNullOrEmpty(usuario))
-            {
-                TempData["Mensaje"] = "Iniciá sesión para ver tu Watchlist.";
-                return RedirectToAction("Login");
-            }
-            BD bd = new BD();
-            int idUsuario = bd.ObtenerIdUsuario(usuario);
-            return View(bd.ObtenerWatchlist(idUsuario));
         }
 
         private IActionResult VolverA(string returnUrl, string accionPredeterminada)
@@ -471,7 +402,10 @@ namespace Cineura.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(
+            Duration = 0,
+            Location = ResponseCacheLocation.None,
+            NoStore = true)]
         public IActionResult Error()
         {
             ErrorViewModel modelo = new ErrorViewModel();
@@ -494,16 +428,14 @@ namespace Cineura.Controllers
         [HttpPost]
         public IActionResult Login(string usuario, string contrasena)
         {
-            if (usuario == null || usuario.Length < 4
-                || contrasena == null || contrasena.Length < 6)
+            if (usuario == null || usuario.Length < 4 ||
+                contrasena == null || contrasena.Length < 6)
             {
                 ViewBag.Error = "El usuario debe tener al menos 4 caracteres y la contraseña 6.";
                 return View();
             }
-
             BD bd = new BD();
             Usuarios usuarioEncontrado = bd.ObtenerUsuario(usuario, contrasena);
-
             if (usuarioEncontrado == null)
             {
                 ViewBag.Error = "Usuario o contraseña incorrectos.";
@@ -527,15 +459,14 @@ namespace Cineura.Controllers
             string usuario,
             string contrasena)
         {
-            if (nombre == null || nombre.Length < 2
-                || apellido == null || apellido.Length < 2
-                || usuario == null || usuario.Length < 4
-                || contrasena == null || contrasena.Length < 6)
+            if (nombre == null || nombre.Length < 2 ||
+                apellido == null || apellido.Length < 2 ||
+                usuario == null || usuario.Length < 4 ||
+                contrasena == null || contrasena.Length < 6)
             {
                 ViewBag.Error = "Completá los campos correctamente: nombre y apellido de al menos 2 caracteres, usuario de 4 y contraseña de 6.";
                 return View();
             }
-
             BD bd = new BD();
             Usuarios usuarioExistente = bd.ObtenerUsuarioPorNombre(usuario);
             if (usuarioExistente != null)
@@ -543,77 +474,20 @@ namespace Cineura.Controllers
                 ViewBag.Error = "Ese nombre de usuario ya existe.";
                 return View();
             }
-
             Usuarios nuevoUsuario = new Usuarios();
-
             nuevoUsuario.Nombre = nombre;
             nuevoUsuario.Apellido = apellido;
             nuevoUsuario.NombreUsuario = usuario;
             nuevoUsuario.Contraseña = contrasena;
-
             bd.AgregarUsuario(nuevoUsuario);
-
             return RedirectToAction("Login");
         }
 
         public IActionResult CerrarSesion()
         {
             HttpContext.Session.Clear();
+
             return RedirectToAction("Index");
-        }
-
-        private bool EsPeticionAjax()
-        {
-            return Request.Headers["X-Requested-With"] == "XMLHttpRequest";
-        }
-
-        private IActionResult RespuestaToggle(
-            bool ok,
-            string mensaje,
-            bool esFavorito = false,
-            bool estaEnWatchlist = false,
-            string redirectUrl = "")
-        {
-            if (!ok && !string.IsNullOrWhiteSpace(redirectUrl))
-            {
-                return Json(new
-                {
-                    ok = false,
-                    message = mensaje,
-                    redirectUrl = redirectUrl
-                });
-            }
-
-            return Json(new
-            {
-                ok = ok,
-                message = mensaje,
-                esFavorito = esFavorito,
-                estaEnWatchlist = estaEnWatchlist
-            });
-        }
-
-        private string ObtenerUsuarioActual()
-        {
-            string usuario = HttpContext.Session.GetString("usuario");
-            return usuario;
-        }
-
-        private int ObtenerIdUsuarioActual(BD bd)
-        {
-            string usuario = ObtenerUsuarioActual();
-            if (string.IsNullOrEmpty(usuario))
-            {
-                return 0;
-            }
-
-            int idUsuario = bd.ObtenerIdUsuario(usuario);
-            return idUsuario;
-        }
-
-        private IActionResult JsonSiAjax(object data)
-        {
-            return Json(data);
         }
 
         [HttpPost]
@@ -629,7 +503,6 @@ namespace Cineura.Controllers
                     message = "Iniciá sesión para guardar películas en Favoritas."
                 });
             }
-
             BD bd = new BD();
             int idUsuario = bd.ObtenerIdUsuario(usuario);
             if (idUsuario == 0)
@@ -641,7 +514,6 @@ namespace Cineura.Controllers
                     message = "Sesión inválida."
                 });
             }
-
             bool estabaAgregado = bd.EsFavorito(idUsuario, idPelicula);
             if (estabaAgregado)
             {
@@ -651,7 +523,6 @@ namespace Cineura.Controllers
             {
                 bd.AgregarFavorito(idUsuario, idPelicula);
             }
-
             bool nuevoEstado = !estabaAgregado;
             return Json(new
             {
@@ -702,112 +573,88 @@ namespace Cineura.Controllers
                 message = nuevoEstado ? "Añadida a Watchlist." : "Quitada de Watchlist."
             });
         }
-    
+
         [HttpPost]
-public IActionResult AgregarComentario(int idPelicula, string texto)
-{
-    string usuario = HttpContext.Session.GetString("usuario");
+        public IActionResult AgregarComentario(int idPelicula, string texto)
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+            if (string.IsNullOrEmpty(usuario))
+            {
+                return RedirectToAction("Login");
+            }
+            if (string.IsNullOrWhiteSpace(texto) || texto.Length > 1000)
+            {
+                return RedirectToAction("Detalles", new { id = idPelicula });
+            }
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Login");
+            }
+            bd.AgregarComentario(idUsuario, idPelicula, texto.Trim());
+            return RedirectToAction("Detalles", new { id = idPelicula });
+        }
 
-    if (string.IsNullOrEmpty(usuario))
-    {
-        return RedirectToAction("Login");
+        [HttpPost]
+        public IActionResult EditarComentario(int idComentario, int idPelicula, string texto)
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+            if (string.IsNullOrEmpty(usuario))
+            {
+                return RedirectToAction("Login");
+            }
+            if (string.IsNullOrWhiteSpace(texto) || texto.Length > 1000)
+            {
+                return RedirectToAction("Detalles", new { id = idPelicula });
+            }
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Login");
+            }
+            bd.EditarComentario(idComentario, idUsuario, texto.Trim());
+            return RedirectToAction("Detalles", new { id = idPelicula });
+        }
+        [HttpPost]
+        public IActionResult EliminarComentario(int idComentario, int idPelicula)
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+            if (string.IsNullOrEmpty(usuario))
+            {
+                return RedirectToAction("Login");
+            }
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Login");
+            }
+            bd.EliminarComentario(idComentario, idUsuario);
+            return RedirectToAction("Detalles", new { id = idPelicula });
+        }
+
+        [HttpPost]
+        public IActionResult GuardarPuntuacion(int idPelicula, int puntuacion)
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+            if (string.IsNullOrEmpty(usuario))
+            {
+                return RedirectToAction("Login");
+            }
+            if (puntuacion < 1 || puntuacion > 5)
+            {
+                return RedirectToAction("Detalles", new { id = idPelicula });
+            }
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Login");
+            }
+            bd.GuardarPuntuacion(idUsuario, idPelicula, puntuacion);
+            return RedirectToAction("Detalles", new { id = idPelicula });
+        }
     }
-
-    if (string.IsNullOrWhiteSpace(texto) || texto.Length > 1000)
-    {
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-
-    BD bd = new BD();
-    int idUsuario = bd.ObtenerIdUsuario(usuario);
-
-    if (idUsuario == 0)
-    {
-        return RedirectToAction("Login");
-    }
-
-    bd.AgregarComentario(idUsuario, idPelicula, texto.Trim());
-
-    return RedirectToAction("Detalles", new { id = idPelicula });
 }
-
-[HttpPost]
-public IActionResult EditarComentario(int idComentario, int idPelicula, string texto)
-{
-    string usuario = HttpContext.Session.GetString("usuario");
-
-    if (string.IsNullOrEmpty(usuario))
-    {
-        return RedirectToAction("Login");
-    }
-
-    if (string.IsNullOrWhiteSpace(texto) || texto.Length > 1000)
-    {
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-
-    BD bd = new BD();
-    int idUsuario = bd.ObtenerIdUsuario(usuario);
-
-    if (idUsuario == 0)
-    {
-        return RedirectToAction("Login");
-    }
-
-    bd.EditarComentario(idComentario, idUsuario, texto.Trim());
-
-    return RedirectToAction("Detalles", new { id = idPelicula });
-}
-
-[HttpPost]
-public IActionResult EliminarComentario(int idComentario, int idPelicula)
-{
-    string usuario = HttpContext.Session.GetString("usuario");
-
-    if (string.IsNullOrEmpty(usuario))
-    {
-        return RedirectToAction("Login");
-    }
-
-    BD bd = new BD();
-    int idUsuario = bd.ObtenerIdUsuario(usuario);
-
-    if (idUsuario == 0)
-    {
-        return RedirectToAction("Login");
-    }
-
-    bd.EliminarComentario(idComentario, idUsuario);
-
-    return RedirectToAction("Detalles", new { id = idPelicula });
-}
-
-[HttpPost]
-public IActionResult GuardarPuntuacion(int idPelicula, int puntuacion)
-{
-    string usuario = HttpContext.Session.GetString("usuario");
-
-    if (string.IsNullOrEmpty(usuario))
-    {
-        return RedirectToAction("Login");
-    }
-
-    if (puntuacion < 1 || puntuacion > 5)
-    {
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-
-    BD bd = new BD();
-    int idUsuario = bd.ObtenerIdUsuario(usuario);
-
-    if (idUsuario == 0)
-    {
-        return RedirectToAction("Login");
-    }
-
-        bd.GuardarPuntuacion(idUsuario, idPelicula, puntuacion);
-
-        return RedirectToAction("Detalles", new { id = idPelicula });
-    }
-}}
-

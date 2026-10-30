@@ -1,24 +1,36 @@
 
-@model Cineura.Models.Peliculas
-
 @{
     ViewData["Title"] = Model.Titulo;
 
-    string poster = !string.IsNullOrWhiteSpace(Model.PosterUrl)
-        ? Model.PosterUrl
-        : "";
+    string poster = Model.PosterUrl;
+    string titulo = Model.Titulo;
+    string sinopsis = Model.Sinopsis;
+    string director = "";
 
-    string titulo = string.IsNullOrWhiteSpace(Model.Titulo)
-        ? "Película sin título"
-        : Model.Titulo;
+    if (ViewBag.Director != null)
+    {
+        director = ViewBag.Director.ToString();
+    }
 
-    string sinopsis = string.IsNullOrWhiteSpace(Model.Sinopsis)
-        ? "Todavía no hay una sinopsis disponible para esta película."
-        : Model.Sinopsis;
+    if (string.IsNullOrWhiteSpace(poster))
+    {
+        poster = "";
+    }
 
-    string director = ViewBag.Director == null
-        ? "No disponible"
-        : ViewBag.Director.ToString();
+    if (string.IsNullOrWhiteSpace(titulo))
+    {
+        titulo = "Película sin título";
+    }
+
+    if (string.IsNullOrWhiteSpace(sinopsis))
+    {
+        sinopsis = "Todavía no hay una sinopsis disponible para esta película.";
+    }
+
+    if (string.IsNullOrWhiteSpace(director))
+    {
+        director = "No disponible";
+    }
 
     bool usuarioConectado = ViewBag.UsuarioConectado == true;
     bool esFavorito = ViewBag.EsFavorito == true;
@@ -147,7 +159,6 @@
             <div class="cine-informacion">
 
                 <div class="cine-etiqueta-superior">
-                    <span class="cine-etiqueta-icono">C</span>
                     CINEURA
                     <span class="cine-separador">/</span>
                     DETALLES DE LA PELÍCULA
@@ -279,7 +290,7 @@
 
                         @if (estaEnWatchlist)
                         {
-                            <form asp-controller="Home"
+                            <form asp-controller="Watchlist"
                                   asp-action="QuitarWatchlist"
                                   method="post"
                                   class="cine-formulario-accion">
@@ -300,7 +311,7 @@
                         }
                         else
                         {
-                            <form asp-controller="Home"
+                            <form asp-controller="Watchlist"
                                   asp-action="AgregarWatchlist"
                                   method="post"
                                   class="cine-formulario-accion">
@@ -406,7 +417,7 @@
 
                     <div class="cine-reviews-lista">
 
-                        @foreach (Cineura.Models.Comentarios comentario in ViewBag.Comentarios)
+                        @foreach (Comentarios comentario in ViewBag.Comentarios)
                         {
                             <article class="cine-review">
 
@@ -579,7 +590,7 @@
 
                         @if (usuarioConectado)
                         {
-                            <a asp-controller="Home" asp-action="Watchlist">
+                            <a asp-controller="Watchlist" asp-action="Index">
                                 Ver mi Watchlist <span aria-hidden="true">→</span>
                             </a>
                         }

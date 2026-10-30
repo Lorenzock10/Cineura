@@ -1,3 +1,4 @@
+
 function cerrarDetallesCineura(id) {
     var modal = document.getElementById("detalle-cineura-" + id);
 
@@ -17,6 +18,10 @@ document.addEventListener("keydown", function (evento) {
 function agregarTexto(texto) {
     const campo = document.getElementById("busqueda");
 
+    if (!campo) {
+        return;
+    }
+
     if (campo.value.trim() !== "") {
         campo.value += ", " + texto;
     } else {
@@ -26,104 +31,116 @@ function agregarTexto(texto) {
     campo.focus();
 }
 
-document.getElementById("formBusqueda").addEventListener("submit", async function (e) {
-    e.preventDefault();
+const formularioBusqueda = document.getElementById("formBusqueda");
 
-    const campo = document.getElementById("busqueda");
-    const boton = document.getElementById("botonBuscar");
-    const mensaje = document.getElementById("resultado");
-    const contenedor = document.getElementById("resultadosBusqueda");
+if (formularioBusqueda) {
+    formularioBusqueda.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-    mensaje.textContent = "Nova está buscando películas para vos...";
-    contenedor.innerHTML = "";
-    boton.disabled = true;
+        const campo = document.getElementById("busqueda");
+        const boton = document.getElementById("botonBuscar");
+        const mensaje = document.getElementById("resultado");
+        const contenedor = document.getElementById("resultadosBusqueda");
 
-    try {
-        const datos = new FormData();
-        datos.append("busqueda", campo.value);
-
-        const respuesta = await fetch("/Home/BuscarPeliculas", {
-            method: "POST",
-            body: datos
-        });
-
-        if (!respuesta.ok) {
-            const error = await respuesta.text();
-            throw new Error(error || "No se pudo realizar la búsqueda.");
-        }
-
-        const peliculas = await respuesta.json();
-
-        if (!peliculas.length) {
-            mensaje.textContent = "No encontramos películas con esos filtros. Probá describirlo de otra manera.";
+        if (!campo || !boton || !mensaje || !contenedor) {
             return;
         }
 
-        mensaje.textContent = "Encontramos estas películas para vos:";
+        mensaje.textContent = "Nova está buscando películas para vos...";
+        contenedor.innerHTML = "";
+        boton.disabled = true;
 
-        peliculas.forEach(function (pelicula) {
-            const columna = document.createElement("div");
-            columna.className = "col";
+        try {
+            const datos = new FormData();
+            datos.append("busqueda", campo.value);
 
-            const tarjeta = document.createElement("div");
-            tarjeta.className = "card-pelicula h-100";
-            tarjeta.dataset.id = pelicula.idPelicula;
-            tarjeta.dataset.titulo = pelicula.titulo || "Sin título";
-
-            tarjeta.addEventListener("click", function (event) {
-                if (event.target.closest("button")) {
-                    return;
-                }
-                if (pelicula.idPelicula) {
-                    window.location.href = "/Home/Detalles/" + pelicula.idPelicula;
-                }
+            const respuesta = await fetch("/Home/BuscarPeliculas", {
+                method: "POST",
+                body: datos
             });
 
-            if (pelicula.posterUrl) {
-                const imagen = document.createElement("img");
-                imagen.src = pelicula.posterUrl;
-                imagen.alt = "Póster de " + pelicula.titulo;
-                imagen.className = "card-poster-img";
-                imagen.loading = "lazy";
-                tarjeta.appendChild(imagen);
+            if (!respuesta.ok) {
+                const error = await respuesta.text();
+                throw new Error(error || "No se pudo realizar la búsqueda.");
             }
 
-            const info = document.createElement("div");
-            info.className = "card-info";
+            const peliculas = await respuesta.json();
 
-            const titulo = document.createElement("h4");
-            titulo.className = "card-titulo";
-            titulo.textContent = pelicula.titulo || "Sin título";
+            if (!peliculas.length) {
+                mensaje.textContent = "No encontramos películas con esos filtros. Probá describirlo de otra manera.";
+                return;
+            }
 
-            const meta = document.createElement("p");
-            meta.className = "card-meta";
-            meta.textContent =
-                (pelicula.anio || "") + " • " +
-                (pelicula.duracionMinutos || "?") + " minutos";
+            mensaje.textContent = "Encontramos estas películas para vos:";
 
-            const genero = document.createElement("p");
-            genero.textContent = pelicula.genero || "";
+            peliculas.forEach(function (pelicula) {
+                const columna = document.createElement("div");
+                columna.className = "col";
 
-            const sinopsis = document.createElement("p");
-            sinopsis.className = "card-sinopsis";
-            sinopsis.textContent = pelicula.sinopsis || "Sin sinopsis disponible.";
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "card-pelicula h-100";
+                tarjeta.dataset.id = pelicula.idPelicula;
+                tarjeta.dataset.titulo = pelicula.titulo || "Sin título";
 
-            info.appendChild(titulo);
-            info.appendChild(meta);
-            info.appendChild(genero);
-            info.appendChild(sinopsis);
-            tarjeta.appendChild(info);
-            columna.appendChild(tarjeta);
-            contenedor.appendChild(columna);
-        });
-    } catch (error) {
-        mensaje.textContent = error.message || "Ocurrió un error al buscar películas.";
-    } finally {
-        boton.disabled = false;
-    }
-});
+                tarjeta.addEventListener("click", function (event) {
+                    if (event.target.closest("button")) {
+                        return;
+                    }
+
+                    if (pelicula.idPelicula) {
+                        window.location.href = "/Home/Detalles/" + pelicula.idPelicula;
+                    }
+                });
+
+                if (pelicula.posterUrl) {
+                    const imagen = document.createElement("img");
+                    imagen.src = pelicula.posterUrl;
+                    imagen.alt = "Póster de " + pelicula.titulo;
+                    imagen.className = "card-poster-img";
+                    imagen.loading = "lazy";
+                    tarjeta.appendChild(imagen);
+                }
+
+                const info = document.createElement("div");
+                info.className = "card-info";
+
+                const titulo = document.createElement("h4");
+                titulo.className = "card-titulo";
+                titulo.textContent = pelicula.titulo || "Sin título";
+
+                const meta = document.createElement("p");
+                meta.className = "card-meta";
+                meta.textContent =
+                    (pelicula.anio || "") + " • " +
+                    (pelicula.duracionMinutos || "?") + " minutos";
+
+                const genero = document.createElement("p");
+                genero.textContent = pelicula.genero || "";
+
+                const sinopsis = document.createElement("p");
+                sinopsis.className = "card-sinopsis";
+                sinopsis.textContent = pelicula.sinopsis || "Sin sinopsis disponible.";
+
+                info.appendChild(titulo);
+                info.appendChild(meta);
+                info.appendChild(genero);
+                info.appendChild(sinopsis);
+                tarjeta.appendChild(info);
+                columna.appendChild(tarjeta);
+                contenedor.appendChild(columna);
+            });
+
+        } catch (error) {
+            mensaje.textContent = error.message || "Ocurrió un error al buscar películas.";
+
+        } finally {
+            boton.disabled = false;
+        }
+    });
+}
 
 function configurarAccionesCineura() {
+
     document.querySelectorAll("[data-busqueda]").forEach(function (boton) {
         boton.addEventListener("click", function () {
             agregarTexto(boton.dataset.busqueda);
@@ -158,16 +175,20 @@ function configurarAccionesCineura() {
         });
     });
 
+    // FAVORITOS
     document.querySelectorAll(".favorite-toggle").forEach(function (boton) {
         boton.addEventListener("click", async function (event) {
             event.stopPropagation();
+
             const id = boton.dataset.id;
             const activo = boton.dataset.active === "true";
 
             try {
                 const respuesta = await fetch("/Home/ToggleFavorito", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
                     body: "idPelicula=" + encodeURIComponent(id)
                 });
 
@@ -178,15 +199,19 @@ function configurarAccionesCineura() {
                         window.location.href = data.redirectUrl;
                         return;
                     }
+
                     throw new Error(data.message || "No se pudo actualizar favoritos.");
                 }
 
                 boton.dataset.active = String(!activo);
                 boton.classList.toggle("active", !activo);
+
                 const icono = boton.querySelector(".favorito-icon");
+
                 if (icono) {
-                    icono.textContent = (!activo) ? "♥" : "♥";
+                    icono.textContent = "♥";
                 }
+
             } catch (error) {
                 console.error(error);
                 alert(error.message || "No se pudo actualizar favoritos.");
@@ -194,16 +219,19 @@ function configurarAccionesCineura() {
         });
     });
 
+    // WATCHLIST
     document.querySelectorAll(".watchlist-toggle").forEach(function (boton) {
         boton.addEventListener("click", async function (event) {
             event.stopPropagation();
+
             const id = boton.dataset.id;
-            const activo = boton.dataset.active === "true";
 
             try {
-                const respuesta = await fetch("/Home/ToggleWatchlist", {
+                const respuesta = await fetch("/Watchlist/ToggleWatchlist", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
                     body: "idPelicula=" + encodeURIComponent(id)
                 });
 
@@ -214,162 +242,25 @@ function configurarAccionesCineura() {
                         window.location.href = data.redirectUrl;
                         return;
                     }
-                    throw new Error(data.message || "No se pudo actualizar watchlist.");
+
+                    throw new Error(data.message || "No se pudo actualizar Watchlist.");
                 }
 
-                boton.dataset.active = String(!activo);
-                boton.classList.toggle("active", !activo);
+                boton.dataset.active = String(data.estaEnWatchlist);
+                boton.classList.toggle("active", data.estaEnWatchlist);
+
                 const icono = boton.querySelector(".watchlist-icon");
+
                 if (icono) {
-                    icono.textContent = (!activo) ? "✓" : "+";
+                    icono.textContent = data.estaEnWatchlist ? "✓" : "+";
                 }
+
             } catch (error) {
                 console.error(error);
-                alert(error.message || "No se pudo actualizar watchlist.");
+                alert(error.message || "No se pudo actualizar Watchlist.");
             }
         });
     });
 }
 
 document.addEventListener("DOMContentLoaded", configurarAccionesCineura);
-"use strict";
-
-let ultimaBusqueda = "";
-let ultimaLista = [];
-let indiceActual = 0;
-
-const formulario = document.getElementById("formBusqueda");
-const campoBusqueda = document.getElementById("campoBusqueda");
-const resultado = document.getElementById("resultado");
-const recomendacion = document.getElementById("recomendacion");
-const botonBuscar = document.getElementById("botonBuscar");
-
-// Agregar texto al buscador al tocar los botones de mood o estilo
-function agregarTexto(texto) {
-    if (campoBusqueda.value.trim() !== "") {
-        campoBusqueda.value += " ";
-    }
-
-    campoBusqueda.value += texto;
-    campoBusqueda.focus();
-}
-
-// Botones de mood y estilo
-document.querySelectorAll(".btn-tag[data-text]").forEach((boton) => {
-    boton.addEventListener("click", () => {
-        agregarTexto(boton.dataset.text);
-    });
-});
-
-// Buscar películas
-formulario.addEventListener("submit", async function (event) {
-    event.preventDefault();
-
-    const busqueda = campoBusqueda.value.trim();
-
-    if (busqueda === "") {
-        alert("Escribí qué película estás buscando.");
-        return;
-    }
-
-    ultimaBusqueda = busqueda;
-
-    botonBuscar.disabled = true;
-    botonBuscar.textContent = "Buscando...";
-
-    resultado.innerHTML = "";
-    recomendacion.style.display = "none";
-
-    try {
-        const respuesta = await fetch(formulario.action, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                busqueda: busqueda
-            })
-        });
-
-        if (!respuesta.ok) {
-            throw new Error("Ocurrió un error al buscar películas.");
-        }
-
-        const datos = await respuesta.json();
-
-        ultimaLista = Array.isArray(datos) ? datos : [];
-        indiceActual = 0;
-
-        if (ultimaLista.length === 0) {
-            resultado.innerHTML =
-                "<p>No encontramos películas que coincidan con tu búsqueda.</p>";
-            return;
-        }
-
-        mostrarPelicula(ultimaLista[indiceActual]);
-
-    } catch (error) {
-        resultado.innerHTML =
-            "<p>Hubo un problema al buscar. Intentá nuevamente.</p>";
-
-        console.error(error);
-
-    } finally {
-        botonBuscar.disabled = false;
-        botonBuscar.textContent = "BUSCAR";
-    }
-});
-
-// Mostrar la película recomendada
-function mostrarPelicula(pelicula) {
-    if (!pelicula) {
-        return;
-    }
-
-    recomendacion.style.display = "block";
-
-    resultado.innerHTML = `
-        <div class="card-pelicula">
-            <div class="card-poster-wrap">
-                <img
-                    src="${pelicula.posterUrl || ""}"
-                    class="card-poster-img"
-                    alt="Póster de ${pelicula.titulo || "película"}"
-                />
-            </div>
-
-            <div class="card-info">
-                <h3 class="card-titulo">${pelicula.titulo || "Película recomendada"}</h3>
-
-                <p class="card-sinopsis">
-                    ${pelicula.sinopsis || "No hay sinopsis disponible."}
-                </p>
-
-                <div class="card-tags">
-                    <span class="mini-tag">
-                        ${pelicula.genero || ""}
-                    </span>
-
-                    <span class="mini-tag">
-                        ${pelicula.duracionMinutos || ""} min
-                    </span>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// Mostrar otra recomendación
-function mostrarOtraPelicula() {
-    if (ultimaLista.length <= 1) {
-        return;
-    }
-
-    indiceActual++;
-
-    if (indiceActual >= ultimaLista.length) {
-        indiceActual = 0;
-    }
-
-    mostrarPelicula(ultimaLista[indiceActual]);
-}
