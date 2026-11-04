@@ -1,0 +1,184 @@
+@using Cineura.Models
+@{
+    ViewData["Title"] = "Perfil";
+
+    var nombreUsuario = Context.Session.GetString("nombre") ?? "Usuario";
+    var apellidoUsuario = Context.Session.GetString("apellido") ?? "";
+    var handleUsuario = Context.Session.GetString("usuario") ?? "usuario";
+
+    var iniciales = "";
+    if (!string.IsNullOrEmpty(nombreUsuario)) iniciales += nombreUsuario[0];
+    if (!string.IsNullOrEmpty(apellidoUsuario)) iniciales += apellidoUsuario[0];
+    if (string.IsNullOrEmpty(iniciales)) iniciales = "U";
+
+    List<Peliculas> misFavoritas = ViewBag.MisFavoritas as List<Peliculas> ?? new List<Peliculas>();
+    int cantidadFavoritas = ViewBag.CantidadFavoritas ?? 0;
+    string gustosAdn = ViewBag.GustosAdn ?? "";
+
+    var actoresFrecuentes = ViewBag.ActoresFrecuentes as List<KeyValuePair<string, int>> ?? new List<KeyValuePair<string, int>>();
+    var directoresFrecuentes = ViewBag.DirectoresFrecuentes as List<KeyValuePair<string, int>> ?? new List<KeyValuePair<string, int>>();
+}
+
+<link rel="stylesheet" href="~/css/perfil.css" />
+
+<div class="perfil-container">
+
+    <!-- 1. SECCIÓN SUPERIOR: DATOS DE USUARIO, STATS Y ADN -->
+    <section class="profile-header-grid">
+        <!-- Tarjeta de Usuario -->
+        <div class="user-card-main">
+            <div class="avatar-circle">
+                <span>@iniciales.ToUpper()</span>
+            </div>
+            <div class="user-info">
+                <h2>@nombreUsuario @apellidoUsuario</h2>
+                <span class="user-handle">@@@handleUsuario</span>
+                <div class="user-badges">
+                    <span class="badge badge-primary">✦ Miembro activo</span>
+                    <span class="badge badge-secondary">Perfil privado</span>
+                </div>
+                <p class="user-bio">
+                    Bienvenido a tu perfil en Cineura.
+                </p>
+            </div>
+        </div>
+
+        <!-- Métricas / Estadísticas -->
+        <div class="stats-card">
+            <div class="stat-item">
+                <span class="stat-title">FAVORITAS</span>
+                <span class="stat-number">@cantidadFavoritas</span>
+                <span class="stat-sub">Guardadas</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-title">VALORACIÓN</span>
+                <span class="stat-number">-</span>
+                <span class="stat-sub">Promedio</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-title">RESEÑAS</span>
+                <span class="stat-number">0</span>
+                <span class="stat-sub">Publicadas</span>
+            </div>
+        </div>
+
+        <!-- ADN Cinematográfico -->
+        <div class="adn-card">
+            <div class="adn-header">
+                <h3>✦ ADN Cinematográfico</h3>
+            </div>
+            <p class="adn-desc">Ingresá tus gustos, géneros o la vibra que buscás para generar recomendaciones personalizadas:</p>
+            
+            <form asp-action="GuardarAdn" method="post" style="display: flex; flex-direction: column; gap: 8px;">
+                <textarea name="gustosAdn" rows="3" placeholder="Ej: Me gusta la ciencia ficción, thrillers psicológicos, dramas con finales abiertos..." style="width: 100%; background: #0f172a; color: #fff; border: 1px solid #1e293b; border-radius: 6px; padding: 8px; font-size: 12px; resize: none;">@gustosAdn</textarea>
+                <button type="submit" class="btn-adjust">Guardar preferencias</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 2. MIS PELÍCULAS FAVORITAS -->
+    <section class="section-block">
+        <h3 class="section-title"><span class="icon-heart">❤️</span> MIS PELÍCULAS FAVORITAS</h3>
+        
+        @if (misFavoritas.Count > 0)
+        {
+            <div class="movies-grid">
+                @foreach (var peli in misFavoritas)
+                {
+                    <div class="movie-card">
+                        <a href="@Url.Action("Detalles", "Home", new { id = peli.IdPelicula })" style="text-decoration: none; color: inherit;">
+                            <div class="poster-wrapper">
+                                @if (!string.IsNullOrEmpty(peli.PosterUrl))
+                                {
+                                    <img src="@peli.PosterUrl" alt="@peli.Titulo" />
+                                }
+                                else
+                                {
+                                    <div style="display: flex; height: 100%; align-items: center; justify-content: center; text-align: center; font-size: 11px; padding: 6px;">@peli.Titulo</div>
+                                }
+                            </div>
+                            <h4 style="margin-top: 6px;">@peli.Titulo</h4>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;">Todavía no agregaste películas a tus Favoritas.</p>
+        }
+    </section>
+
+    <!-- 3. ACTORES Y DIRECTORES FRECUENTES -->
+    <section class="section-block">
+        <h3 class="section-title">🟡 ACTORES FRECUENTES</h3>
+        @if (actoresFrecuentes.Count > 0)
+        {
+            <div class="people-row">
+                @foreach (var actor in actoresFrecuentes)
+                {
+                    <div class="person-chip">
+                        <div class="chip-avatar"></div>
+                        <div class="chip-info">
+                            <strong>@actor.Key</strong>
+                            <span>@actor.Value película(s) en favoritas</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;">Agregá películas a tus favoritas para calcular tus actores más frecuentes.</p>
+        }
+    </section>
+
+    <section class="section-block">
+        <h3 class="section-title">🎬 DIRECTORES FRECUENTES</h3>
+        @if (directoresFrecuentes.Count > 0)
+        {
+            <div class="people-row">
+                @foreach (var director in directoresFrecuentes)
+                {
+                    <div class="person-chip">
+                        <div class="chip-avatar"></div>
+                        <div class="chip-info">
+                            <strong>@director.Key</strong>
+                            <span>@director.Value película(s) en favoritas</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p style="color: #94a3b8; font-size: 13px; margin: 0;">Agregá películas a tus favoritas para calcular tus directores más frecuentes.</p>
+        }
+    </section>
+
+    <!-- 4. BLOQUE INFERIOR (RECOMENDACIONES, AMIGOS, ACTIVIDAD RECIENTE) -->
+    <div class="bottom-three-columns">
+        <!-- Recomendaciones del día -->
+        <div class="sub-block">
+            <h3 class="section-title">✦ Recomendaciones del día</h3>
+            <p style="color: #94a3b8; font-size: 12px; margin: 0;">Completá tu ADN cinematográfico para recibir recomendaciones personalizadas.</p>
+        </div>
+
+        <!-- Tus amigos -->
+        <div class="sub-block">
+            <div class="sub-header">
+                <h3 class="section-title">👥 Tus amigos</h3>
+            </div>
+            <p style="color: #94a3b8; font-size: 12px; margin-top: 10px;">No hay amigos agregados todavía.</p>
+        </div>
+
+        <!-- Actividad reciente -->
+        <div class="sub-block">
+            <h3 class="section-title">📑 Actividad reciente</h3>
+            <p style="color: #94a3b8; font-size: 12px; margin-top: 10px;">No hay actividad reciente.</p>
+        </div>
+    </div>
+
+</div>

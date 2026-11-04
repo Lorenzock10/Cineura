@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -256,7 +255,7 @@
                     <a href="@Url.Action("Index", "Home")">Inicio</a>
                     <a href="@Url.Action("Index", "Explorador")">Explorador</a>
                     <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
-                    <a href="@Url.Action("Favoritas", "Home")">Favoritas</a>
+                    <a href="@Url.Action("Perfil", "Home")">Perfil</a>
                 </nav>
             }
 
@@ -264,7 +263,7 @@
                 @if (!string.IsNullOrEmpty(usuarioSesion))
                 {
                     <span class="cineura-saludo">
-                        👋 Hola, @nombreSesion
+                        👋 <a href="@Url.Action("Perfil", "Home")" style="color: inherit; text-decoration: none;">Hola, @nombreSesion</a>
                     </span>
 
                     <a href="@Url.Action("CerrarSesion", "Home")"

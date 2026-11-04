@@ -385,6 +385,79 @@ namespace Cineura.Controllers
             return View(bd.ObtenerFavoritos(idUsuario));
         }
 
+        public IActionResult Perfil()
+        {
+            string usuario = HttpContext.Session.GetString("usuario");
+            if (string.IsNullOrEmpty(usuario))
+            {
+                TempData["Mensaje"] = "Iniciá sesión para ver tu perfil.";
+                return RedirectToAction("Login");
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+            // 1. Películas favoritas
+            List<Peliculas> misFavoritas = bd.ObtenerFavoritos(idUsuario) ?? new List<Peliculas>();
+            ViewBag.MisFavoritas = misFavoritas;
+            ViewBag.CantidadFavoritas = misFavoritas.Count;
+
+            // 2. Conteo dinámico de Actores y Directores frecuentes a partir de sus películas favoritas
+            Dictionary<string, int> conteoActores = new Dictionary<string, int>();
+            Dictionary<string, int> conteoDirectores = new Dictionary<string, int>();
+
+            foreach (var peli in misFavoritas)
+            {
+                // Conteo de Directores
+                if (peli.IdDirector > 0)
+                {
+                    string nombreDirector = bd.ObtenerNombreDirector(peli.IdDirector);
+                    if (!string.IsNullOrEmpty(nombreDirector) && nombreDirector != "No disponible")
+                    {
+                        if (conteoDirectores.ContainsKey(nombreDirector))
+                            conteoDirectores[nombreDirector]++;
+                        else
+                            conteoDirectores[nombreDirector] = 1;
+                    }
+                }
+
+                // Conteo de Actores (usando ObtenerActores de tu clase BD)
+                List<string> actoresPeli = bd.ObtenerActores(peli.IdPelicula);
+                if (actoresPeli != null)
+                {
+                    foreach (string nombreActor in actoresPeli)
+                    {
+                        if (!string.IsNullOrEmpty(nombreActor))
+                        {
+                            if (conteoActores.ContainsKey(nombreActor))
+                                conteoActores[nombreActor]++;
+                            else
+                                conteoActores[nombreActor] = 1;
+                        }
+                    }
+                }
+            }
+
+            ViewBag.ActoresFrecuentes = conteoActores.OrderByDescending(x => x.Value).Take(5).ToList();
+            ViewBag.DirectoresFrecuentes = conteoDirectores.OrderByDescending(x => x.Value).Take(5).ToList();
+
+            string gustosGuardados = HttpContext.Session.GetString("gustosAdn") ?? "";
+            ViewBag.GustosAdn = gustosGuardados;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult GuardarAdn(string gustosAdn)
+        {
+            if (!string.IsNullOrWhiteSpace(gustosAdn))
+            {
+                HttpContext.Session.SetString("gustosAdn", gustosAdn.Trim());
+                TempData["Mensaje"] = "¡ADN cinematográfico actualizado!";
+            }
+            return RedirectToAction("Perfil");
+        }
+
         private IActionResult VolverA(string returnUrl, string accionPredeterminada)
         {
             if (!string.IsNullOrWhiteSpace(returnUrl))
@@ -617,6 +690,7 @@ namespace Cineura.Controllers
             bd.EditarComentario(idComentario, idUsuario, texto.Trim());
             return RedirectToAction("Detalles", new { id = idPelicula });
         }
+
         [HttpPost]
         public IActionResult EliminarComentario(int idComentario, int idPelicula)
         {

@@ -1,0 +1,181 @@
+/* Color Palette */
+:root {
+    --bg-dark: #0a0e17;
+    --card-bg: #121824;
+    --card-border: #1e293b;
+    --accent-yellow: #f59e0b;
+    --accent-blue: #00d2ff;
+    --text-white: #ffffff;
+    --text-gray: #94a3b8;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.perfil-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Header Grid Layout */
+.profile-header-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.2fr;
+    gap: 16px;
+}
+
+.user-card-main, .stats-card, .adn-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* User Card */
+.user-card-main {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.avatar-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-yellow);
+    flex-shrink: 0;
+}
+
+.user-info h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.user-handle {
+    font-size: 13px;
+    color: var(--text-gray);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.user-badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+.badge-primary { background: #3b2000; color: #facc15; border: 1px solid #854d0e; }
+.badge-secondary { background: #1e1b4b; color: #a78bfa; border: 1px solid #4338ca; }
+
+.user-bio {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin: 0;
+}
+
+/* Stats Card */
+.stats-card {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-title { font-size: 11px; color: var(--text-gray); letter-spacing: 1px; }
+.stat-number { font-size: 28px; font-weight: bold; color: var(--text-white); margin: 4px 0; }
+.stat-sub { font-size: 10px; color: #22c55e; }
+.stat-divider { width: 1px; height: 50px; background-color: var(--card-border); }
+
+/* ADN Card */
+.adn-card { display: flex; flex-direction: column; justify-content: space-between; }
+.adn-header { display: flex; justify-content: space-between; align-items: center; }
+.adn-header h3 { font-size: 14px; margin: 0; }
+.match-badge { background-color: #064e3b; color: #34d399; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+.adn-desc { font-size: 11px; color: var(--text-gray); margin: 6px 0 12px 0; }
+.adn-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tag { background-color: #1e293b; font-size: 11px; padding: 4px 10px; border-radius: 16px; color: #cbd5e1; }
+.btn-adjust { background-color: var(--accent-yellow); color: #000; border: none; padding: 8px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+/* General Sections */
+.section-block {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.section-title { font-size: 13px; color: var(--text-white); letter-spacing: 0.5px; margin-top: 0; margin-bottom: 16px; }
+
+/* Movie Grid */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+.movie-card { display: flex; flex-direction: column; gap: 8px; }
+.poster-wrapper { border-radius: 8px; overflow: hidden; height: 220px; background-color: #1e293b; }
+.poster-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.movie-card h4 { font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stars { color: var(--accent-yellow); font-size: 12px; }
+
+/* Frequent People Chips */
+.people-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.person-chip { background-color: #0f172a; border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; display: flex; align-items: center; gap: 10px; }
+.chip-avatar { width: 36px; height: 36px; border-radius: 50%; background-color: #334155; }
+.chip-info { display: flex; flex-direction: column; }
+.chip-info strong { font-size: 12px; }
+.chip-info span { font-size: 10px; color: var(--text-gray); }
+
+/* Bottom Columns */
+.bottom-three-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+.sub-block { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; }
+.sub-header { display: flex; justify-content: space-between; align-items: center; }
+.link-see-all { font-size: 10px; color: var(--accent-yellow); text-decoration: none; }
+
+.mini-movie-item, .friend-item, .activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 8px;
+    background-color: #0f172a;
+    border-radius: 6px;
+}
+
+.mini-poster { width: 50px; height: 50px; background-color: #334155; font-size: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; text-align: center; }
+.mini-details strong, .friend-info strong { display: block; font-size: 12px; }
+.mini-details span, .friend-info span { font-size: 10px; color: var(--text-gray); }
+.match-text { color: #34d399; font-weight: bold; }
+
+.avatar-small { width: 32px; height: 32px; border-radius: 50%; background-color: #475569; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; }
+.status-dot { width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; margin-left: auto; }
