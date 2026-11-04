@@ -821,3 +821,38 @@ INNER JOIN Directores D
     ON P.IdDirector = D.IdDirector
 ORDER BY D.Nombre, P.Titulo;
 GO
+INSERT INTO Tendencias (IdPelicula, CantidadInteracciones)
+SELECT P.IdPelicula, 1000
+FROM Peliculas P
+WHERE P.Titulo = 'Dune: Part Two'
+AND NOT EXISTS (
+    SELECT 1 FROM Tendencias T
+    WHERE T.IdPelicula = P.IdPelicula
+);
+
+INSERT INTO Tendencias (IdPelicula, CantidadInteracciones)
+SELECT P.IdPelicula, 900
+FROM Peliculas P
+WHERE P.Titulo = 'Poor Things'
+AND NOT EXISTS (
+    SELECT 1 FROM Tendencias T
+    WHERE T.IdPelicula = P.IdPelicula
+);
+
+INSERT INTO Tendencias (IdPelicula, CantidadInteracciones)
+SELECT P.IdPelicula, 800
+FROM Peliculas P
+WHERE P.Titulo = 'The Substance'
+AND NOT EXISTS (
+    SELECT 1 FROM Tendencias T
+    WHERE T.IdPelicula = P.IdPelicula
+);
+
+INSERT INTO Tendencias (IdPelicula, CantidadInteracciones)
+SELECT P.IdPelicula, 700
+FROM Peliculas P
+WHERE P.Titulo = 'Anatomy of a Fall'
+AND NOT EXISTS (
+    SELECT 1 FROM Tendencias T
+    WHERE T.IdPelicula = P.IdPelicula
+);
