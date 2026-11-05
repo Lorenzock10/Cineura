@@ -1,235 +1,891 @@
 ﻿@using Cineura.Models
 
 @{
-    ViewData["Title"] = "Cineura | Buscador Inteligente";
+    ViewData["Title"] = "Cineura | Tu próximo universo cinematográfico";
+
+    bool usuarioConectado =
+        !string.IsNullOrEmpty(Context.Session.GetString("usuario"));
 }
 
 <div class="cineura-pagina">
     <div class="cineura-contenedor">
 
-        <!-- BUSCADOR IA -->
-        <div class="cineura-hero text-center mb-5">
-            
-            
+        @if (!usuarioConectado)
+        {
+            <!-- =====================================
+                 LANDING PAGE
+            ====================================== -->
 
-            <h1 class="hero-titulo">¿Qué vibra o historia buscás vivir hoy?</h1>
+            <section class="landing-cineura">
 
-            <p class="cineura-subtitulo hero-subtitulo">
-               En Cineura no te elegimos la mejor película vos nos elegís a nosotros.
-            </p>
+                <!-- HERO -->
 
-            <div class="cineura-buscador-box">
-                <form id="formBusqueda" class="w-100">
-                    <div class="buscador-input-group">
-                        <textarea id="busqueda"
-                                  name="busqueda"
-                                  class="form-control cineura-input-hero"
-                                  rows="2"
-                                  placeholder="Ej: Un thriller psicológico oscuro con giros inesperados..."
-                                  required></textarea>
+                
+<section class="landing-hero" id="inicio">
 
-                        <button type="submit" id="botonBuscar" class="cineura-boton-ia">
-                            ✦ Generar Recomendación
-                        </button>
-                    </div>
-                </form>
+    <div class="landing-hero-overlay"></div>
 
-                <!-- MOODS -->
-                <div class="filtros-rapidos mt-3">
-                    <div class="grupo-tags">
-                        <span class="tag-label">MOODS:</span>
+    <div class="landing-hero-content">
 
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cerebral & Tenso')">
-                            • Cerebral & Tenso
-                        </button>
-
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Melancolía Nórdica')">
-                            Melancolía Nórdica
-                        </button>
-
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Adrenalina Pura')">
-                            Adrenalina Pura
-                        </button>
-
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Existencialista')">
-                            Existencialista
-                        </button>
-                    </div>
-
-                    <div class="grupo-tags mt-2">
-                        <span class="tag-label">ESTÉTICAS:</span>
-
-                        <button type="button" class="btn-tag tag-destacado" onclick="agregarTexto('A24 Vibes')">
-                            ✦ A24 Vibes
-                        </button>
-
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cine de Autor')">
-                            Cine de Autor
-                        </button>
-
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Cyberpunk')">
-                            Cyberpunk
-                        </button>
-
-                        <button type="button" class="btn-tag" onclick="agregarTexto('Sci-Fi 70s')">
-                            Sci-Fi 70s
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <div class="landing-overline">
+            <span class="landing-punto"></span>
+            TU EXPERIENCIA CINEMATOGRÁFICA
         </div>
 
-        <!-- MENSAJES DEL BUSCADOR -->
-        <div id="resultado"
-             class="cineura-estado text-center fs-5 my-4"
-             role="status">
+        <h1>
+            No busques qué ver.
+            <span>Descubrí qué sentir.</span>
+        </h1>
+
+        <p class="landing-hero-description">
+            Cada película tiene un universo por descubrir.
+            Encontrá historias que conecten con vos, tu estado de ánimo
+            y lo que tenés ganas de vivir hoy.
+        </p>
+
+        <div class="landing-hero-botones">
+            <a asp-controller="Home" asp-action="Registrarse"
+               class="landing-btn-rojo">
+                DESCUBRIR MI PRÓXIMA PELÍCULA ↗
+            </a>
+
+            <a href="#tendencias" class="landing-btn-outline">
+                EXPLORAR CINE
+            </a>
         </div>
 
-        <!-- RESULTADO DE LA RECOMENDACIÓN -->
-        <div id="recomendacion" class="cineura-recomendacion mb-5">
-            <div class="row g-0">
-
-                <div class="col-md-5" id="zonaPoster">
-                    <div class="cineura-poster-vacio">
-                        <span>✦ CINEURA</span>
-                    </div>
-                </div>
-
-                <div class="col-md-7">
-                    <div class="cineura-detalle">
-
-                        <div class="cineura-subtitulo mb-2">
-                            ✦ RECOMENDACIÓN PARA VOS
-                        </div>
-
-                        <h2 id="tituloPelicula">
-                            Tu próxima película
-                        </h2>
-
-                        <div id="etiquetasPelicula" class="my-3"></div>
-
-                        <p id="datosPelicula" class="cineura-datos"></p>
-
-                        <h3 class="mt-4 fs-5 text-white">
-                            Sinopsis
-                        </h3>
-
-                        <p id="descripcionPelicula" class="cineura-descripcion"></p>
-
-                        <div class="cineura-motivo">
-                            <h3>¿Por qué la elegimos para vos?</h3>
-                            <p id="motivoPelicula"></p>
-                        </div>
-
-                        <div class="d-flex flex-wrap gap-2 mt-4">
-
-                            <button type="button"
-                                    id="botonDetalles"
-                                    class="cineura-boton-ia py-2 px-4 w-auto">
-                                Ver detalles
-                            </button>
-
-                            <button type="button"
-                                    id="botonOtra"
-                                    class="cineura-boton-secundario">
-                                ↻ Otra recomendación
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
+        <div class="landing-hero-stats">
+            <div>
+                <strong>∞</strong>
+                <span>HISTORIAS POR DESCUBRIR</span>
             </div>
-        </div>
-
-        <!-- PELÍCULAS EN TENDENCIA -->
-        <div class="seccion-tendencias mt-5 pt-4">
-
-            <div class="d-flex justify-content-between align-items-end mb-4">
-                <div>
-
-                    <div class="cineura-badge-neural d-inline-block mb-1">
-                        ● TRENDING NOW &nbsp;•&nbsp; ACTUALIZADO HOY
-                    </div>
-
-                    <h2 class="h3 fw-bold text-white mb-0">
-                        Películas en Tendencias Globales
-                    </h2>
-
-                    <p class="text-secondary small mb-0">
-                        Los estrenos más vistos y aclamados de la semana.
-                    </p>
-
-                </div>
+            <div>
+                <strong>IA</strong>
+                <span>RECOMENDACIONES INTELIGENTES</span>
             </div>
-
-            <!-- TARJETAS DINÁMICAS DESDE SQL -->
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
-
-                @foreach (Peliculas pelicula in ViewBag.PeliculasTendencia)
-                {
-                    <div class="col">
-
-                        <div class="card-pelicula">
-
-                            <!-- PÓSTER -->
-                            <div class="card-poster-wrap">
-
-                                <img src="@pelicula.PosterUrl"
-                                     class="card-poster-img"
-                                     alt="Póster de @pelicula.Titulo"
-                                     loading="lazy"
-                                     onerror="this.onerror=null;this.src='https://placehold.co/500x750/111827/FBBF24?text=Cineura';" />
-
-                            </div>
-
-                            <!-- INFORMACIÓN -->
-                            <div class="card-info">
-
-                                <div class="card-meta">
-                                    @pelicula.Anio • @pelicula.DuracionMinutos min
-                                </div>
-
-                                <h4 class="card-titulo">
-                                    @pelicula.Titulo
-                                </h4>
-
-                                <!-- ETIQUETAS -->
-                                <div class="card-tags">
-
-                                    @if (!string.IsNullOrEmpty(pelicula.Genero))
-                                    {
-                                        <span class="mini-tag">
-                                            @pelicula.Genero
-                                        </span>
-                                    }
-
-                                    @if (!string.IsNullOrEmpty(pelicula.Animo))
-                                    {
-                                        <span class="mini-tag">
-                                            @pelicula.Animo
-                                        </span>
-                                    }
-
-                                </div>
-
-                                <!-- SINOPSIS -->
-                                <p class="card-sinopsis">
-                                    @pelicula.Sinopsis
-                                </p>
-                                <a asp-controller="Home" asp-action="Detalles" asp-route-id="@pelicula.IdPelicula" class="explorador-detalle">VER DETALLE</a>
-                            </div>
-                        </div>
-                    </div>
-                }
-
+            <div>
+                <strong>100%</strong>
+                <span>HECHO PARA VOS</span>
             </div>
         </div>
 
     </div>
+
+    <div class="landing-hero-bottom">
+        <span>DESCUBRÍ TU PRÓXIMA HISTORIA</span>
+        <a href="#tendencias">DESLIZÁ PARA EXPLORAR ↓</a>
+    </div>
+
+</section>
+
+                <!-- FRASE DE MARCA -->
+
+                <section class="landing-manifiesto">
+
+                    <span class="landing-manifiesto-linea"></span>
+
+                    <p>
+                        EL CINE NO ES SOLAMENTE LO QUE VES.
+                        <strong>ES LO QUE TE HACE SENTIR.</strong>
+                    </p>
+
+                    <span class="landing-manifiesto-linea"></span>
+
+                </section>
+
+                <!-- TENDENCIAS -->
+
+                <section id="tendencias" class="landing-tendencias">
+
+                    <div class="landing-seccion-header">
+
+                        <div>
+                            <div class="landing-overline">
+                                <span class="landing-punto"></span>
+                                EL UNIVERSO CINEURA
+                            </div>
+
+                            <h2>
+                                Historias que
+                                <span>merecen ser vistas.</span>
+                            </h2>
+
+                            <p>
+                                Explorá películas, encontrá nuevos favoritos
+                                y descubrí algo que todavía no sabías que buscabas.
+                            </p>
+                        </div>
+
+                        <div class="landing-seccion-numero">
+                            <span>01</span>
+                            <small>PELÍCULAS</small>
+                        </div>
+
+                    </div>
+
+                    <div class="landing-movie-track">
+
+                        @if (ViewBag.PeliculasTendencia != null)
+                        {
+                            @foreach (Peliculas pelicula in ViewBag.PeliculasTendencia)
+                            {
+                                <article class="landing-movie-card">
+
+                                    <a asp-controller="Home"
+                                       asp-action="Registrarse"
+                                       class="landing-movie-poster">
+
+                                        <img src="@pelicula.PosterUrl"
+                                             alt="Póster de @pelicula.Titulo"
+                                             loading="lazy"
+                                             onerror="this.onerror=null;this.src='https://placehold.co/500x750/111111/FBBF24?text=CINEURA';" />
+
+                                        <div class="landing-movie-overlay">
+                                            <span>✦</span>
+                                            <strong>VER DETALLE</strong>
+                                        </div>
+
+                                    </a>
+
+                                    <div class="landing-movie-info">
+
+                                        <div class="landing-movie-meta">
+                                            @pelicula.Anio
+                                            <span>•</span>
+                                            @pelicula.DuracionMinutos min
+                                        </div>
+
+                                        <h3>@pelicula.Titulo</h3>
+
+                                        <div class="landing-movie-tags">
+
+                                            @if (!string.IsNullOrEmpty(pelicula.Genero))
+                                            {
+                                                <span>@pelicula.Genero</span>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(pelicula.Animo))
+                                            {
+                                                <span>@pelicula.Animo</span>
+                                            }
+
+                                        </div>
+
+                                        <a asp-controller="Home"
+                                           asp-action="Registrarse"
+                                           class="landing-movie-link">
+                                            VER DETALLE <span>↗</span>
+                                        </a>
+
+                                    </div>
+
+                                </article>
+                            }
+                        }
+
+                    </div>
+
+                    <div class="landing-track-indicacion">
+                        <span>DESLIZÁ PARA DESCUBRIR MÁS</span>
+                        <span class="landing-track-flecha">⟶</span>
+                    </div>
+
+                </section>
+
+                <!-- EL PROBLEMA -->
+
+                <section class="landing-problema">
+
+                    <div class="landing-problema-numero">02</div>
+
+                    <div class="landing-problema-contenido">
+
+                        <div class="landing-overline">
+                            EL PROBLEMA
+                        </div>
+
+                        <h2>
+                            ¿Cuánto tiempo perdés
+                            <span>decidiendo qué mirar?</span>
+                        </h2>
+
+                        <p>
+                            Miles de películas. Decenas de plataformas.
+                            Recomendaciones que siempre parecen iguales.
+                            A veces pasamos más tiempo buscando una película
+                            que disfrutándola.
+                        </p>
+
+                        <p>
+                            Cineura nace para cambiar esa experiencia:
+                            menos vueltas, más descubrimientos y recomendaciones
+                            que tengan sentido para vos.
+                        </p>
+
+                    </div>
+
+                    <div class="landing-problema-visual">
+
+                        <div class="landing-buscando-card">
+
+                            <div class="landing-buscando-top">
+                                <span>BUSCANDO ALGO PARA VER...</span>
+                                <span class="landing-loading">● ● ●</span>
+                            </div>
+
+                            <div class="landing-buscando-linea"></div>
+                            <div class="landing-buscando-linea corta"></div>
+                            <div class="landing-buscando-linea"></div>
+
+                            <div class="landing-buscando-error">
+                                <span>×</span>
+                                DEMASIADAS OPCIONES
+                            </div>
+
+                        </div>
+
+                        <div class="landing-buscando-solucion">
+                            <span>✦</span>
+                            MENOS BÚSQUEDA. MÁS CINE.
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- IA -->
+
+                <section class="landing-ia">
+
+                    <div class="landing-ia-texto">
+
+                        <div class="landing-overline">
+                            <span class="landing-punto"></span>
+                            INTELIGENCIA ARTIFICIAL
+                        </div>
+
+                        <h2>
+                            No necesitás saber qué película buscar.
+                            <span>Solo contanos qué querés sentir.</span>
+                        </h2>
+
+                        <p>
+                            Nuestro buscador inteligente interpreta lo que estás
+                            buscando y transforma tus ideas en recomendaciones
+                            cinematográficas.
+                        </p>
+
+                        <a asp-controller="Home"
+                           asp-action="Registrarse"
+                           class="landing-text-link">
+                            DESCUBRÍ EL BUSCADOR <span>↗</span>
+                        </a>
+
+                    </div>
+
+                    <div class="landing-ia-demo">
+
+                        <div class="landing-ia-window">
+
+                            <div class="landing-ia-window-top">
+
+                                <div class="landing-window-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+
+                                <span>CINEURA / AI SEARCH</span>
+
+                                <span class="landing-ia-status">
+                                    ● ACTIVO
+                                </span>
+
+                            </div>
+
+                            <div class="landing-ia-window-content">
+
+                                <div class="landing-ia-label">
+                                    ¿QUÉ HISTORIA BUSCÁS HOY?
+                                </div>
+
+                                <div class="landing-ia-prompt">
+                                    Quiero un thriller psicológico,
+                                    oscuro y con un final inesperado...
+                                    <span class="landing-cursor">|</span>
+                                </div>
+
+                                <div class="landing-ia-tags">
+                                    <span>THRILLER</span>
+                                    <span>OSCURO</span>
+                                    <span>GIROS INESPERADOS</span>
+                                </div>
+
+                                <div class="landing-ia-response">
+
+                                    <div class="landing-ia-response-title">
+                                        <span>✦</span>
+                                        CINEURA ENTIENDE TU BÚSQUEDA
+                                    </div>
+
+                                    <div class="landing-ia-response-line"></div>
+                                    <div class="landing-ia-response-line short"></div>
+
+                                    <div class="landing-ia-result">
+
+                                        <div class="landing-ia-result-icon">✦</div>
+
+                                        <div>
+                                            <strong>Una recomendación pensada para vos.</strong>
+                                            <small>Gustos + contexto + inteligencia artificial</small>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="landing-ia-glow"></div>
+
+                    </div>
+
+                </section>
+
+                <!-- EXPERIENCIA -->
+
+                <section class="landing-experiencia">
+
+                    <div class="landing-seccion-header">
+
+                        <div>
+                            <div class="landing-overline">
+                                MUCHO MÁS QUE RECOMENDACIONES
+                            </div>
+
+                            <h2>
+                                Tu espacio.
+                                <span>Tu manera de vivir el cine.</span>
+                            </h2>
+
+                            <p>
+                                Todo lo que necesitás para descubrir,
+                                organizar y compartir tu pasión por las películas.
+                            </p>
+                        </div>
+
+                        <div class="landing-seccion-numero">
+                            <span>03</span>
+                            <small>EXPERIENCIA</small>
+                        </div>
+
+                    </div>
+
+                    <div class="landing-experiencia-grid">
+
+                        <article class="landing-feature feature-grande">
+
+                            <div class="landing-feature-numero">01</div>
+                            <div class="landing-feature-icon">✦</div>
+
+                            <div class="landing-feature-contenido">
+                                <h3>Recomendaciones que conectan con vos.</h3>
+
+                                <p>
+                                    Encontrá películas según tus gustos,
+                                    preferencias y estado de ánimo.
+                                </p>
+                            </div>
+
+                            <div class="landing-feature-decoration">
+                                <span>DISCOVER</span>
+                                <span>EXPLORE</span>
+                                <span>FEEL</span>
+                            </div>
+
+                        </article>
+
+                        <article class="landing-feature feature-roja">
+
+                            <div class="landing-feature-numero">02</div>
+                            <div class="landing-feature-icon">♡</div>
+
+                            <div class="landing-feature-contenido">
+                                <h3>Tus películas favoritas.</h3>
+
+                                <p>
+                                    Guardá las historias que te marcaron
+                                    y construí tu colección.
+                                </p>
+                            </div>
+
+                            <div class="feature-corazones">♥ ♥ ♥</div>
+
+                        </article>
+
+                        <article class="landing-feature feature-watchlist">
+
+                            <div class="landing-feature-numero">03</div>
+                            <div class="landing-feature-icon">▤</div>
+
+                            <div class="landing-feature-contenido">
+                                <h3>Tu próxima maratón.</h3>
+
+                                <p>
+                                    Organizá las películas que querés ver
+                                    en tu propia Watchlist.
+                                </p>
+                            </div>
+
+                            <div class="feature-lista">
+                                <span>01 &nbsp; PRÓXIMAMENTE</span>
+                                <span>02 &nbsp; PARA EL FINDE</span>
+                                <span>03 &nbsp; IMPERDIBLES</span>
+                            </div>
+
+                        </article>
+
+                        <article class="landing-feature feature-comunidad">
+
+                            <div class="landing-feature-numero">04</div>
+                            <div class="landing-feature-icon">◎</div>
+
+                            <div class="landing-feature-contenido">
+                                <h3>Compartí tu mirada.</h3>
+
+                                <p>
+                                    Comentá, puntuá y descubrí opiniones
+                                    de otros amantes del cine.
+                                </p>
+                            </div>
+
+                            <div class="feature-estrellas">★★★★★</div>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- CÓMO FUNCIONA -->
+
+                <section class="landing-pasos">
+
+                    <div class="landing-overline">
+                        EMPEZÁ TU EXPERIENCIA
+                    </div>
+
+                    <h2>
+                        Tres pasos.
+                        <span>Un universo por descubrir.</span>
+                    </h2>
+
+                    <div class="landing-pasos-grid">
+
+                        <div class="landing-paso">
+                            <span>01</span>
+                            <div class="landing-paso-linea"></div>
+                            <h3>Creá tu perfil</h3>
+                            <p>
+                                Registrate y empezá a construir
+                                tu propio universo cinematográfico.
+                            </p>
+                        </div>
+
+                        <div class="landing-paso">
+                            <span>02</span>
+                            <div class="landing-paso-linea"></div>
+                            <h3>Descubrí historias</h3>
+                            <p>
+                                Explorá tendencias y recibí recomendaciones
+                                que conecten con vos.
+                            </p>
+                        </div>
+
+                        <div class="landing-paso">
+                            <span>03</span>
+                            <div class="landing-paso-linea"></div>
+                            <h3>Viví el cine</h3>
+                            <p>
+                                Guardá, puntuá y compartí
+                                tus películas favoritas.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- CTA FINAL -->
+
+                <section class="landing-final">
+
+                    <div class="landing-final-fondo"></div>
+
+                    <div class="landing-final-contenido">
+
+                        <div class="landing-overline">
+                            ✦ TU PRÓXIMA HISTORIA TE ESPERA
+                        </div>
+
+                        <h2>
+                            El próximo gran descubrimiento
+                            <span>puede empezar acá.</span>
+                        </h2>
+
+                        <p>
+                            Dejá de buscar entre miles de opciones.
+                            Empezá a encontrar historias que realmente sean para vos.
+                        </p>
+
+                        <a asp-controller="Home"
+                           asp-action="Registrarse"
+                           class="landing-btn-rojo">
+                            Crear mi cuenta <span>↗</span>
+                        </a>
+
+                    </div>
+
+                    <div class="landing-final-marca">
+                        CINEURA<span>✦</span>
+                    </div>
+
+                </section>
+
+            </section>
+        }
+        else
+        {
+            <!-- BUSCADOR IA PARA USUARIOS CONECTADOS -->
+
+            <div class="cineura-hero text-center mb-5">
+
+                <h1 class="hero-titulo">
+                    ¿Qué vibra o historia buscás vivir hoy?
+                </h1>
+
+                <p class="cineura-subtitulo hero-subtitulo">
+                    En Cineura no te elegimos la mejor película,
+                    vos nos elegís a nosotros.
+                </p>
+
+                <div class="cineura-buscador-box">
+
+                    <form id="formBusqueda" class="w-100">
+
+                        <div class="buscador-input-group">
+
+                            <textarea id="busqueda"
+                                      name="busqueda"
+                                      class="form-control cineura-input-hero"
+                                      rows="2"
+                                      placeholder="Ej: Un thriller psicológico oscuro con giros inesperados..."
+                                      required></textarea>
+
+                            <button type="submit"
+                                    id="botonBuscar"
+                                    class="cineura-boton-ia">
+                                ✦ Generar Recomendación
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <div class="filtros-rapidos mt-3">
+
+                        <div class="grupo-tags">
+
+                            <span class="tag-label">MOODS:</span>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Cerebral & Tenso')">
+                                • Cerebral & Tenso
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Melancolía Nórdica')">
+                                Melancolía Nórdica
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Adrenalina Pura')">
+                                Adrenalina Pura
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Existencialista')">
+                                Existencialista
+                            </button>
+
+                        </div>
+
+                        <div class="grupo-tags mt-2">
+
+                            <span class="tag-label">ESTÉTICAS:</span>
+
+                            <button type="button" class="btn-tag tag-destacado"
+                                    onclick="agregarTexto('A24 Vibes')">
+                                ✦ A24 Vibes
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Cine de Autor')">
+                                Cine de Autor
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Cyberpunk')">
+                                Cyberpunk
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Sci-Fi 70s')">
+                                Sci-Fi 70s
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="resultado"
+                 class="cineura-estado text-center fs-5 my-4"
+                 role="status">
+            </div>
+
+            <div id="recomendacion" class="cineura-recomendacion mb-5">
+
+                <div class="row g-0">
+
+                    <div class="col-md-5" id="zonaPoster">
+
+                        <div class="cineura-poster-vacio">
+                            <span>✦ CINEURA</span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-7">
+
+                        <div class="cineura-detalle">
+
+                            <div class="cineura-subtitulo mb-2">
+                                ✦ RECOMENDACIÓN PARA VOS
+                            </div>
+
+                            <h2 id="tituloPelicula">
+                                Tu próxima película
+                            </h2>
+
+                            <div id="etiquetasPelicula" class="my-3"></div>
+
+                            <p id="datosPelicula" class="cineura-datos"></p>
+
+                            <h3 class="mt-4 fs-5 text-white">
+                                Sinopsis
+                            </h3>
+
+                            <p id="descripcionPelicula"
+                               class="cineura-descripcion"></p>
+
+                            <div class="cineura-motivo">
+
+                                <h3>¿Por qué la elegimos para vos?</h3>
+
+                                <p id="motivoPelicula"></p>
+
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2 mt-4">
+
+                                <button type="button"
+                                        id="botonDetalles"
+                                        class="cineura-boton-ia py-2 px-4 w-auto">
+                                    Ver detalles
+                                </button>
+
+                                <button type="button"
+                                        id="botonOtra"
+                                        class="cineura-boton-secundario">
+                                    ↻ Otra recomendación
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+        <!-- TENDENCIAS PARA USUARIOS CONECTADOS -->
+
+        @if (usuarioConectado)
+        {
+            <section id="tendencias" class="seccion-tendencias mt-5 pt-4">
+
+                <div class="d-flex justify-content-between align-items-end mb-4">
+
+                    <div>
+
+                        <div class="cineura-badge-neural d-inline-block mb-1">
+                            ● TRENDING NOW &nbsp;•&nbsp; ACTUALIZADO HOY
+                        </div>
+
+                        <h2 class="h3 fw-bold text-white mb-0">
+                            Películas en Tendencias Globales
+                        </h2>
+
+                        <p class="text-secondary small mb-0">
+                            Los estrenos más vistos y aclamados de la semana.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+
+                    @if (ViewBag.PeliculasTendencia != null)
+                    {
+                        @foreach (Peliculas pelicula in ViewBag.PeliculasTendencia)
+                        {
+                            <div class="col">
+
+                                <div class="card-pelicula">
+
+                                    <div class="card-poster-wrap">
+
+                                        <img src="@pelicula.PosterUrl"
+                                             class="card-poster-img"
+                                             alt="Póster de @pelicula.Titulo"
+                                             loading="lazy"
+                                             onerror="this.onerror=null;this.src='https://placehold.co/500x750/111111/FBBF24?text=CINEURA';" />
+
+                                    </div>
+
+                                    <div class="card-info">
+
+                                        <div class="card-meta">
+                                            @pelicula.Anio • @pelicula.DuracionMinutos min
+                                        </div>
+
+                                        <h4 class="card-titulo">
+                                            @pelicula.Titulo
+                                        </h4>
+
+                                        <div class="card-tags">
+
+                                            @if (!string.IsNullOrEmpty(pelicula.Genero))
+                                            {
+                                                <span class="mini-tag">
+                                                    @pelicula.Genero
+                                                </span>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(pelicula.Animo))
+                                            {
+                                                <span class="mini-tag">
+                                                    @pelicula.Animo
+                                                </span>
+                                            }
+
+                                        </div>
+
+                                        <p class="card-sinopsis">
+                                            @pelicula.Sinopsis
+                                        </p>
+
+                                        <a asp-controller="Home"
+                                           asp-action="Detalles"
+                                           asp-route-id="@pelicula.IdPelicula"
+                                           class="explorador-detalle">
+                                            VER DETALLE
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+                    }
+
+                </div>
+
+            </section>
+            
+
+            
+        }
+
+    </div>
 </div>
+
 @section Scripts {
-    <script src="~/js/home-index.js" asp-append-version="true"></script>
+
+    @if (usuarioConectado)
+    {
+        <script src="~/js/home-index.js" asp-append-version="true"></script>
+    }
+    else
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const elementos = document.querySelectorAll(
+                    ".landing-problema, .landing-ia, .landing-feature, .landing-paso, .landing-final"
+                );
+
+                if ("IntersectionObserver" in window) {
+
+                    const observador = new IntersectionObserver(function (entradas) {
+
+                        entradas.forEach(function (entrada) {
+
+                            if (entrada.isIntersecting) {
+                                entrada.target.classList.add("landing-visible");
+                                observador.unobserve(entrada.target);
+                            }
+
+                        });
+
+                    }, {
+                        threshold: 0.12
+                    });
+
+                    elementos.forEach(function (elemento) {
+                        elemento.classList.add("landing-reveal");
+                        observador.observe(elemento);
+                    });
+
+                } else {
+
+                    elementos.forEach(function (elemento) {
+                        elemento.classList.add("landing-visible");
+                    });
+
+                }
+
+            });
+        </script>
+    }
+
 }
+
 @section Styles {
-    <link rel="stylesheet" href="~/css/home-index.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/home-index.css"
+          asp-append-version="true" />
+
 }
