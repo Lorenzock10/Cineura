@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Cineura.Models;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace Cineura.Controllers
             string ordenar = "")
         {
             BD bd = new BD();
+
+            bool esFetch =
+                Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
             List<Peliculas> peliculas = bd.ObtenerPeliculas();
             List<Peliculas> peliculasEncontradas = new List<Peliculas>();
@@ -63,7 +67,7 @@ namespace Cineura.Controllers
                 }
             }
 
-            // Buscar una coincidencia exacta del título.
+            // Buscar coincidencia exacta del título.
             if (busqueda != null && busqueda.Trim() != "" &&
                 (genero == null || genero == "") &&
                 !anio.HasValue &&
@@ -79,6 +83,18 @@ namespace Cineura.Controllers
 
                         if (tituloPelicula == tituloBuscado)
                         {
+                            if (esFetch)
+                            {
+                                return Json(new
+                                {
+                                    redirectUrl = Url.Action(
+                                        "Detalles",
+                                        "Home",
+                                        new { id = pelicula.IdPelicula }
+                                    )
+                                });
+                            }
+
                             return RedirectToAction(
                                 "Detalles",
                                 "Home",
@@ -108,6 +124,15 @@ namespace Cineura.Controllers
             ViewBag.Anio = anio;
             ViewBag.DuracionMaxima = duracionMaxima;
             ViewBag.Ordenar = ordenar;
+
+            // Si viene de Fetch, devolver solamente los resultados.
+            if (esFetch)
+            {
+                return PartialView(
+                    "_ResultadosExplorador",
+                    peliculasEncontradas
+                );
+            }
 
             return View("../Home/Explorador", peliculasEncontradas);
         }

@@ -1,7 +1,7 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿
+// ============================================
+// NOVA - BUSCADOR DE RECOMENDACIONES CON IA
+// ============================================
 
 let ultimaBusqueda = "";
 let ultimaLista = [];
@@ -14,6 +14,7 @@ const recomendacion = document.getElementById("recomendacion");
 const botonBuscar = document.getElementById("botonBuscar");
 
 function agregarTexto(texto) {
+
     if (campoBusqueda && campoBusqueda.value.trim() === "") {
         campoBusqueda.value = texto;
     } else if (campoBusqueda) {
@@ -26,7 +27,9 @@ function agregarTexto(texto) {
 }
 
 if (formulario && campoBusqueda && resultado && recomendacion && botonBuscar) {
+
     formulario.addEventListener("submit", async function (e) {
+
         e.preventDefault();
 
         ultimaBusqueda = campoBusqueda.value.trim();
@@ -41,6 +44,7 @@ if (formulario && campoBusqueda && resultado && recomendacion && botonBuscar) {
         botonBuscar.disabled = true;
 
         try {
+
             const respuesta = await fetch('/Home/BuscarPeliculas', {
                 method: "POST",
                 headers: {
@@ -75,22 +79,30 @@ if (formulario && campoBusqueda && resultado && recomendacion && botonBuscar) {
                     : " películas para vos.");
 
             recomendacion.style.display = "block";
+
             recomendacion.scrollIntoView({
                 behavior: "smooth",
                 block: "start"
             });
 
-        } catch (error) {
+        }
+        catch (error) {
+
             console.error(error);
+
             resultado.textContent =
                 "No pudimos obtener las recomendaciones. Revisá el servidor e intentá nuevamente.";
-        } finally {
+
+        }
+        finally {
             botonBuscar.disabled = false;
         }
+
     });
 }
 
 function mostrarPelicula(p) {
+
     if (!p) return;
 
     document.getElementById("tituloPelicula").textContent =
@@ -103,23 +115,31 @@ function mostrarPelicula(p) {
         p.duracionMinutos ? p.duracionMinutos + " min" : "Información no disponible";
 
     const etiquetas = document.getElementById("etiquetasPelicula");
+
     etiquetas.replaceChildren();
 
     [p.genero, p.animo].filter(Boolean).forEach(function (texto) {
+
         const etiqueta = document.createElement("span");
+
         etiqueta.className = "cineura-etiqueta";
         etiqueta.textContent = texto;
+
         etiquetas.appendChild(etiqueta);
+
     });
 
     document.getElementById("motivoPelicula").textContent =
         'Esta película coincide con tu búsqueda: "' + ultimaBusqueda + '".';
 
     const zonaPoster = document.getElementById("zonaPoster");
+
     zonaPoster.replaceChildren();
 
     if (p.posterUrl) {
+
         const imagen = document.createElement("img");
+
         imagen.src = p.posterUrl;
         imagen.alt = p.titulo || "Póster";
         imagen.className = "cineura-poster";
@@ -129,11 +149,15 @@ function mostrarPelicula(p) {
         };
 
         zonaPoster.appendChild(imagen);
+
     } else {
+
         mostrarPosterVacio(p.titulo);
+
     }
 
     document.getElementById("botonDetalles").onclick = function () {
+
         if (!p.idPelicula) {
             alert("No se encontró el ID de esta película en la base de datos.");
             return;
@@ -141,11 +165,14 @@ function mostrarPelicula(p) {
 
         window.location.href =
             "/Home/Detalles?id=" + encodeURIComponent(p.idPelicula);
+
     };
 }
 
 function mostrarPosterVacio(titulo) {
+
     const zonaPoster = document.getElementById("zonaPoster");
+
     zonaPoster.replaceChildren();
 
     const espacio = document.createElement("div");
@@ -156,40 +183,62 @@ function mostrarPosterVacio(titulo) {
 
     espacio.appendChild(texto);
     zonaPoster.appendChild(espacio);
+
 }
 
+// Botón para ver otra recomendación.
+
 const botonOtra = document.getElementById("botonOtra");
+
 if (botonOtra) {
+
     botonOtra.addEventListener("click", function () {
+
         if (ultimaLista.length <= 1) {
+
             resultado.textContent =
                 "No hay otra película para esta búsqueda. Probá con otra descripción.";
+
             return;
         }
 
         indiceActual = (indiceActual + 1) % ultimaLista.length;
+
         mostrarPelicula(ultimaLista[indiceActual]);
 
         resultado.textContent =
             "Recomendación " + (indiceActual + 1) +
             " de " + ultimaLista.length;
+
     });
 }
 
 window.agregarTexto = agregarTexto;
 
+
+// ============================================
+// CALIFICACIONES Y REVIEWS
+// ============================================
+
 document.addEventListener("DOMContentLoaded", function () {
+
+    // CALIFICACIÓN CON ESTRELLAS
+
     const calificacion = document.querySelector(".cine-calificacion");
 
     if (calificacion) {
+
         const estrellas = calificacion.querySelectorAll(".cine-estrella");
-        const formulario = document.getElementById("form-puntuacion");
+        const formularioPuntuacion = document.getElementById("form-puntuacion");
         const puntuacion = document.getElementById("puntuacion-seleccionada");
         const textos = calificacion.querySelectorAll(".cine-calificacion-texto");
 
-        if (formulario && puntuacion) {
+        if (formularioPuntuacion && puntuacion) {
+
             function actualizarEstrellas(valor) {
+
                 estrellas.forEach(function (estrella) {
+
                     const numero = Number(estrella.dataset.valor);
 
                     if (numero <= valor) {
@@ -203,10 +252,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         estrella.setAttribute("aria-pressed", "false");
                     }
+
                 });
             }
 
             const inicial = Number(puntuacion.value);
+
             actualizarEstrellas(inicial);
 
             if (inicial > 0 && textos.length > 0) {
@@ -214,18 +265,26 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             estrellas.forEach(function (estrella) {
+
                 estrella.addEventListener("click", function () {
+
                     const valor = Number(estrella.dataset.valor);
 
                     puntuacion.value = valor;
+
                     actualizarEstrellas(valor);
-                    formulario.submit();
+
+                   formularioPuntuacion.requestSubmit();
+
                 });
+
             });
+
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+
+    // LEER MÁS / LEER MENOS EN REVIEWS
 
     const botonesLeerMas = document.querySelectorAll(".cine-review-leer-mas");
 
@@ -248,4 +307,287 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+
+// ============================================
+// EXPLORADOR - FILTROS CON FETCH
+// ============================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const formularioExplorador =
+        document.querySelector(".explorador-buscador");
+
+    if (!formularioExplorador) return;
+
+    async function aplicarFiltros() {
+
+        const datos = new FormData(formularioExplorador);
+        const parametros = new URLSearchParams(datos);
+
+        try {
+
+            const respuesta = await fetch(
+                formularioExplorador.action + "?" + parametros.toString(),
+                {
+                    method: "GET",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error("Error del servidor: " + respuesta.status);
+            }
+
+            const tipoContenido = respuesta.headers.get("content-type");
+
+            if (tipoContenido && tipoContenido.includes("application/json")) {
+
+                const resultadoFetch = await respuesta.json();
+
+                if (resultadoFetch.redirectUrl) {
+                    window.location.href = resultadoFetch.redirectUrl;
+                }
+
+                return;
+            }
+
+            const html = await respuesta.text();
+
+            const contenedorResultados =
+                document.getElementById("peliculas");
+
+            if (contenedorResultados) {
+                contenedorResultados.outerHTML = html;
+            }
+
+        }
+        catch (error) {
+
+            console.error("Error al aplicar filtros:", error);
+
+        }
+    }
+
+    // Buscar al enviar el formulario.
+
+    formularioExplorador.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        aplicarFiltros();
+
+    });
+
+    // Aplicar filtros automáticamente.
+
+    ["genero", "anio", "duracionMaxima", "ordenar"].forEach(function (id) {
+
+        const campo = document.getElementById(id);
+
+        if (campo) {
+            campo.addEventListener("change", aplicarFiltros);
+        }
+
+    });
+
+    // Limpiar filtros.
+
+    const botonLimpiar =
+        document.querySelector(".explorador-limpiar");
+
+    if (botonLimpiar) {
+
+        botonLimpiar.addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            formularioExplorador.reset();
+
+            aplicarFiltros();
+
+        });
+
+    }
+
+});
+
+// ============================================
+// FAVORITOS, WATCHLIST Y PUNTUACIONES CON FETCH
+// ============================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Enviar formularios sin recargar la página.
+    async function enviarFormularioFetch(formulario) {
+
+        const boton = formulario.querySelector("button[type='submit']");
+
+        if (!boton) return;
+
+        const accionOriginal = formulario.action;
+        const textoOriginal = boton.innerHTML;
+
+        boton.disabled = true;
+
+        try {
+
+            const datos = new FormData(formulario);
+
+            const respuesta = await fetch(formulario.action, {
+                method: "POST",
+                body: datos,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            // Si el servidor redirige al login, ir al login.
+            if (respuesta.redirected &&
+                respuesta.url.toLowerCase().includes("/login")) {
+
+                window.location.href = respuesta.url;
+                return;
+            }
+
+            if (!respuesta.ok) {
+                throw new Error("Error al guardar: " + respuesta.status);
+            }
+
+            // ==================================
+            // PUNTUACIONES
+            // ==================================
+
+            if (formulario.id === "form-puntuacion") {
+
+                const puntuacion = Number(
+                    formulario.querySelector("#puntuacion-seleccionada").value
+                );
+
+                const estrellas = formulario.querySelectorAll(".cine-estrella");
+
+                estrellas.forEach(function (estrella) {
+
+                    const valor = Number(estrella.dataset.valor);
+
+                    estrella.classList.toggle("activa", valor <= puntuacion);
+
+                });
+
+                const texto = document.querySelector(
+                    ".cine-calificacion-texto"
+                );
+
+                if (texto) {
+                    texto.textContent = "Tu puntuación: " + puntuacion + " de 5";
+                }
+
+            }
+
+            // ==================================
+            // FAVORITOS
+            // ==================================
+
+            else if (accionOriginal.includes("AgregarFavorito")) {
+
+                const nuevaAccion = new URL(accionOriginal);
+                nuevaAccion.pathname = nuevaAccion.pathname.replace(
+                    "AgregarFavorito",
+                    "QuitarFavorito"
+                );
+
+                formulario.action = nuevaAccion.toString();
+
+                boton.className = "cine-boton cine-boton-favorito-activo";
+                boton.innerHTML = '<span aria-hidden="true">♥</span> En Favoritas';
+
+            }
+
+            else if (accionOriginal.includes("QuitarFavorito")) {
+
+                const nuevaAccion = new URL(accionOriginal);
+                nuevaAccion.pathname = nuevaAccion.pathname.replace(
+                    "QuitarFavorito",
+                    "AgregarFavorito"
+                );
+
+                formulario.action = nuevaAccion.toString();
+
+                boton.className = "cine-boton cine-boton-principal";
+                boton.innerHTML = '<span aria-hidden="true">♥</span> Agregar a Favoritas';
+
+            }
+
+            // ==================================
+            // WATCHLIST
+            // ==================================
+
+            else if (accionOriginal.includes("AgregarWatchlist")) {
+
+                const nuevaAccion = new URL(accionOriginal);
+                nuevaAccion.pathname = nuevaAccion.pathname.replace(
+                    "AgregarWatchlist",
+                    "QuitarWatchlist"
+                );
+
+                formulario.action = nuevaAccion.toString();
+
+                boton.className = "cine-boton cine-boton-secundario";
+                boton.innerHTML = '<span aria-hidden="true">✓</span> En Watchlist';
+
+            }
+
+            else if (accionOriginal.includes("QuitarWatchlist")) {
+
+                const nuevaAccion = new URL(accionOriginal);
+                nuevaAccion.pathname = nuevaAccion.pathname.replace(
+                    "QuitarWatchlist",
+                    "AgregarWatchlist"
+                );
+
+                formulario.action = nuevaAccion.toString();
+
+                boton.className = "cine-boton cine-boton-secundario";
+                boton.innerHTML = '<span aria-hidden="true">＋</span> Agregar a Watchlist';
+
+            }
+
+        }
+        catch (error) {
+
+            console.error("Error en la operación:", error);
+
+            alert("No se pudo guardar el cambio. Intentá nuevamente.");
+
+            boton.innerHTML = textoOriginal;
+
+        }
+        finally {
+
+            boton.disabled = false;
+
+        }
+    }
+
+
+    // Interceptar únicamente los formularios indicados.
+
+    const formularios = document.querySelectorAll(
+        "#form-puntuacion, .cine-formulario-accion"
+    );
+
+    formularios.forEach(function (formulario) {
+
+        formulario.addEventListener("submit", function (e) {
+
+            e.preventDefault();
+
+            enviarFormularioFetch(formulario);
+
+        });
+
+    });
+
 });

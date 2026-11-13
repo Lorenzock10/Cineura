@@ -3,17 +3,6 @@
 
 @{
     ViewData["Title"] = "Explorador | Cineura";
-
-    var peliculasCarrusel = Model
-        .Where(p => !p.Titulo.Contains("Toy Story", StringComparison.OrdinalIgnoreCase))
-        .Take(36)
-        .ToList();
-
-    bool mostrarGrilla =
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Busqueda)) ||
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Genero)) ||
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Anio)) ||
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.DuracionMaxima));
 }
 
 <link rel="stylesheet" href="~/css/Explorador.css" asp-append-version="true" />
@@ -57,6 +46,7 @@
         </div>
 
         <form method="get" action="/Explorador/Index" class="explorador-buscador">
+
             <div class="explorador-busqueda-principal">
                 <span class="explorador-icono-busqueda">⌕</span>
 
@@ -72,8 +62,10 @@
             </div>
 
             <div class="explorador-filtros">
+
                 <div class="explorador-campo">
                     <label for="genero">GÉNERO</label>
+
                     <select id="genero" name="genero">
                         <option value="">Todos los géneros</option>
                         <option value="Acción" selected="@(ViewBag.Genero == "Acción" ? "selected" : null)">Acción</option>
@@ -89,6 +81,7 @@
 
                 <div class="explorador-campo">
                     <label for="anio">AÑO</label>
+
                     <input type="number"
                            id="anio"
                            name="anio"
@@ -98,6 +91,7 @@
 
                 <div class="explorador-campo">
                     <label for="duracionMaxima">DURACIÓN</label>
+
                     <select id="duracionMaxima" name="duracionMaxima">
                         <option value="">Cualquier duración</option>
                         <option value="90" selected="@(ViewBag.DuracionMaxima?.ToString() == "90" ? "selected" : null)">Hasta 90 min</option>
@@ -109,143 +103,46 @@
 
                 <div class="explorador-campo">
                     <label for="ordenar">ORDENAR POR</label>
+
                     <select id="ordenar" name="ordenar">
                         <option value="titulo" selected="@(ViewBag.Ordenar != "anio" ? "selected" : null)">Título</option>
                         <option value="anio" selected="@(ViewBag.Ordenar == "anio" ? "selected" : null)">Año más reciente</option>
                     </select>
                 </div>
+
             </div>
 
             <div class="explorador-buscador-pie">
                 <span>✦ Personalizá tu búsqueda con los filtros</span>
+
                 <a href="/Explorador/Index" class="explorador-limpiar">
                     Limpiar filtros <span>↺</span>
                 </a>
             </div>
+
         </form>
     </section>
 
-    <section class="explorador-resultados" id="peliculas">
-        <div class="explorador-resultados-titulo">
-            <div>
-                <span class="explorador-mini-etiqueta">EL CATÁLOGO DE CINEURA</span>
-
-                <h2>
-                    @(mostrarGrilla ? "Resultados de tu búsqueda" : "Películas para descubrir")
-                </h2>
-
-                <p>
-                    @(mostrarGrilla
-                        ? "Estas películas coinciden con tus filtros."
-                        : "Elegí una historia y dejate llevar.")
-                </p>
-            </div>
-
-            <div class="explorador-cantidad">
-                <span class="explorador-cantidad-numero">@peliculasCarrusel.Count</span>
-                <span class="explorador-cantidad-texto">PELÍCULAS</span>
-            </div>
-        </div>
-
-        @if (peliculasCarrusel.Count > 0)
-        {
-            @if (mostrarGrilla)
-            {
-                <div class="explorador-grilla-resultados">
-                    @foreach (Cineura.Models.Peliculas pelicula in peliculasCarrusel)
-                    {
-                        <a href="/Home/Detalles/@pelicula.IdPelicula"
-                           class="explorador-poster-link"
-                           title="@pelicula.Titulo"
-                           aria-label="Ver detalle de @pelicula.Titulo">
-
-                            @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
-                            {
-                                <img class="explorador-poster"
-                                     src="@pelicula.PosterUrl"
-                                     alt="Póster de @pelicula.Titulo"
-                                     loading="lazy" />
-                            }
-                            else
-                            {
-                                <div class="explorador-poster-vacio">
-                                    <span>✦</span>
-                                    <p>CINEURA</p>
-                                </div>
-                            }
-                        </a>
-                    }
-                </div>
-            }
-            else
-            {
-                <div class="explorador-carrusel">
-                    <button type="button"
-                            class="explorador-flecha"
-                            onclick="moverCarrusel(-1)"
-                            aria-label="Películas anteriores">
-                        &#10094;
-                    </button>
-
-                    <div class="explorador-peliculas-carrusel" id="carruselPeliculas">
-                        @foreach (Cineura.Models.Peliculas pelicula in peliculasCarrusel)
-                        {
-                            <a href="/Home/Detalles/@pelicula.IdPelicula"
-                               class="explorador-poster-link"
-                               title="@pelicula.Titulo"
-                               aria-label="Ver detalle de @pelicula.Titulo">
-
-                                @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
-                                {
-                                    <img class="explorador-poster"
-                                         src="@pelicula.PosterUrl"
-                                         alt="Póster de @pelicula.Titulo"
-                                         loading="lazy" />
-                                }
-                                else
-                                {
-                                    <div class="explorador-poster-vacio">
-                                        <span>✦</span>
-                                        <p>CINEURA</p>
-                                    </div>
-                                }
-                            </a>
-                        }
-                    </div>
-
-                    <button type="button"
-                            class="explorador-flecha"
-                            onclick="moverCarrusel(1)"
-                            aria-label="Películas siguientes">
-                        &#10095;
-                    </button>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="explorador-sin-resultados">
-                <div class="explorador-sin-resultados-icono">⌕</div>
-                <h3>No encontramos películas</h3>
-                <p>Probá cambiando la búsqueda o quitando alguno de los filtros.</p>
-                <a href="/Explorador/Index">Ver todas las películas</a>
-            </div>
-        }
-    </section>
+    <!-- RESULTADOS QUE SE ACTUALIZAN CON FETCH -->
+    @await Html.PartialAsync("_ResultadosExplorador", Model)
 
     <div class="explorador-final">
         <span>✦</span>
         <p>Hay una historia esperando ser descubierta.</p>
         <span>✦</span>
     </div>
+
 </main>
 
 <script>
     function moverCarrusel(direccion) {
+
         const carrusel = document.getElementById("carruselPeliculas");
+
         if (!carrusel) return;
 
         const poster = carrusel.querySelector(".explorador-poster-link");
+
         if (!poster) return;
 
         const estilos = window.getComputedStyle(carrusel);
