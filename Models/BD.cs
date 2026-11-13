@@ -1,4 +1,4 @@
-
+using BCrypt.Net;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -26,14 +26,22 @@ namespace Cineura.Models
             string query = @"
                 SELECT TOP 1 *
                 FROM Usuarios
-                WHERE NombreUsuario = @nombreUsuario
-                AND Contraseña = @contrasena";
+                WHERE NombreUsuario = @nombreUsuario";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                return connection.QueryFirstOrDefault<Usuarios>(
-                    query,
-                    new { nombreUsuario, contrasena });
+                Usuarios usuario = connection.QueryFirstOrDefault<Usuarios>(query, new { nombreUsuario });
+
+                if (usuario == null)
+                    return null;
+
+                if (BCrypt.Net.BCrypt.Verify(contrasena, usuario.Contraseña))
+                    return usuario;
+
+                if (string.Equals(usuario.Contraseña, contrasena, StringComparison.Ordinal))
+                    return usuario;
+
+                return null;
             }
         }
 

@@ -551,7 +551,7 @@ namespace Cineura.Controllers
             nuevoUsuario.Nombre = nombre;
             nuevoUsuario.Apellido = apellido;
             nuevoUsuario.NombreUsuario = usuario;
-            nuevoUsuario.Contraseña = contrasena;
+            nuevoUsuario.Contraseña = BCrypt.Net.BCrypt.HashPassword(contrasena);
             bd.AgregarUsuario(nuevoUsuario);
             return RedirectToAction("Login");
         }
