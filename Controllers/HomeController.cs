@@ -19,11 +19,33 @@ namespace Cineura.Controllers
             _buscadorIA = buscadorIA;
         }
 
-        public IActionResult Index()
+       
+public IActionResult Index()
+
         {
-            BD bd = new BD();
-            List<Peliculas> peliculas = bd.ObtenerPeliculasTendencia();
-            ViewBag.PeliculasTendencia = peliculas;
+            
+BD bd = new BD();
+
+string usuarioActual = HttpContext.Session.GetString("usuario");
+
+List<Peliculas> peliculas;
+
+if (string.IsNullOrEmpty(usuarioActual))
+{
+    // LANDING: mantiene las tendencias originales
+    peliculas = bd.ObtenerPeliculasTendencia();
+}
+else
+{
+    // HOME: elige 4 películas aleatorias de la base de datos
+    peliculas = bd.ObtenerPeliculas()
+        .OrderBy(p => Random.Shared.Next())
+        .Take(4)
+        .ToList();
+}
+
+ViewBag.PeliculasTendencia = peliculas;
+
 
             ViewBag.IdDune = BuscarId(peliculas, "Dune: Part Two");
             ViewBag.IdPoorThings = BuscarId(peliculas, "Poor Things");
@@ -80,7 +102,14 @@ namespace Cineura.Controllers
                     }
                 }
             }
-            return View();
+            if (string.IsNullOrEmpty(usuario))
+{
+    return View("Index");
+}
+else
+{
+    return View("Home");
+}
         }
 
         private int BuscarId(List<Peliculas> peliculas, string titulo)

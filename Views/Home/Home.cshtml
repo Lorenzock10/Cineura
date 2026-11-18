@@ -1,0 +1,307 @@
+
+@using Cineura.Models
+
+@{
+    ViewData["Title"] = "Inicio - Cineura";
+}
+
+<div class="cineura-pagina">
+    <div class="cineura-contenedor">
+
+        <!-- BUSCADOR IA PARA USUARIOS CONECTADOS -->
+
+        <div class="cineura-hero text-center mb-5">
+
+            <h1 class="hero-titulo">
+                ¿Qué vibra o historia buscás vivir hoy?
+            </h1>
+
+            <p class="cineura-subtitulo hero-subtitulo">
+                En Cineura no te elegimos la mejor película,
+                vos nos elegís a nosotros.
+            </p>
+
+            <div class="cineura-buscador-box">
+
+                <form id="formBusqueda" class="w-100">
+
+                    <div class="buscador-input-group">
+
+                        <textarea id="busqueda"
+                                  name="busqueda"
+                                  class="form-control cineura-input-hero"
+                                  rows="2"
+                                  placeholder="Ej: Un thriller psicológico oscuro con giros inesperados..."
+                                  required></textarea>
+
+                        <button type="submit"
+                                id="botonBuscar"
+                                class="cineura-boton-ia">
+                            ✦ Generar Recomendación
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <!-- ETIQUETAS DE NOVA -->
+
+                <div class="filtros-rapidos mt-3">
+
+                    <div class="grupo-tags">
+
+                        <span class="tag-label">¿QUÉ QUERÉS VER?</span>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Acción')">
+                            🎬 Acción
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Comedia')">
+                            😂 Comedia
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Terror')">
+                            😱 Terror
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Romance')">
+                            ❤️ Romance
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Ciencia ficción')">
+                            🚀 Ciencia ficción
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Drama')">
+                            🎭 Drama
+                        </button>
+
+                    </div>
+
+                    <div class="grupo-tags mt-2">
+
+                        <span class="tag-label">¿CÓMO TE QUERÉS SENTIR?</span>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Emocionante')">
+                            🔥 Emocionante
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Reflexivo')">
+                            🧠 Reflexivo
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Alegre')">
+                            😊 Alegre
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Emotivo')">
+                            🥹 Emotivo
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Intrigante')">
+                            🔍 Intrigante
+                        </button>
+
+                        <button type="button" class="btn-tag"
+                                onclick="agregarTexto('Inspirador')">
+                            ✨ Inspirador
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="resultado"
+             class="cineura-estado text-center fs-5 my-4"
+             role="status">
+        </div>
+
+        <div id="recomendacion" class="cineura-recomendacion mb-5">
+
+            <div class="row g-0">
+
+                <div class="col-md-5" id="zonaPoster">
+
+                    <div class="cineura-poster-vacio">
+                        <span>✦ CINEURA</span>
+                    </div>
+
+                </div>
+
+                <div class="col-md-7">
+
+                    <div class="cineura-detalle">
+
+                        <div class="cineura-subtitulo mb-2">
+                            ✦ RECOMENDACIÓN PARA VOS
+                        </div>
+
+                        <h2 id="tituloPelicula">
+                            Tu próxima película
+                        </h2>
+
+                        <div id="etiquetasPelicula" class="my-3"></div>
+
+                        <p id="datosPelicula" class="cineura-datos"></p>
+
+                        <h3 class="mt-4 fs-5 text-white">
+                            Sinopsis
+                        </h3>
+
+                        <p id="descripcionPelicula"
+                           class="cineura-descripcion"></p>
+
+                        <div class="cineura-motivo">
+
+                            <h3>¿Por qué la elegimos para vos?</h3>
+
+                            <p id="motivoPelicula"></p>
+
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+
+                            <button type="button"
+                                    id="botonDetalles"
+                                    class="cineura-boton-ia py-2 px-4 w-auto">
+                                Ver detalles
+                            </button>
+
+                            <button type="button"
+                                    id="botonOtra"
+                                    class="cineura-boton-secundario">
+                                ↻ Otra recomendación
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TENDENCIAS PARA USUARIOS CONECTADOS -->
+
+        <section id="tendencias" class="seccion-tendencias mt-5 pt-4">
+
+            <div class="d-flex justify-content-between align-items-end mb-4">
+
+                <div>
+
+                    <div class="cineura-badge-neural d-inline-block mb-1">
+                        ● TRENDING NOW &nbsp;•&nbsp; ACTUALIZADO HOY
+                    </div>
+
+                    <h2 class="h3 fw-bold text-white mb-0">
+                        Películas en Tendencias Globales
+                    </h2>
+
+                    <p class="text-secondary small mb-0">
+                        Los estrenos más vistos y aclamados de la semana.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+
+                @if (ViewBag.PeliculasTendencia != null)
+                {
+                    @foreach (Peliculas pelicula in ViewBag.PeliculasTendencia)
+                    {
+                        <div class="col">
+
+                            <div class="card-pelicula">
+
+                                <div class="card-poster-wrap">
+
+                                    <img src="@pelicula.PosterUrl"
+                                         class="card-poster-img"
+                                         alt="Póster de @pelicula.Titulo"
+                                         loading="lazy"
+                                         onerror="this.onerror=null;this.src='https://placehold.co/500x750/111111/FBBF24?text=CINEURA';" />
+
+                                </div>
+
+                                <div class="card-info">
+
+                                    <div class="card-meta">
+                                        @pelicula.Anio • @pelicula.DuracionMinutos min
+                                    </div>
+
+                                    <h4 class="card-titulo">
+                                        @pelicula.Titulo
+                                    </h4>
+
+                                    <div class="card-tags">
+
+                                        @if (!string.IsNullOrEmpty(pelicula.Genero))
+                                        {
+                                            <span class="mini-tag">
+                                                @pelicula.Genero
+                                            </span>
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(pelicula.Animo))
+                                        {
+                                            <span class="mini-tag">
+                                                @pelicula.Animo
+                                            </span>
+                                        }
+
+                                    </div>
+
+                                    <p class="card-sinopsis">
+                                        @pelicula.Sinopsis
+                                    </p>
+
+                                    <a asp-controller="Home"
+                                       asp-action="Detalles"
+                                       asp-route-id="@pelicula.IdPelicula"
+                                       class="explorador-detalle">
+                                        VER DETALLE
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/home-index.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/home-index.css"
+          asp-append-version="true" />
+}
