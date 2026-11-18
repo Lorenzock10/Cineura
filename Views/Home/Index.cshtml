@@ -1,4 +1,5 @@
-﻿@using Cineura.Models
+﻿
+@using Cineura.Models
 
 @{
     ViewData["Title"] = "Cineura | Tu próximo universo cinematográfico";
@@ -20,63 +21,62 @@
 
                 <!-- HERO -->
 
-                
-<section class="landing-hero" id="inicio">
+                <section class="landing-hero" id="inicio">
 
-    <div class="landing-hero-overlay"></div>
+                    <div class="landing-hero-overlay"></div>
 
-    <div class="landing-hero-content">
+                    <div class="landing-hero-content">
 
-        <div class="landing-overline">
-            <span class="landing-punto"></span>
-            TU EXPERIENCIA CINEMATOGRÁFICA
-        </div>
+                        <div class="landing-overline">
+                            <span class="landing-punto"></span>
+                            TU EXPERIENCIA CINEMATOGRÁFICA
+                        </div>
 
-        <h1>
-            No busques qué ver.
-            <span>Descubrí qué sentir.</span>
-        </h1>
+                        <h1>
+                            No busques qué ver.
+                            <span>Descubrí qué sentir.</span>
+                        </h1>
 
-        <p class="landing-hero-description">
-            Cada película tiene un universo por descubrir.
-            Encontrá historias que conecten con vos, tu estado de ánimo
-            y lo que tenés ganas de vivir hoy.
-        </p>
+                        <p class="landing-hero-description">
+                            Cada película tiene un universo por descubrir.
+                            Encontrá historias que conecten con vos, tu estado de ánimo
+                            y lo que tenés ganas de vivir hoy.
+                        </p>
 
-        <div class="landing-hero-botones">
-            <a asp-controller="Home" asp-action="Registrarse"
-               class="landing-btn-rojo">
-                DESCUBRIR MI PRÓXIMA PELÍCULA ↗
-            </a>
+                        <div class="landing-hero-botones">
+                            <a asp-controller="Home" asp-action="Registrarse"
+                               class="landing-btn-rojo">
+                                DESCUBRIR MI PRÓXIMA PELÍCULA ↗
+                            </a>
 
-            <a href="#tendencias" class="landing-btn-outline">
-                EXPLORAR CINE
-            </a>
-        </div>
+                            <a href="#tendencias" class="landing-btn-outline">
+                                EXPLORAR CINE
+                            </a>
+                        </div>
 
-        <div class="landing-hero-stats">
-            <div>
-                <strong>∞</strong>
-                <span>HISTORIAS POR DESCUBRIR</span>
-            </div>
-            <div>
-                <strong>IA</strong>
-                <span>RECOMENDACIONES INTELIGENTES</span>
-            </div>
-            <div>
-                <strong>100%</strong>
-                <span>HECHO PARA VOS</span>
-            </div>
-        </div>
+                        <div class="landing-hero-stats">
+                            <div>
+                                <strong>∞</strong>
+                                <span>HISTORIAS POR DESCUBRIR</span>
+                            </div>
+                            <div>
+                                <strong>IA</strong>
+                                <span>RECOMENDACIONES INTELIGENTES</span>
+                            </div>
+                            <div>
+                                <strong>100%</strong>
+                                <span>HECHO PARA VOS</span>
+                            </div>
+                        </div>
 
-    </div>
+                    </div>
 
-    <div class="landing-hero-bottom">
-        <span>DESCUBRÍ TU PRÓXIMA HISTORIA</span>
-        <a href="#tendencias">DESLIZÁ PARA EXPLORAR ↓</a>
-    </div>
+                    <div class="landing-hero-bottom">
+                        <span>DESCUBRÍ TU PRÓXIMA HISTORIA</span>
+                        <a href="#tendencias">DESLIZÁ PARA EXPLORAR ↓</a>
+                    </div>
 
-</section>
+                </section>
 
                 <!-- FRASE DE MARCA -->
 
@@ -594,56 +594,78 @@
 
                     </form>
 
+                    <!-- NUEVAS ETIQUETAS DE NOVA -->
+
                     <div class="filtros-rapidos mt-3">
 
                         <div class="grupo-tags">
 
-                            <span class="tag-label">MOODS:</span>
+                            <span class="tag-label">¿QUÉ QUERÉS VER?</span>
 
                             <button type="button" class="btn-tag"
-                                    onclick="agregarTexto('Cerebral & Tenso')">
-                                • Cerebral & Tenso
+                                    onclick="agregarTexto('Acción')">
+                                🎬 Acción
                             </button>
 
                             <button type="button" class="btn-tag"
-                                    onclick="agregarTexto('Melancolía Nórdica')">
-                                Melancolía Nórdica
+                                    onclick="agregarTexto('Comedia')">
+                                😂 Comedia
                             </button>
 
                             <button type="button" class="btn-tag"
-                                    onclick="agregarTexto('Adrenalina Pura')">
-                                Adrenalina Pura
+                                    onclick="agregarTexto('Terror')">
+                                😱 Terror
                             </button>
 
                             <button type="button" class="btn-tag"
-                                    onclick="agregarTexto('Existencialista')">
-                                Existencialista
+                                    onclick="agregarTexto('Romance')">
+                                ❤️ Romance
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Ciencia ficción')">
+                                🚀 Ciencia ficción
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Drama')">
+                                🎭 Drama
                             </button>
 
                         </div>
 
                         <div class="grupo-tags mt-2">
 
-                            <span class="tag-label">ESTÉTICAS:</span>
+                            <span class="tag-label">¿CÓMO TE QUERÉS SENTIR?</span>
 
-                            <button type="button" class="btn-tag tag-destacado"
-                                    onclick="agregarTexto('A24 Vibes')">
-                                ✦ A24 Vibes
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Emocionante')">
+                                🔥 Emocionante
                             </button>
 
                             <button type="button" class="btn-tag"
-                                    onclick="agregarTexto('Cine de Autor')">
-                                Cine de Autor
+                                    onclick="agregarTexto('Reflexivo')">
+                                🧠 Reflexivo
                             </button>
 
                             <button type="button" class="btn-tag"
-                                    onclick="agregarTexto('Cyberpunk')">
-                                Cyberpunk
+                                    onclick="agregarTexto('Alegre')">
+                                😊 Alegre
                             </button>
 
                             <button type="button" class="btn-tag"
-                                    onclick="agregarTexto('Sci-Fi 70s')">
-                                Sci-Fi 70s
+                                    onclick="agregarTexto('Emotivo')">
+                                🥹 Emotivo
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Intrigante')">
+                                🔍 Intrigante
+                            </button>
+
+                            <button type="button" class="btn-tag"
+                                    onclick="agregarTexto('Inspirador')">
+                                ✨ Inspirador
                             </button>
 
                         </div>
@@ -823,9 +845,6 @@
                 </div>
 
             </section>
-            
-
-            
         }
 
     </div>
