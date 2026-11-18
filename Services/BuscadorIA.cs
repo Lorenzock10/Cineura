@@ -1,7 +1,12 @@
+
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Linq;
+using Cineura.Models;
 
 namespace Cineura.Services
 {
@@ -111,8 +116,9 @@ Ejemplo:
         // Conserva compatibilidad con llamadas anteriores.
         public string InterpretarBusqueda(string busqueda)
         {
-            var bd = new Cineura.Models.BD();
-            var etiquetas = bd.ObtenerTodasLasEtiquetas();
+            BD bd = new BD();
+
+          var etiquetas = bd.ObtenerTodasLasEtiquetas();
 
             return InterpretarBusqueda(
                 busqueda,
@@ -121,6 +127,132 @@ Ejemplo:
                 etiquetas.Where(e => e.Tipo == "Emocion")
                          .Select(e => e.Nombre).ToList()
             );
+        }
+
+        // NUEVO: ANALIZAR LA EMOCIÓN DE UNA PELÍCULA
+
+        public string ObtenerEmocionPelicula(
+            string titulo,
+            string sinopsis,
+            string genero,
+            List<string> emociones)
+        {
+            if (emociones.Count == 0)
+            {
+                return "";
+            }
+
+            string apiKey = Environment.GetEnvironmentVariable("GROQ_API_KEY");
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                throw new Exception("No se encontró GROQ_API_KEY.");
+            }
+
+            string prompt = $@"
+Sos Nova, la inteligencia artificial de Cineura.
+
+Tu tarea es analizar una película y elegir la emoción
+que mejor representa su historia.
+
+EMOCIONES DISPONIBLES:
+{string.Join(", ", emociones)}
+
+REGLAS:
+1. Elegí solamente una emoción.
+2. La emoción debe estar en la lista disponible.
+3. Tené en cuenta principalmente la sinopsis.
+4. No inventes emociones nuevas.
+5. Si no hay suficiente información, devolvé una cadena vacía.
+6. Respondé únicamente con un objeto JSON.
+
+Formato:
+{{""emocion"":""Nombre de la emoción""}}
+";
+
+            string datosPelicula =
+                "Título: " + titulo +
+                "\nGénero: " + genero +
+                "\nSinopsis: " + sinopsis;
+
+            using (HttpClient cliente = new HttpClient())
+            {
+                cliente.Timeout = TimeSpan.FromSeconds(30);
+
+                using (HttpRequestMessage solicitud = new HttpRequestMessage(
+                    HttpMethod.Post,
+                    "https://api.groq.com/openai/v1/chat/completions"))
+                {
+                    solicitud.Headers.Authorization =
+                        new AuthenticationHeaderValue("Bearer", apiKey);
+
+                    solicitud.Content = JsonContent.Create(new
+                    {
+                        model = "openai/gpt-oss-120b",
+                        messages = new[]
+                        {
+                            new { role = "system", content = prompt },
+                            new { role = "user", content = datosPelicula }
+                        },
+                        temperature = 0,
+                        response_format = new
+                        {
+                            type = "json_object"
+                        }
+                    });
+
+                    using (HttpResponseMessage respuesta =
+                        cliente.Send(solicitud))
+                    {
+                        string texto = respuesta.Content
+                            .ReadAsStringAsync().GetAwaiter().GetResult();
+
+                        if (!respuesta.IsSuccessStatusCode)
+                        {
+                            throw new Exception("Error al consultar Groq.");
+                        }
+
+                        using (JsonDocument documento = JsonDocument.Parse(texto))
+                        {
+                            string contenido = documento.RootElement
+                                .GetProperty("choices")[0]
+                                .GetProperty("message")
+                                .GetProperty("content")
+                                .GetString();
+
+                            if (string.IsNullOrWhiteSpace(contenido))
+                            {
+                                return "";
+                            }
+
+                            using (JsonDocument resultado = JsonDocument.Parse(contenido))
+                            {
+                                string emocion = resultado.RootElement
+                                    .GetProperty("emocion")
+                                    .GetString();
+
+                                if (string.IsNullOrWhiteSpace(emocion))
+                                {
+                                    return "";
+                                }
+
+                                foreach (string disponible in emociones)
+                                {
+                                    if (string.Equals(
+                                        disponible,
+                                        emocion,
+                                        StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        return disponible;
+                                    }
+                                }
+
+                                return "";
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -1,0 +1,192 @@
+
+@{
+    ViewData["Title"] = "Importar películas";
+}
+
+<div style="max-width: 600px; margin: 80px auto; color: white;">
+
+    <h1>Importar películas desde TMDB</h1>
+
+    <h3>Importar una película</h3>
+
+    <form action="/TMDB/Importar" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="number"
+               name="idTMDB"
+               placeholder="ID de TMDB"
+               min="1"
+               required
+               style="padding: 12px; width: 100%; margin-bottom: 15px;" />
+
+        <button type="submit"
+                style="background: #FBBF24; color: #111827;
+                       padding: 12px 25px; border: none;
+                       border-radius: 8px; cursor: pointer;">
+            Importar película
+        </button>
+    </form>
+
+    <hr style="margin: 35px 0;" />
+
+    <h3>Importar 20 películas</h3>
+
+    <form action="/TMDB/ImportarPagina" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="number"
+               name="pagina"
+               placeholder="Número de página"
+               min="1"
+               max="40"
+               required
+               style="padding: 12px; width: 100%; margin-bottom: 15px;" />
+
+        <button type="submit"
+                style="background: #FBBF24; color: #111827;
+                       padding: 12px 25px; border: none;
+                       border-radius: 8px; cursor: pointer;">
+            Importar página
+        </button>
+    </form>
+
+    <hr style="margin: 35px 0;" />
+
+    <h3>Importación automática</h3>
+
+    <p>
+        Importar las páginas 3 a 40 de TMDB.
+        Cada página contiene hasta 20 películas.
+    </p>
+
+    <button id="botonImportar"
+            type="button"
+            onclick="importarTodas()"
+            style="background: #FBBF24; color: #111827;
+                   padding: 12px 25px; border: none;
+                   border-radius: 8px; cursor: pointer;">
+        Importar todas las películas
+    </button>
+
+    <p id="progreso" style="margin-top: 25px;">
+        Todavía no comenzó la importación.
+    </p>
+
+    <progress id="barraProgreso"
+              value="0"
+              max="38"
+              style="width: 100%; height: 25px;">
+    </progress>
+
+    <p id="estadisticas"></p>
+
+    <div id="resultados"
+         style="margin-top: 20px; max-height: 250px;
+                overflow-y: auto; font-size: 14px;">
+    </div>
+
+</div>
+
+<script>
+    let importando = false;
+
+    async function importarTodas() {
+
+        if (importando) {
+            return;
+        }
+
+        importando = true;
+
+        const boton = document.getElementById("botonImportar");
+        const progreso = document.getElementById("progreso");
+        const barra = document.getElementById("barraProgreso");
+        const estadisticas = document.getElementById("estadisticas");
+        const resultados = document.getElementById("resultados");
+
+        boton.disabled = true;
+        boton.innerText = "Importando...";
+
+        let totalImportadas = 0;
+        let totalOmitidas = 0;
+        let totalErrores = 0;
+
+        barra.value = 0;
+        resultados.innerHTML = "";
+
+        const token = document.querySelector(
+            'form[action="/TMDB/ImportarPagina"] input[name="__RequestVerificationToken"]'
+        ).value;
+
+        for (let pagina = 3; pagina <= 40; pagina++) {
+
+            progreso.innerText = "Importando página " + pagina + " de 40...";
+
+            try {
+                const datos = new URLSearchParams();
+                datos.append("pagina", pagina);
+                datos.append("__RequestVerificationToken", token);
+
+                const respuesta = await fetch("/TMDB/ImportarPagina", {
+                    method: "POST",
+                    body: datos
+                });
+
+                if (!respuesta.ok) {
+                    throw new Error("Error HTTP " + respuesta.status);
+                }
+
+                const texto = await respuesta.text();
+
+                const importadas = Number(
+                    texto.match(/Importadas: (\d+)/)?.[1] || 0
+                );
+
+                const omitidas = Number(
+                    texto.match(/Omitidas: (\d+)/)?.[1] || 0
+                );
+
+                const errores = Number(
+                    texto.match(/Errores: (\d+)/)?.[1] || 0
+                );
+
+                totalImportadas += importadas;
+                totalOmitidas += omitidas;
+                totalErrores += errores;
+
+                const linea = document.createElement("p");
+                linea.innerText = texto;
+                resultados.appendChild(linea);
+
+            } catch (error) {
+
+                totalErrores++;
+
+                const linea = document.createElement("p");
+                linea.innerText = "Página " + pagina + ": " + error.message;
+                resultados.appendChild(linea);
+
+                progreso.innerText =
+                    "La importación se detuvo en la página " + pagina
+                    + ". Revisá el error antes de continuar.";
+
+                break;
+            }
+
+            barra.value = pagina - 2;
+
+            estadisticas.innerText =
+                "Importadas: " + totalImportadas
+                + " | Omitidas: " + totalOmitidas
+                + " | Errores: " + totalErrores;
+        }
+
+        if (barra.value === 38) {
+            progreso.innerText = "Importación finalizada.";
+        }
+
+        boton.disabled = false;
+        boton.innerText = "Importar todas las películas";
+        importando = false;
+    }
+</script>

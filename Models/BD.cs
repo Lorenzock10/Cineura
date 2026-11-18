@@ -484,5 +484,183 @@ public List<Peliculas> BuscarPeliculasPorEtiquetas(
     }
 }
 
+
+public bool AgregarPeliculaTMDB(
+    int idTMDB,
+    string titulo,
+    string sinopsis,
+    string genero,
+    int duracion,
+    int anio,
+    string animo,
+    int idDirector,
+    string posterUrl)
+{
+    string query = @"
+        IF NOT EXISTS (
+            SELECT 1
+            FROM Peliculas
+            WHERE IdTMDB = @idTMDB
+               OR (Titulo = @titulo AND Anio = @anio)
+        )
+        BEGIN
+            INSERT INTO Peliculas
+            (IdTMDB, Titulo, Sinopsis, Genero,
+             DuracionMinutos, Anio, Animo, IdDirector, PosterUrl)
+            VALUES
+            (@idTMDB, @titulo, @sinopsis, @genero,
+             @duracion, @anio, @animo, @idDirector, @posterUrl)
+        END";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        int filas = connection.Execute(query, new
+        {
+            idTMDB,
+            titulo,
+            sinopsis,
+            genero,
+            duracion,
+            anio,
+            animo,
+            idDirector,
+            posterUrl
+        });
+
+        return filas > 0;
+    }
+}
+
+public int ObtenerOCrearDirector(string nombre)
+{
+    string query = @"
+        IF NOT EXISTS (
+            SELECT 1 FROM Directores
+            WHERE Nombre = @nombre
+        )
+        BEGIN
+            INSERT INTO Directores (Nombre)
+            VALUES (@nombre)
+        END
+
+        SELECT TOP 1 IdDirector
+        FROM Directores
+        WHERE Nombre = @nombre";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.QueryFirst<int>(query, new { nombre });
+    }
+}
+
+public int ObtenerOCrearActor(string nombre)
+{
+    string query = @"
+        IF NOT EXISTS (
+            SELECT 1 FROM Actores
+            WHERE Nombre = @nombre
+        )
+        BEGIN
+            INSERT INTO Actores (Nombre)
+            VALUES (@nombre)
+        END
+
+        SELECT TOP 1 IdActor
+        FROM Actores
+        WHERE Nombre = @nombre";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.QueryFirst<int>(query, new { nombre });
+    }
+}
+
+public void AgregarActorAPelicula(int idPelicula, int idActor)
+{
+    string query = @"
+        IF NOT EXISTS (
+            SELECT 1 FROM PeliculaActor
+            WHERE IdPelicula = @idPelicula
+              AND IdActor = @idActor
+        )
+        BEGIN
+            INSERT INTO PeliculaActor (IdPelicula, IdActor)
+            VALUES (@idPelicula, @idActor)
+        END";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        connection.Execute(query, new { idPelicula, idActor });
+    }
+}
+
+public void AgregarEtiquetaAPelicula(
+    int idPelicula,
+    string nombre,
+    string tipo)
+{
+    string query = @"
+        IF NOT EXISTS (
+            SELECT 1
+            FROM Etiquetas
+            WHERE Nombre = @nombre
+              AND Tipo = @tipo
+        )
+        BEGIN
+            INSERT INTO Etiquetas (Nombre, Tipo)
+            VALUES (@nombre, @tipo)
+        END
+
+        DECLARE @idEtiqueta INT;
+
+        SELECT @idEtiqueta = IdEtiqueta
+        FROM Etiquetas
+        WHERE Nombre = @nombre
+          AND Tipo = @tipo;
+
+        IF NOT EXISTS (
+            SELECT 1
+            FROM PeliculaEtiquetas
+            WHERE IdPelicula = @idPelicula
+              AND IdEtiqueta = @idEtiqueta
+        )
+        BEGIN
+            INSERT INTO PeliculaEtiquetas
+                (IdPelicula, IdEtiqueta)
+            VALUES
+                (@idPelicula, @idEtiqueta)
+        END";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        connection.Execute(query, new
+        {
+            idPelicula,
+            nombre,
+            tipo
+        });
+    }
+}
+
+public int ObtenerIdPeliculaTMDB(int idTMDB, string titulo, int anio)
+{
+    string query = @"
+        SELECT TOP 1 IdPelicula
+        FROM Peliculas
+        WHERE IdTMDB = @idTMDB
+           OR (Titulo = @titulo AND Anio = @anio)";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.QueryFirstOrDefault<int>(query, new
+        {
+            idTMDB,
+            titulo,
+            anio
+        });
+    }
+}
+
+
     }
 }
