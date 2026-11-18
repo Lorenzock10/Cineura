@@ -406,5 +406,83 @@ namespace Cineura.Models
                     query, new { idUsuario });
             }
         }
+
+
+public List<EtiquetasPelicula> ObtenerEtiquetasPelicula(int idPelicula)
+{
+    string query = @"
+        SELECT E.Nombre, E.Tipo
+        FROM Etiquetas E
+        INNER JOIN PeliculaEtiquetas PE
+            ON E.IdEtiqueta = PE.IdEtiqueta
+        WHERE PE.IdPelicula = @idPelicula
+        ORDER BY E.Tipo, E.Nombre";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.Query<EtiquetasPelicula>(
+            query,
+            new { idPelicula }
+        ).ToList();
+    }
+}
+
+public List<EtiquetasPelicula> ObtenerTodasLasEtiquetas()
+{
+    string query = @"
+        SELECT Nombre, Tipo
+        FROM Etiquetas
+        ORDER BY Tipo, Nombre";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.Query<EtiquetasPelicula>(query).ToList();
+    }
+}
+public List<Peliculas> BuscarPeliculasPorEtiquetas(
+    string tematica,
+    string emocion,
+    int? duracionMaxima)
+{
+    string query = @"
+        SELECT P.IdPelicula, P.Titulo, P.Sinopsis,
+               P.Genero, P.DuracionMinutos, P.Anio,
+               P.Animo, P.IdDirector, P.PosterUrl
+        FROM Peliculas P
+        WHERE
+            (@duracionMaxima IS NULL
+                OR P.DuracionMinutos <= @duracionMaxima)
+
+            AND (@tematica IS NULL OR EXISTS (
+                SELECT 1
+                FROM PeliculaEtiquetas PE
+                INNER JOIN Etiquetas E
+                    ON PE.IdEtiqueta = E.IdEtiqueta
+                WHERE PE.IdPelicula = P.IdPelicula
+                  AND E.Tipo = 'Tematica'
+                  AND E.Nombre = @tematica
+            ))
+
+            AND (@emocion IS NULL OR EXISTS (
+                SELECT 1
+                FROM PeliculaEtiquetas PE
+                INNER JOIN Etiquetas E
+                    ON PE.IdEtiqueta = E.IdEtiqueta
+                WHERE PE.IdPelicula = P.IdPelicula
+                  AND E.Tipo = 'Emocion'
+                  AND E.Nombre = @emocion
+            ))
+
+        ORDER BY P.IdPelicula";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.Query<Peliculas>(
+            query,
+            new { tematica, emocion, duracionMaxima }
+        ).ToList();
+    }
+}
+
     }
 }

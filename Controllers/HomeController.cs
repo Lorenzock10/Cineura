@@ -149,145 +149,85 @@ namespace Cineura.Controllers
         }
 
         [HttpPost]
-        public IActionResult BuscarPeliculas(string busqueda)
+public IActionResult BuscarPeliculas(string busqueda)
+{
+    if (string.IsNullOrWhiteSpace(busqueda))
+        return BadRequest(new { error = "Escribí qué película querés ver." });
+
+    try
+    {
+        BD bd = new BD();
+
+        var etiquetas = bd.ObtenerTodasLasEtiquetas();
+
+        var tematicas = etiquetas
+            .Where(e => e.Tipo == "Tematica")
+            .Select(e => e.Nombre)
+            .ToList();
+
+        var emociones = etiquetas
+            .Where(e => e.Tipo == "Emocion")
+            .Select(e => e.Nombre)
+            .ToList();
+
+        string respuestaIA = _buscadorIA.InterpretarBusqueda(
+            busqueda, tematicas, emociones);
+
+        using JsonDocument documento = JsonDocument.Parse(respuestaIA);
+        JsonElement raiz = documento.RootElement;
+
+        string tematica = null;
+        string emocion = null;
+        int? duracionMaxima = null;
+
+        if (raiz.TryGetProperty("tematica", out JsonElement t)
+            && t.ValueKind == JsonValueKind.String)
+            tematica = t.GetString();
+
+        if (raiz.TryGetProperty("emocion", out JsonElement e)
+            && e.ValueKind == JsonValueKind.String)
+            emocion = e.GetString();
+
+        if (raiz.TryGetProperty("duracionMaxima", out JsonElement d)
+            && d.ValueKind == JsonValueKind.Number
+            && d.TryGetInt32(out int minutos)
+            && minutos > 0)
+            duracionMaxima = minutos;
+
+        // Aceptar solamente etiquetas que existan realmente en SQL.
+        tematica = tematicas.FirstOrDefault(x =>
+            string.Equals(x, tematica, StringComparison.OrdinalIgnoreCase));
+
+        emocion = emociones.FirstOrDefault(x =>
+            string.Equals(x, emocion, StringComparison.OrdinalIgnoreCase));
+
+        List<Peliculas> peliculas = bd.BuscarPeliculasPorEtiquetas(
+            tematica, emocion, duracionMaxima);
+
+        var resultados = peliculas.Select(p => new
         {
-            if (string.IsNullOrWhiteSpace(busqueda))
-            {
-                return BadRequest("Escribí qué tipo de película querés ver.");
-            }
+            p.IdPelicula,
+            p.Titulo,
+            p.Sinopsis,
+            p.Genero,
+            p.Animo,
+            p.DuracionMinutos,
+            p.Anio,
+            p.PosterUrl
+        }).ToList();
 
-            string respuesta = _buscadorIA.InterpretarBusqueda(busqueda);
-            string json = LimpiarJson(respuesta);
+        return Json(resultados);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al buscar películas con Nova");
 
-            string genero = "";
-            string animo = "";
-            int duracionMaxima = 0;
-            bool tieneDuracion = false;
-
-            using (JsonDocument documento = JsonDocument.Parse(json))
-            {
-                JsonElement datos = documento.RootElement;
-
-                if (datos.TryGetProperty("genero", out JsonElement datoGenero))
-                {
-                    if (datoGenero.ValueKind == JsonValueKind.String)
-                    {
-                        genero = datoGenero.GetString();
-                    }
-                }
-
-                if (datos.TryGetProperty("animo", out JsonElement datoAnimo))
-                {
-                    if (datoAnimo.ValueKind == JsonValueKind.String)
-                    {
-                        animo = datoAnimo.GetString();
-                    }
-                }
-
-                if (datos.TryGetProperty("duracionMaxima", out JsonElement datoDuracion))
-                {
-                    if (datoDuracion.ValueKind == JsonValueKind.Number)
-                    {
-                        duracionMaxima = datoDuracion.GetInt32();
-                        tieneDuracion = true;
-                    }
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(genero) &&
-                string.IsNullOrWhiteSpace(animo) &&
-                !tieneDuracion)
-            {
-                return Json(new List<object>());
-            }
-            BD bd = new BD();
-            List<Peliculas> peliculas = bd.ObtenerPeliculas();
-            List<Peliculas> peliculasFiltradas = new List<Peliculas>();
-
-            foreach (Peliculas pelicula in peliculas)
-            {
-                bool coincide = true;
-
-                if (!string.IsNullOrWhiteSpace(genero))
-                {
-                    if (string.IsNullOrWhiteSpace(pelicula.Genero))
-                    {
-                        coincide = false;
-                    }
-                    else
-                    {
-                        if (!Normalizar(pelicula.Genero).Contains(Normalizar(genero)))
-                        {
-                            coincide = false;
-                        }
-                    }
-                }
-
-                if (tieneDuracion)
-                {
-                    if (duracionMaxima <= 0)
-                    {
-                        coincide = false;
-                    }
-                    else
-                    {
-                        if (pelicula.DuracionMinutos <= 0 ||
-                            pelicula.DuracionMinutos > duracionMaxima)
-                        {
-                            coincide = false;
-                        }
-                    }
-                }
-
-                if (!string.IsNullOrWhiteSpace(animo))
-                {
-                    if (string.IsNullOrWhiteSpace(pelicula.Animo))
-                    {
-                        coincide = false;
-                    }
-                    else
-                    {
-                        string animoPelicula = Normalizar(pelicula.Animo);
-                        string animoBuscado = Normalizar(animo);
-
-                        if (!animoPelicula.Contains(animoBuscado) &&
-                            !animoBuscado.Contains(animoPelicula))
-                        {
-                            coincide = false;
-                        }
-                    }
-                }
-
-                if (coincide)
-                {
-                    peliculasFiltradas.Add(pelicula);
-                }
-            }
-
-            List<object> resultados = new List<object>();
-            foreach (Peliculas pelicula in peliculasFiltradas)
-            {
-                string poster = "";
-                if (pelicula.PosterUrl != null)
-                {
-                    poster = pelicula.PosterUrl;
-                }
-                object resultado = new
-                {
-                    idPelicula = pelicula.IdPelicula,
-                    titulo = pelicula.Titulo,
-                    sinopsis = pelicula.Sinopsis,
-                    genero = pelicula.Genero,
-                    animo = pelicula.Animo,
-                    duracionMinutos = pelicula.DuracionMinutos,
-                    anio = pelicula.Anio,
-                    posterUrl = poster
-                };
-
-                resultados.Add(resultado);
-            }
-            return Json(resultados);
-        }
+        return StatusCode(500, new
+        {
+            error = "Nova tuvo un problema al buscar. Intentá nuevamente."
+        });
+    }
+}
 
         public IActionResult Detalles(int id)
         {

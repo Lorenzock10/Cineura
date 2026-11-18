@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\50049697\\Downloads\\Cineura\\Cineura.csproj": {}
+    "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj": {}
   },
   "projects": {
-    "C:\\Users\\50049697\\Downloads\\Cineura\\Cineura.csproj": {
+    "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\50049697\\Downloads\\Cineura\\Cineura.csproj",
+        "projectUniqueName": "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj",
         "projectName": "Cineura",
-        "projectPath": "C:\\Users\\50049697\\Downloads\\Cineura\\Cineura.csproj",
-        "packagesPath": "C:\\Users\\50049697\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\50049697\\Downloads\\Cineura\\obj\\",
+        "projectPath": "C:\\Users\\49903691\\Downloads\\Cineura\\Cineura.csproj",
+        "packagesPath": "C:\\Users\\49903691\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\49903691\\Downloads\\Cineura\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\50049697\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\49903691\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

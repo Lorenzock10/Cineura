@@ -856,3 +856,183 @@ AND NOT EXISTS (
     SELECT 1 FROM Tendencias T
     WHERE T.IdPelicula = P.IdPelicula
 );
+
+USE Cineura;
+GO
+
+-- ============================================
+-- 22. CREAR TABLA DE ETIQUETAS
+-- ============================================
+
+IF OBJECT_ID('Etiquetas', 'U') IS NULL
+BEGIN
+    CREATE TABLE Etiquetas (
+        IdEtiqueta INT IDENTITY(1,1) PRIMARY KEY,
+        Nombre NVARCHAR(100) NOT NULL,
+        Tipo NVARCHAR(30) NOT NULL,
+
+        CONSTRAINT UQ_Etiquetas_Nombre_Tipo
+            UNIQUE (Nombre, Tipo),
+
+        CONSTRAINT CK_Etiquetas_Tipo
+            CHECK (Tipo IN (
+                'Tematica',
+                'Estilo',
+                'Emocion',
+                'Ritmo'
+            ))
+    );
+END
+GO
+
+
+-- ============================================
+-- 23. CREAR RELACIÓN PELÍCULA - ETIQUETA
+-- ============================================
+
+IF OBJECT_ID('PeliculaEtiquetas', 'U') IS NULL
+BEGIN
+    CREATE TABLE PeliculaEtiquetas (
+        IdPelicula INT NOT NULL,
+        IdEtiqueta INT NOT NULL,
+
+        PRIMARY KEY (IdPelicula, IdEtiqueta),
+
+        FOREIGN KEY (IdPelicula)
+            REFERENCES Peliculas(IdPelicula),
+
+        FOREIGN KEY (IdEtiqueta)
+            REFERENCES Etiquetas(IdEtiqueta)
+    );
+END
+GO
+
+
+-- ============================================
+-- 24. CARGAR TEMÁTICAS
+-- ============================================
+
+INSERT INTO Etiquetas (Nombre, Tipo)
+SELECT DISTINCT
+    CASE
+        WHEN P.Genero IN (N'Animacion', N'Animación')
+            THEN N'Animación'
+        ELSE P.Genero
+    END,
+    'Tematica'
+FROM Peliculas P
+WHERE P.Genero IS NOT NULL
+AND NOT EXISTS (
+    SELECT 1
+    FROM Etiquetas E
+    WHERE E.Tipo = 'Tematica'
+    AND E.Nombre =
+        CASE
+            WHEN P.Genero IN (N'Animacion', N'Animación')
+                THEN N'Animación'
+            ELSE P.Genero
+        END
+);
+GO
+
+
+-- ============================================
+-- 25. CARGAR EMOCIONES
+-- ============================================
+
+INSERT INTO Etiquetas (Nombre, Tipo)
+SELECT DISTINCT
+    P.Animo,
+    'Emocion'
+FROM Peliculas P
+WHERE P.Animo IS NOT NULL
+AND NOT EXISTS (
+    SELECT 1
+    FROM Etiquetas E
+    WHERE E.Tipo = 'Emocion'
+      AND E.Nombre = P.Animo
+);
+GO
+
+
+-- ============================================
+-- 26. RELACIONAR TEMÁTICAS CON PELÍCULAS
+-- ============================================
+
+INSERT INTO PeliculaEtiquetas (
+    IdPelicula,
+    IdEtiqueta
+)
+SELECT
+    P.IdPelicula,
+    E.IdEtiqueta
+FROM Peliculas P
+INNER JOIN Etiquetas E
+    ON E.Tipo = 'Tematica'
+    AND E.Nombre =
+        CASE
+            WHEN P.Genero IN (N'Animacion', N'Animación')
+                THEN N'Animación'
+            ELSE P.Genero
+        END
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM PeliculaEtiquetas PE
+    WHERE PE.IdPelicula = P.IdPelicula
+      AND PE.IdEtiqueta = E.IdEtiqueta
+);
+GO
+
+
+-- ============================================
+-- 27. RELACIONAR EMOCIONES CON PELÍCULAS
+-- ============================================
+
+INSERT INTO PeliculaEtiquetas (
+    IdPelicula,
+    IdEtiqueta
+)
+SELECT
+    P.IdPelicula,
+    E.IdEtiqueta
+FROM Peliculas P
+INNER JOIN Etiquetas E
+    ON E.Tipo = 'Emocion'
+    AND E.Nombre = P.Animo
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM PeliculaEtiquetas PE
+    WHERE PE.IdPelicula = P.IdPelicula
+      AND PE.IdEtiqueta = E.IdEtiqueta
+);
+GO
+
+
+-- ============================================
+-- 28. COMPROBAR ETIQUETAS
+-- ============================================
+
+SELECT
+    IdEtiqueta,
+    Nombre,
+    Tipo
+FROM Etiquetas
+ORDER BY Tipo, Nombre;
+GO
+
+
+-- ============================================
+-- 29. COMPROBAR ETIQUETAS DE CADA PELÍCULA
+-- ============================================
+
+SELECT
+    P.Titulo,
+    E.Nombre AS Etiqueta,
+    E.Tipo
+FROM PeliculaEtiquetas PE
+INNER JOIN Peliculas P
+    ON P.IdPelicula = PE.IdPelicula
+INNER JOIN Etiquetas E
+    ON E.IdEtiqueta = PE.IdEtiqueta
+ORDER BY P.Titulo, E.Tipo;
+GO
