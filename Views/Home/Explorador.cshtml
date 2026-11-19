@@ -3,19 +3,35 @@
 
 @{
     ViewData["Title"] = "Explorador | Cineura";
+
+    List<Cineura.Models.Peliculas> destacadas = Model
+        .Where(p => !string.IsNullOrWhiteSpace(p.PosterUrl))
+        .OrderByDescending(p => p.Anio)
+        .Take(5)
+        .ToList();
+
+    // Películas que el usuario ya tiene guardadas.
+    List<int> idsFavoritos = ViewBag.IdsFavoritos ?? new List<int>();
+    List<int> idsWatchlist = ViewBag.IdsWatchlist ?? new List<int>();
 }
 
 <link rel="stylesheet" href="~/css/Explorador.css" asp-append-version="true" />
 
 <main class="explorador">
 
+    <!-- PRESENTACIÓN ORIGINAL DE CINEURA -->
     <section class="explorador-hero">
+
         <div class="explorador-hero-contenido">
+
             <span class="explorador-etiqueta">
                 TU PRÓXIMA PELÍCULA TE ESPERA
             </span>
 
-            <h1>El próximo gran<br /><span>descubrimiento</span></h1>
+            <h1>
+                El próximo gran<br />
+                <span>descubrimiento</span>
+            </h1>
 
             <p>
                 Historias que te atrapan. Mundos que te sorprenden.
@@ -25,29 +41,178 @@
             <a href="#peliculas" class="explorador-hero-boton">
                 Explorar películas <span>↓</span>
             </a>
+
         </div>
 
         <div class="explorador-hero-decoracion">
+
             <div class="explorador-hero-circulo explorador-hero-circulo-uno"></div>
             <div class="explorador-hero-circulo explorador-hero-circulo-dos"></div>
 
             <img src="/imagenes/cineura.jpg"
                  alt="Logo de Cineura"
                  style="display:block; width:280px; height:auto; object-fit:contain;" />
+
         </div>
+
     </section>
 
-    <section class="explorador-buscador-seccion">
-        <div class="explorador-seccion-titulo">
-            <div>
-                <span class="explorador-mini-etiqueta">ENCONTRÁ TU PRÓXIMA HISTORIA</span>
-                <h2>¿Qué tenés ganas de ver?</h2>
+
+    <!-- CARRUSEL DE PELÍCULAS DESTACADAS -->
+    @if (destacadas.Count > 0)
+    {
+        <section class="cineura-destacadas"
+                 aria-label="Películas destacadas">
+
+            @for (int i = 0; i < destacadas.Count; i++)
+            {
+                Cineura.Models.Peliculas pelicula = destacadas[i];
+
+                bool esFavorito = idsFavoritos.Contains(pelicula.IdPelicula);
+                bool estaEnWatchlist = idsWatchlist.Contains(pelicula.IdPelicula);
+
+                <article class="cineura-destacada @(i == 0 ? "activa" : "")">
+
+                    <div class="cineura-destacada-fondo"
+                         style="background-image: url('@pelicula.PosterUrl');">
+                    </div>
+
+                    <div class="cineura-destacada-contenido">
+
+                        <span class="cineura-destacada-etiqueta">
+                            ✦ PELÍCULA DESTACADA
+                        </span>
+
+                        <h2>@pelicula.Titulo</h2>
+
+                        <p class="cineura-destacada-datos">
+                            @pelicula.Genero · @pelicula.Anio · @pelicula.DuracionMinutos min
+                        </p>
+
+                        <p class="cineura-destacada-sinopsis">
+                            @pelicula.Sinopsis
+                        </p>
+
+
+                        <!-- BOTONES DEL CARRUSEL -->
+                        <div class="cineura-destacada-acciones">
+
+                            <!-- VER DETALLE -->
+                            <a href="/Home/Detalles/@pelicula.IdPelicula"
+                               class="cineura-destacada-boton principal">
+                                ▶ Ver detalle
+                            </a>
+
+
+                            <!-- FAVORITOS -->
+                            <button type="button"
+                                    class="cineura-destacada-boton cineura-boton-favorito @(esFavorito ? "seleccionado" : "")"
+                                    onclick="toggleDestacada(this, @pelicula.IdPelicula, 'favorito')">
+
+                                @if (esFavorito)
+                                {
+                                    <text>♥ En Favoritos</text>
+                                }
+                                else
+                                {
+                                    <text>♡ Favoritos</text>
+                                }
+
+                            </button>
+
+
+                            <!-- WATCHLIST -->
+                            <button type="button"
+                                    class="cineura-destacada-boton cineura-boton-watchlist @(estaEnWatchlist ? "seleccionado" : "")"
+                                    onclick="toggleDestacada(this, @pelicula.IdPelicula, 'watchlist')">
+
+                                @if (estaEnWatchlist)
+                                {
+                                    <text>✓ En Watchlist</text>
+                                }
+                                else
+                                {
+                                    <text>＋ Watchlist</text>
+                                }
+
+                            </button>
+
+
+                            <!-- RESEÑAR -->
+                            <a href="/Home/Detalles/@pelicula.IdPelicula#comentarios"
+                               class="cineura-destacada-boton">
+                                ✎ Reseñar
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+
+
+            <!-- FLECHA ANTERIOR -->
+            <button type="button"
+                    class="cineura-destacada-flecha anterior"
+                    onclick="cambiarDestacada(-1)"
+                    aria-label="Película anterior">
+                &#10094;
+            </button>
+
+
+            <!-- FLECHA SIGUIENTE -->
+            <button type="button"
+                    class="cineura-destacada-flecha siguiente"
+                    onclick="cambiarDestacada(1)"
+                    aria-label="Película siguiente">
+                &#10095;
+            </button>
+
+
+            <!-- INDICADORES -->
+            <div class="cineura-destacada-indicadores">
+
+                @for (int i = 0; i < destacadas.Count; i++)
+                {
+                    <button type="button"
+                            class="cineura-destacada-punto @(i == 0 ? "activo" : "")"
+                            onclick="irADestacada(@i)"
+                            aria-label="Ver película destacada @(i + 1)">
+                    </button>
+                }
+
             </div>
+
+        </section>
+    }
+
+
+    <!-- BUSCADOR ORIGINAL -->
+    <section class="explorador-buscador-seccion">
+
+        <div class="explorador-seccion-titulo">
+
+            <div>
+
+                <span class="explorador-mini-etiqueta">
+                    ENCONTRÁ TU PRÓXIMA HISTORIA
+                </span>
+
+                <h2>¿Qué tenés ganas de ver?</h2>
+
+            </div>
+
         </div>
 
-        <form method="get" action="/Explorador/Index" class="explorador-buscador">
 
+        <form method="get"
+              action="/Explorador/Index"
+              class="explorador-buscador">
+
+            <!-- BÚSQUEDA POR TÍTULO -->
             <div class="explorador-busqueda-principal">
+
                 <span class="explorador-icono-busqueda">⌕</span>
 
                 <input type="text"
@@ -56,30 +221,74 @@
                        value="@ViewBag.Busqueda"
                        placeholder="Buscá por título... Ej. Dune, Poor Things" />
 
-                <button type="submit" class="explorador-boton-buscar">
+                <button type="submit"
+                        class="explorador-boton-buscar">
                     Buscar
                 </button>
+
             </div>
 
+
+            <!-- FILTROS -->
             <div class="explorador-filtros">
 
+                <!-- GÉNERO -->
                 <div class="explorador-campo">
+
                     <label for="genero">GÉNERO</label>
 
                     <select id="genero" name="genero">
+
                         <option value="">Todos los géneros</option>
-                        <option value="Acción" selected="@(ViewBag.Genero == "Acción" ? "selected" : null)">Acción</option>
-                        <option value="Aventura" selected="@(ViewBag.Genero == "Aventura" ? "selected" : null)">Aventura</option>
-                        <option value="Ciencia ficción" selected="@(ViewBag.Genero == "Ciencia ficción" ? "selected" : null)">Ciencia ficción</option>
-                        <option value="Comedia" selected="@(ViewBag.Genero == "Comedia" ? "selected" : null)">Comedia</option>
-                        <option value="Drama" selected="@(ViewBag.Genero == "Drama" ? "selected" : null)">Drama</option>
-                        <option value="Fantasía" selected="@(ViewBag.Genero == "Fantasía" ? "selected" : null)">Fantasía</option>
-                        <option value="Terror" selected="@(ViewBag.Genero == "Terror" ? "selected" : null)">Terror</option>
-                        <option value="Suspenso" selected="@(ViewBag.Genero == "Suspenso" ? "selected" : null)">Suspenso</option>
+
+                        <option value="Acción"
+                                selected="@(ViewBag.Genero == "Acción" ? "selected" : null)">
+                            Acción
+                        </option>
+
+                        <option value="Aventura"
+                                selected="@(ViewBag.Genero == "Aventura" ? "selected" : null)">
+                            Aventura
+                        </option>
+
+                        <option value="Ciencia ficción"
+                                selected="@(ViewBag.Genero == "Ciencia ficción" ? "selected" : null)">
+                            Ciencia ficción
+                        </option>
+
+                        <option value="Comedia"
+                                selected="@(ViewBag.Genero == "Comedia" ? "selected" : null)">
+                            Comedia
+                        </option>
+
+                        <option value="Drama"
+                                selected="@(ViewBag.Genero == "Drama" ? "selected" : null)">
+                            Drama
+                        </option>
+
+                        <option value="Fantasía"
+                                selected="@(ViewBag.Genero == "Fantasía" ? "selected" : null)">
+                            Fantasía
+                        </option>
+
+                        <option value="Terror"
+                                selected="@(ViewBag.Genero == "Terror" ? "selected" : null)">
+                            Terror
+                        </option>
+
+                        <option value="Suspenso"
+                                selected="@(ViewBag.Genero == "Suspenso" ? "selected" : null)">
+                            Suspenso
+                        </option>
+
                     </select>
+
                 </div>
 
+
+                <!-- AÑO -->
                 <div class="explorador-campo">
+
                     <label for="anio">AÑO</label>
 
                     <input type="number"
@@ -87,71 +296,100 @@
                            name="anio"
                            value="@ViewBag.Anio"
                            placeholder="Ej. 2024" />
+
                 </div>
 
+
+                <!-- DURACIÓN -->
                 <div class="explorador-campo">
+
                     <label for="duracionMaxima">DURACIÓN</label>
 
                     <select id="duracionMaxima" name="duracionMaxima">
+
                         <option value="">Cualquier duración</option>
-                        <option value="90" selected="@(ViewBag.DuracionMaxima?.ToString() == "90" ? "selected" : null)">Hasta 90 min</option>
-                        <option value="120" selected="@(ViewBag.DuracionMaxima?.ToString() == "120" ? "selected" : null)">Hasta 120 min</option>
-                        <option value="150" selected="@(ViewBag.DuracionMaxima?.ToString() == "150" ? "selected" : null)">Hasta 150 min</option>
-                        <option value="180" selected="@(ViewBag.DuracionMaxima?.ToString() == "180" ? "selected" : null)">Hasta 180 min</option>
+
+                        <option value="90"
+                                selected="@(ViewBag.DuracionMaxima?.ToString() == "90" ? "selected" : null)">
+                            Hasta 90 min
+                        </option>
+
+                        <option value="120"
+                                selected="@(ViewBag.DuracionMaxima?.ToString() == "120" ? "selected" : null)">
+                            Hasta 120 min
+                        </option>
+
+                        <option value="150"
+                                selected="@(ViewBag.DuracionMaxima?.ToString() == "150" ? "selected" : null)">
+                            Hasta 150 min
+                        </option>
+
+                        <option value="180"
+                                selected="@(ViewBag.DuracionMaxima?.ToString() == "180" ? "selected" : null)">
+                            Hasta 180 min
+                        </option>
+
                     </select>
+
                 </div>
 
+
+                <!-- ORDENAR -->
                 <div class="explorador-campo">
+
                     <label for="ordenar">ORDENAR POR</label>
 
                     <select id="ordenar" name="ordenar">
-                        <option value="titulo" selected="@(ViewBag.Ordenar != "anio" ? "selected" : null)">Título</option>
-                        <option value="anio" selected="@(ViewBag.Ordenar == "anio" ? "selected" : null)">Año más reciente</option>
+
+                        <option value="titulo"
+                                selected="@(ViewBag.Ordenar != "anio" ? "selected" : null)">
+                            Título
+                        </option>
+
+                        <option value="anio"
+                                selected="@(ViewBag.Ordenar == "anio" ? "selected" : null)">
+                            Año más reciente
+                        </option>
+
                     </select>
+
                 </div>
 
             </div>
 
-            <div class="explorador-buscador-pie">
-                <span>✦ Personalizá tu búsqueda con los filtros</span>
 
-                <a href="/Explorador/Index" class="explorador-limpiar">
+            <!-- PIE DEL BUSCADOR -->
+            <div class="explorador-buscador-pie">
+
+                <span>
+                    ✦ Personalizá tu búsqueda con los filtros
+                </span>
+
+                <a href="/Explorador/Index"
+                   class="explorador-limpiar">
                     Limpiar filtros <span>↺</span>
                 </a>
+
             </div>
 
         </form>
+
     </section>
+
 
     <!-- RESULTADOS QUE SE ACTUALIZAN CON FETCH -->
     @await Html.PartialAsync("_ResultadosExplorador", Model)
 
+
+    <!-- PIE DEL EXPLORADOR -->
     <div class="explorador-final">
+
         <span>✦</span>
+
         <p>Hay una historia esperando ser descubierta.</p>
+
         <span>✦</span>
+
     </div>
 
 </main>
-
-<script>
-    function moverCarrusel(direccion) {
-
-        const carrusel = document.getElementById("carruselPeliculas");
-
-        if (!carrusel) return;
-
-        const poster = carrusel.querySelector(".explorador-poster-link");
-
-        if (!poster) return;
-
-        const estilos = window.getComputedStyle(carrusel);
-        const espacio = parseFloat(estilos.gap) || 0;
-        const anchoPoster = poster.getBoundingClientRect().width + espacio;
-
-        carrusel.scrollBy({
-            left: direccion * anchoPoster * 4,
-            behavior: "smooth"
-        });
-    }
-</script>

@@ -677,3 +677,174 @@ document.addEventListener("DOMContentLoaded", function () {
 
     mostrarPregunta();
 });
+
+/* ============================================
+   CINEURA - CARRUSEL DESTACADO
+   FAVORITOS Y WATCHLIST
+============================================ */
+
+// Película que se está mostrando en el carrusel
+let destacadaActual = 0;
+
+// Ir a una película del carrusel
+
+function irADestacada(indice) {
+
+    const peliculas = document.querySelectorAll(".cineura-destacada");
+    const puntos = document.querySelectorAll(".cineura-destacada-punto");
+
+    if (peliculas.length === 0) {
+        return;
+    }
+
+    const siguiente = (indice + peliculas.length) % peliculas.length;
+
+    if (siguiente === destacadaActual) {
+        return;
+    }
+
+    const anterior = peliculas[destacadaActual];
+    const nueva = peliculas[siguiente];
+
+    // Preparar la película que entra desde la derecha.
+    nueva.classList.remove("saliendo");
+    nueva.classList.remove("activa");
+
+    // Forzar que el navegador registre su posición inicial.
+    void nueva.offsetWidth;
+
+    // Desplazar la anterior hacia la izquierda.
+    anterior.classList.remove("activa");
+    anterior.classList.add("saliendo");
+
+    // Deslizar la nueva hacia el centro.
+    nueva.classList.add("activa");
+
+    destacadaActual = siguiente;
+
+    puntos.forEach(function (punto, i) {
+        punto.classList.toggle("activo", i === destacadaActual);
+    });
+
+    setTimeout(function () {
+        anterior.classList.remove("saliendo");
+    }, 800);
+}
+
+
+// Botones de las flechas
+function cambiarDestacada(direccion) {
+    irADestacada(destacadaActual + direccion);
+}
+
+// Agregar o quitar de Favoritos y Watchlist
+async function toggleDestacada(boton, idPelicula, tipo) {
+
+    if (boton.disabled) {
+        return;
+    }
+
+    let url = "";
+
+    if (tipo === "favorito") {
+        url = "/Home/ToggleFavorito";
+    } else {
+        url = "/Home/ToggleWatchlist";
+    }
+
+    boton.disabled = true;
+
+    try {
+
+        const datos = new URLSearchParams();
+        datos.append("idPelicula", idPelicula);
+
+        const respuesta = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: datos.toString()
+        });
+
+        if (!respuesta.ok) {
+            throw new Error("Error al guardar la película");
+        }
+
+        const resultado = await respuesta.json();
+
+        // Si no inició sesión
+        if (!resultado.ok) {
+
+            if (resultado.redirectUrl) {
+                window.location.href = resultado.redirectUrl;
+                return;
+            }
+
+            alert(resultado.message || "No se pudo guardar.");
+            return;
+        }
+
+        // Actualizar botón de Favoritos
+        if (tipo === "favorito") {
+
+            if (resultado.esFavorito) {
+                boton.textContent = "♥ En Favoritos";
+                boton.classList.add("seleccionado");
+            } else {
+                boton.textContent = "♡ Favoritos";
+                boton.classList.remove("seleccionado");
+            }
+
+        }
+
+        // Actualizar botón de Watchlist
+        else {
+
+            if (resultado.estaEnWatchlist) {
+                boton.textContent = "✓ En Watchlist";
+                boton.classList.add("seleccionado");
+            } else {
+                boton.textContent = "＋ Watchlist";
+                boton.classList.remove("seleccionado");
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error("Error en Favoritos/Watchlist:", error);
+        alert("No se pudo guardar la película. Intentá nuevamente.");
+
+    } finally {
+
+        boton.disabled = false;
+
+    }
+}
+
+// Permitir que los botones HTML encuentren las funciones
+window.irADestacada = irADestacada;
+window.cambiarDestacada = cambiarDestacada;
+window.toggleDestacada = toggleDestacada;
+
+
+/* ============================================
+   CARRUSEL AUTOMÁTICO DE CINEURA
+============================================ */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const carrusel = document.querySelector(".cineura-destacadas");
+
+    if (!carrusel) {
+        return;
+    }
+
+    // Cambiar de película cada 5 segundos.
+    setInterval(function () {
+        cambiarDestacada(1);
+    }, 5000);
+
+});
+

@@ -125,6 +125,36 @@ namespace Cineura.Controllers
             ViewBag.DuracionMaxima = duracionMaxima;
             ViewBag.Ordenar = ordenar;
 
+            // Comprobar las películas guardadas del usuario.
+            List<int> idsFavoritos = new List<int>();
+            List<int> idsWatchlist = new List<int>();
+
+            string usuario = HttpContext.Session.GetString("usuario");
+
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+                if (idUsuario > 0)
+                {
+                    foreach (Peliculas pelicula in peliculasEncontradas)
+                    {
+                        if (bd.EsFavorito(idUsuario, pelicula.IdPelicula))
+                        {
+                            idsFavoritos.Add(pelicula.IdPelicula);
+                        }
+
+                        if (bd.EstaEnWatchlist(idUsuario, pelicula.IdPelicula))
+                        {
+                            idsWatchlist.Add(pelicula.IdPelicula);
+                        }
+                    }
+                }
+            }
+
+            ViewBag.IdsFavoritos = idsFavoritos;
+            ViewBag.IdsWatchlist = idsWatchlist;
+
             // Si viene de Fetch, devolver solamente los resultados.
             if (esFetch)
             {

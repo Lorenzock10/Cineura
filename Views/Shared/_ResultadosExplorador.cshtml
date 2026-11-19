@@ -1,48 +1,40 @@
 
 @model List<Cineura.Models.Peliculas>
 
-@{
-    var peliculasCarrusel = Model
-        .Where(p => !p.Titulo.Contains("Toy Story", StringComparison.OrdinalIgnoreCase))
-        .Take(36)
-        .ToList();
-
-    bool mostrarGrilla =
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Busqueda)) ||
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Genero)) ||
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.Anio)) ||
-        !string.IsNullOrWhiteSpace(Convert.ToString(ViewBag.DuracionMaxima));
-}
-
 <section class="explorador-resultados" id="peliculas">
+
     <div class="explorador-resultados-titulo">
         <div>
-            <span class="explorador-mini-etiqueta">EL CATÁLOGO DE CINEURA</span>
+            <span class="explorador-mini-etiqueta">
+                EL CATÁLOGO DE CINEURA
+            </span>
 
-            <h2>
-                @(mostrarGrilla ? "Resultados de tu búsqueda" : "Películas para descubrir")
-            </h2>
+            <h2>Descubrí películas</h2>
 
             <p>
-                @(mostrarGrilla
-                    ? "Estas películas coinciden con tus filtros."
-                    : "Elegí una historia y dejate llevar.")
+                Explorá todas las historias que tenemos para vos.
             </p>
         </div>
 
         <div class="explorador-cantidad">
-            <span class="explorador-cantidad-numero">@peliculasCarrusel.Count</span>
-            <span class="explorador-cantidad-texto">PELÍCULAS</span>
+            <span class="explorador-cantidad-numero">
+                @Model.Count
+            </span>
+
+            <span class="explorador-cantidad-texto">
+                PELÍCULAS
+            </span>
         </div>
     </div>
 
-    @if (peliculasCarrusel.Count > 0)
+    @if (Model.Count > 0)
     {
-        @if (mostrarGrilla)
-        {
-            <div class="explorador-grilla-resultados">
-                @foreach (var pelicula in peliculasCarrusel)
-                {
+        <div class="explorador-grilla-resultados">
+
+            @foreach (Cineura.Models.Peliculas pelicula in Model)
+            {
+                <div class="explorador-tarjeta">
+
                     <a href="/Home/Detalles/@pelicula.IdPelicula"
                        class="explorador-poster-link"
                        title="@pelicula.Titulo">
@@ -61,59 +53,35 @@
                                 <p>CINEURA</p>
                             </div>
                         }
+
                     </a>
-                }
-            </div>
-        }
-        else
-        {
-            <div class="explorador-carrusel">
-                <button type="button"
-                        class="explorador-flecha"
-                        onclick="moverCarrusel(-1)">
-                    &#10094;
-                </button>
 
-                <div class="explorador-peliculas-carrusel" id="carruselPeliculas">
-                    @foreach (var pelicula in peliculasCarrusel)
-                    {
-                        <a href="/Home/Detalles/@pelicula.IdPelicula"
-                           class="explorador-poster-link"
-                           title="@pelicula.Titulo">
+               
 
-                            @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
-                            {
-                                <img class="explorador-poster"
-                                     src="@pelicula.PosterUrl"
-                                     alt="Póster de @pelicula.Titulo"
-                                     loading="lazy" />
-                            }
-                            else
-                            {
-                                <div class="explorador-poster-vacio">
-                                    <span>✦</span>
-                                    <p>CINEURA</p>
-                                </div>
-                            }
-                        </a>
-                    }
                 </div>
+            }
 
-                <button type="button"
-                        class="explorador-flecha"
-                        onclick="moverCarrusel(1)">
-                    &#10095;
-                </button>
-            </div>
-        }
+        </div>
     }
     else
     {
         <div class="explorador-sin-resultados">
-            <div class="explorador-sin-resultados-icono">⌕</div>
+
+            <div class="explorador-sin-resultados-icono">
+                ⌕
+            </div>
+
             <h3>No encontramos películas</h3>
-            <p>Probá cambiando la búsqueda o quitando alguno de los filtros.</p>
-            <a href="/Explorador/Index">Ver todas las películas</a>
+
+            <p>
+                Probá cambiando la búsqueda o quitando alguno de los filtros.
+            </p>
+
+            <a href="/Explorador/Index">
+                Ver todas las películas
+            </a>
+
         </div>
     }
+
 </section>
