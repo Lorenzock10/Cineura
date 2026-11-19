@@ -1,0 +1,162 @@
+
+@{
+    ViewData["Title"] = "Tus gustos - Cineura";
+}
+
+<div class="cine-cuestionario">
+    <div class="cine-cuestionario-tarjeta">
+
+        <div class="cine-cuestionario-estrella">
+            <img src="~/imagenes/logo_c.png" alt="Logo Cineura" />
+        </div>        
+        <h2 id="tituloPregunta">¡Empecemos por tus gustos!</h2>
+        <p id="subtituloPregunta">
+            Personalizá tu experiencia en Cineura.
+        </p>
+
+        <div class="cine-cuestionario-progreso">
+            <span class="activo"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        @if (TempData["Error"] != null)
+        {
+            <p class="cine-cuestionario-error">@TempData["Error"]</p>
+        }
+
+        <form asp-controller="Home"
+              asp-action="GuardarCuestionario"
+              method="post"
+              id="formCuestionario">
+
+            @Html.AntiForgeryToken()
+
+            <div class="cine-pregunta activa">
+                <h3>¿Qué géneros disfrutás más?</h3>
+                <p>Podés elegir todos los que quieras.</p>
+
+                <div class="cine-opciones">
+                    @foreach (string genero in new string[] {
+                        "Acción", "Ciencia ficción", "Terror",
+                        "Suspenso", "Comedia", "Drama",
+                        "Romance", "Fantasía", "Animación",
+                        "Documental"
+                    })
+                    {
+                        <label class="cine-opcion">
+                            <input type="checkbox"
+                                   name="generos"
+                                   value="@genero" />
+                            <span>@genero</span>
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <div class="cine-pregunta">
+                <h3>¿Qué tipo de historias disfrutás más?</h3>
+                <p>Elegí las que más te representen.</p>
+
+                <div class="cine-opciones">
+                    @foreach (string historia in new string[] {
+                        "Que me hagan pensar", "Que me emocionen",
+                        "Que me hagan reír", "Con misterio",
+                        "Que me sorprendan", "Con mucha tensión"
+                    })
+                    {
+                        <label class="cine-opcion">
+                            <input type="checkbox"
+                                   name="historias"
+                                   value="@historia" />
+                            <span>@historia</span>
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <div class="cine-pregunta">
+                <h3>¿Con quién solés ver películas?</h3>
+                <p>Elegí la opción que más se acerque a vos.</p>
+
+                <div class="cine-opciones">
+                    @foreach (string opcion in new string[] {
+                        "Solo/a", "Con amigos", "En familia",
+                        "En pareja", "Depende del momento"
+                    })
+                    {
+                        <label class="cine-opcion">
+                            <input type="radio"
+                                   name="compania"
+                                   value="@opcion" />
+                            <span>@opcion</span>
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <div class="cine-pregunta">
+                <h3>¿Qué buscás cuando elegís una película?</h3>
+                <p>Podés marcar más de una emoción.</p>
+
+                <div class="cine-opciones">
+                    @foreach (string emocion in new string[] {
+                        "Adrenalina", "Tranquilidad",
+                        "Emoción", "Intriga",
+                        "Inspiración", "Desconectar"
+                    })
+                    {
+                        <label class="cine-opcion">
+                            <input type="checkbox"
+                                   name="emociones"
+                                   value="@emocion" />
+                            <span>@emocion</span>
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <div class="cine-pregunta">
+                <h3>¿Te gusta descubrir películas poco populares?</h3>
+                <p>Elegí la respuesta que mejor te describa.</p>
+
+                <div class="cine-opciones">
+                    @foreach (string opcion in new string[] {
+                        "Sí, me encanta descubrir",
+                        "A veces, si me interesan",
+                        "Prefiero las más conocidas"
+                    })
+                    {
+                        <label class="cine-opcion">
+                            <input type="radio"
+                                   name="descubrimiento"
+                                   value="@opcion" />
+                            <span>@opcion</span>
+                        </label>
+                    }
+                </div>
+            </div>
+
+            <p id="errorPregunta" class="cine-cuestionario-error"
+               role="alert" aria-live="polite"></p>
+
+            <div class="cine-cuestionario-botones">
+                <button type="button"
+                        id="botonVolver"
+                        class="cine-boton-volver">
+                    ← Volver
+                </button>
+
+                <button type="button"
+                        id="botonContinuar"
+                        class="cine-boton-continuar">
+                    Continuar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+

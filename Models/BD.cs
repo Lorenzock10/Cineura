@@ -662,5 +662,80 @@ public int ObtenerIdPeliculaTMDB(int idTMDB, string titulo, int anio)
 }
 
 
+public void GuardarPreferencia(int idUsuario, int numeroPregunta, string respuesta)
+{
+    string query = @"
+        INSERT INTO PreferenciasUsuario
+        (IdUsuario, NumeroPregunta, Respuesta)
+        VALUES (@idUsuario, @numeroPregunta, @respuesta)";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        connection.Execute(query, new
+        {
+            idUsuario,
+            numeroPregunta,
+            respuesta
+        });
+    }
+}
+
+public List<string> ObtenerPreferencias(int idUsuario, int numeroPregunta)
+{
+    string query = @"
+        SELECT Respuesta
+        FROM PreferenciasUsuario
+        WHERE IdUsuario = @idUsuario
+        AND NumeroPregunta = @numeroPregunta";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.Query<string>(query, new
+        {
+            idUsuario,
+            numeroPregunta
+        }).ToList();
+    }
+}
+
+public bool CuestionarioCompletado(int idUsuario)
+{
+    string query = @"
+        SELECT Completado
+        FROM CuestionariosUsuario
+        WHERE IdUsuario = @idUsuario";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        return connection.QueryFirstOrDefault<bool>(
+            query, new { idUsuario });
+    }
+}
+
+public void CompletarCuestionario(int idUsuario)
+{
+    string query = @"
+        IF NOT EXISTS (
+            SELECT 1 FROM CuestionariosUsuario
+            WHERE IdUsuario = @idUsuario
+        )
+        BEGIN
+            INSERT INTO CuestionariosUsuario
+            (IdUsuario, Completado)
+            VALUES (@idUsuario, 1)
+        END
+        ELSE
+        BEGIN
+            UPDATE CuestionariosUsuario
+            SET Completado = 1
+            WHERE IdUsuario = @idUsuario
+        END";
+
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        connection.Execute(query, new { idUsuario });
+    }
+}
+
     }
 }

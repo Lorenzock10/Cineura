@@ -1174,3 +1174,196 @@ body {
         font-size: 20px;
     }
 }
+
+/* CUESTIONARIO CINEURA */
+
+.cine-cuestionario {
+    min-height: 85vh;
+    background: #111827;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    font-family: 'Manrope', sans-serif;
+}
+
+.cine-cuestionario-tarjeta {
+    width: 100%;
+    max-width: 480px;
+    background: #141e2e;
+    border: 1px solid #253247;
+    border-radius: 9px;
+    padding: 35px 26px;
+    text-align: center;
+    color: white;
+}
+
+.cine-cuestionario-estrella {
+    font-size: 38px;
+    color: #FBBF24;
+    margin-bottom: 12px;
+}
+
+.cine-cuestionario-tarjeta h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.cine-cuestionario-tarjeta > p {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.cine-cuestionario-progreso {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 24px 0 18px;
+}
+
+.cine-cuestionario-progreso span {
+    width: 42px;
+    height: 3px;
+    background: #334155;
+    border-radius: 5px;
+}
+
+.cine-cuestionario-progreso span.activo {
+    background: #FBBF24;
+}
+
+.cine-pregunta {
+    display: none;
+}
+
+.cine-pregunta.activa {
+    display: block;
+}
+
+.cine-pregunta h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.cine-pregunta p {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 17px;
+}
+
+.cine-opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    text-align: left;
+}
+
+.cine-opcion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: #0d1625;
+    border: 1px solid #29374e;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cine-opcion:hover {
+    border-color: #FBBF24;
+}
+
+.cine-opcion:has(input:checked) {
+    border-color: #FBBF24;
+    background: #2b2c22;
+}
+
+.cine-opcion input {
+    margin: 0;
+    accent-color: #FBBF24;
+}
+
+.cine-cuestionario-botones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.cine-boton-volver {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.cine-boton-continuar {
+    background: #FBBF24;
+    color: #111827;
+    border: none;
+    border-radius: 5px;
+    padding: 11px 30px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.cine-boton-continuar:hover {
+    background: #f59e0b;
+}
+
+.cine-cuestionario-error {
+    color: #EF4444;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+@media (max-width: 480px) {
+    .cine-opciones {
+        grid-template-columns: 1fr;
+    }
+
+    .cine-cuestionario-tarjeta {
+        padding: 25px 18px;
+    }
+}
+
+/* PANTALLA FINAL DEL CUESTIONARIO */
+
+.cine-final {
+    min-height: 370px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cine-final h2 {
+    margin-bottom: 15px;
+}
+
+.cine-final p {
+    max-width: 320px;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-bottom: 22px;
+}
+
+.cine-final-enlace {
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+
+.cine-final-perfil {
+    color: #EF4444;
+    text-decoration: none;
+    font-size: 11px;
+}

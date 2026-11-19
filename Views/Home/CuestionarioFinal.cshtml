@@ -1,0 +1,33 @@
+
+@{
+    ViewData["Title"] = "Tu universo - Cineura";
+}
+
+<div class="cine-cuestionario">
+    <div class="cine-cuestionario-tarjeta cine-final">
+
+        <div class="cine-cuestionario-estrella">★</div>
+
+        <h2>¡Tu universo ya está tomando forma!</h2>
+
+        <p>
+            Ya conocemos un poco más de vos.
+            En Cineura, cada recomendación comienza
+            con tus gustos. Ahora dejá que Nova
+            encuentre tu próxima historia.
+        </p>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="cine-boton-continuar cine-final-enlace">
+            Descubrir mi universo
+        </a>
+
+        <a asp-controller="Home"
+           asp-action="Perfil"
+           class="cine-final-perfil">
+            Ver mi perfil
+        </a>
+
+    </div>
+</div>

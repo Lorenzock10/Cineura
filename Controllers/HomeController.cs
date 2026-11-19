@@ -486,6 +486,11 @@ public IActionResult BuscarPeliculas(string busqueda)
             HttpContext.Session.SetString("usuario", usuarioEncontrado.NombreUsuario);
             HttpContext.Session.SetString("nombre", usuarioEncontrado.Nombre);
             HttpContext.Session.SetString("apellido", usuarioEncontrado.Apellido);
+            
+            if (!bd.CuestionarioCompletado(usuarioEncontrado.IdUsuario))
+            {
+                return RedirectToAction("Cuestionario");
+            }
             return RedirectToAction("Index");
         }
 
@@ -524,6 +529,104 @@ public IActionResult BuscarPeliculas(string busqueda)
             bd.AgregarUsuario(nuevoUsuario);
             return RedirectToAction("Login");
         }
+
+    public IActionResult Cuestionario()
+    {
+        string usuario = HttpContext.Session.GetString("usuario");
+
+        if (string.IsNullOrEmpty(usuario))
+        {
+            return RedirectToAction("Login");
+        }
+
+        BD bd = new BD();
+        int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+        if (idUsuario == 0)
+        {
+            return RedirectToAction("Login");
+        }
+
+        if (bd.CuestionarioCompletado(idUsuario))
+        {
+            return RedirectToAction("Index");
+        }
+
+        return View();
+    }
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public IActionResult GuardarCuestionario(
+    List<string> generos,
+    List<string> historias,
+    string compania,
+    List<string> emociones,
+    string descubrimiento)
+{
+    string usuario = HttpContext.Session.GetString("usuario");
+    if (string.IsNullOrEmpty(usuario))
+    {
+        return RedirectToAction("Login");
+    }
+    BD bd = new BD();
+    int idUsuario = bd.ObtenerIdUsuario(usuario);
+    if (idUsuario == 0)
+    {
+        return RedirectToAction("Login");
+    }
+
+    if (bd.CuestionarioCompletado(idUsuario))
+    {
+        return RedirectToAction("Index");
+    }
+
+    if (generos == null || generos.Count == 0 ||
+        historias == null || historias.Count == 0 ||
+        string.IsNullOrWhiteSpace(compania) ||
+        emociones == null || emociones.Count == 0 ||
+        string.IsNullOrWhiteSpace(descubrimiento))
+    {
+        TempData["Error"] = "Respondé todas las preguntas.";
+        return RedirectToAction("Cuestionario");
+    }
+    foreach (string genero in generos.Distinct())
+    {
+        bd.GuardarPreferencia(idUsuario, 1, genero);
+    }
+    foreach (string historia in historias.Distinct())
+    {
+        bd.GuardarPreferencia(idUsuario, 2, historia);
+    }
+    bd.GuardarPreferencia(idUsuario, 3, compania);
+    foreach (string emocion in emociones.Distinct())
+    {
+        bd.GuardarPreferencia(idUsuario, 4, emocion);
+    }
+    bd.GuardarPreferencia(idUsuario, 5, descubrimiento);
+    bd.CompletarCuestionario(idUsuario);
+    return RedirectToAction("CuestionarioFinal");
+}
+
+public IActionResult CuestionarioFinal()
+{
+    string usuario = HttpContext.Session.GetString("usuario");
+
+    if (string.IsNullOrEmpty(usuario))
+    {
+        return RedirectToAction("Login");
+    }
+
+    BD bd = new BD();
+    int idUsuario = bd.ObtenerIdUsuario(usuario);
+
+    if (!bd.CuestionarioCompletado(idUsuario))
+    {
+        return RedirectToAction("Cuestionario");
+    }
+
+    return View();
+}
 
         public IActionResult CerrarSesion()
         {

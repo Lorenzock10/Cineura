@@ -19,7 +19,35 @@ BEGIN
     );
 END
 GO
+IF OBJECT_ID('PreferenciasUsuario', 'U') IS NULL
+BEGIN
+    CREATE TABLE PreferenciasUsuario (
+        IdPreferencia INT IDENTITY(1,1) PRIMARY KEY,
+        IdUsuario INT NOT NULL,
+        NumeroPregunta INT NOT NULL,
+        Respuesta NVARCHAR(100) NOT NULL,
 
+        FOREIGN KEY (IdUsuario)
+        REFERENCES Usuarios(IdUsuario),
+
+        CONSTRAINT UQ_PreferenciaUsuario
+        UNIQUE (IdUsuario, NumeroPregunta, Respuesta)
+    );
+END
+GO
+
+-- Registra quién terminó el cuestionario
+IF OBJECT_ID('CuestionariosUsuario', 'U') IS NULL
+BEGIN
+    CREATE TABLE CuestionariosUsuario (
+        IdUsuario INT PRIMARY KEY,
+        Completado BIT NOT NULL DEFAULT 0,
+
+        FOREIGN KEY (IdUsuario)
+        REFERENCES Usuarios(IdUsuario)
+    );
+END
+GO
 -- 2. DIRECTORES
 IF OBJECT_ID('Directores', 'U') IS NULL
 BEGIN

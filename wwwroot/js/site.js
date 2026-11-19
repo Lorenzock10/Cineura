@@ -591,3 +591,89 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const formulario = document.getElementById("formCuestionario");
+
+    // Solo ejecutar en la página del cuestionario
+    if (formulario === null) {
+        return;
+    }
+
+    let pasoActual = 0;
+
+    const preguntas = document.querySelectorAll(".cine-pregunta");
+    const progreso = document.querySelectorAll(".cine-cuestionario-progreso span");
+
+    const titulo = document.getElementById("tituloPregunta");
+    const subtitulo = document.getElementById("subtituloPregunta");
+    const botonContinuar = document.getElementById("botonContinuar");
+    const botonVolver = document.getElementById("botonVolver");
+    const errorPregunta = document.getElementById("errorPregunta");
+
+    const titulos = [
+        "¡Empecemos por tus gustos!",
+        "Busquemos tu tipo de historia",
+        "Una más para conocerte",
+        "¿Qué querés sentir hoy?",
+        "Descubrí algo diferente"
+    ];
+
+    const subtitulos = [
+        "Personalizá tu experiencia en Cineura.",
+        "Queremos descubrir qué te atrapa de una película.",
+        "Así podemos recomendarte algo para cada momento.",
+        "A veces elegimos una película por cómo queremos sentirnos.",
+        "Queremos saber qué lugar le das a las películas menos conocidas."
+    ];
+
+    function mostrarPregunta() {
+
+        for (let i = 0; i < preguntas.length; i++) {
+            preguntas[i].classList.toggle("activa", i === pasoActual);
+            progreso[i].classList.toggle("activo", i <= pasoActual);
+        }
+
+        titulo.textContent = titulos[pasoActual];
+        subtitulo.textContent = subtitulos[pasoActual];
+
+        botonVolver.style.visibility =
+            pasoActual === 0 ? "hidden" : "visible";
+
+        botonContinuar.textContent =
+            pasoActual === 4 ? "Finalizar" : "Continuar";
+
+        errorPregunta.textContent = "";
+    }
+
+    botonContinuar.addEventListener("click", function () {
+
+        const pregunta = preguntas[pasoActual];
+        const seleccionadas = pregunta.querySelectorAll("input:checked");
+
+        if (seleccionadas.length === 0) {
+            errorPregunta.textContent = "Seleccioná al menos una opción.";
+            return;
+        }
+
+        if (pasoActual < preguntas.length - 1) {
+            pasoActual++;
+            mostrarPregunta();
+        }
+        else {
+            botonContinuar.disabled = true;
+            formulario.submit();
+        }
+    });
+
+    botonVolver.addEventListener("click", function () {
+
+        if (pasoActual > 0) {
+            pasoActual--;
+            mostrarPregunta();
+        }
+    });
+
+    mostrarPregunta();
+});
