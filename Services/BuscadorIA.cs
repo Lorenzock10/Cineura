@@ -1,27 +1,84 @@
-
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Linq;
 using Cineura.Models;
 
 namespace Cineura.Services
 {
     public class BuscadorIA
     {
+        // Este método se encarga de comunicarse con Nova.
+        // Así no repetimos la misma conexión en cada búsqueda.
+        private string ConsultarNova(string prompt, string mensaje)
+        {
+            string apiKey = Environment.GetEnvironmentVariable("GROQ_API_KEY");
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                throw new Exception("No se encontró GROQ_API_KEY.");
+            }
+
+            using (HttpClient cliente = new HttpClient())
+            {
+                cliente.Timeout = TimeSpan.FromSeconds(30);
+
+                using (HttpRequestMessage solicitud = new HttpRequestMessage(
+                    HttpMethod.Post,
+                    "https://api.groq.com/openai/v1/chat/completions"))
+                {
+                    solicitud.Headers.Authorization =
+                        new AuthenticationHeaderValue("Bearer", apiKey);
+
+                    solicitud.Content = JsonContent.Create(new
+                    {
+                        model = "openai/gpt-oss-120b",
+                        messages = new[]
+                        {
+                            new { role = "system", content = prompt },
+                            new { role = "user", content = mensaje }
+                        },
+                        temperature = 0,
+                        response_format = new { type = "json_object" }
+                    });
+
+                    using (HttpResponseMessage respuesta = cliente.Send(solicitud))
+                    {
+                        string texto = respuesta.Content
+                            .ReadAsStringAsync().GetAwaiter().GetResult();
+
+                        if (!respuesta.IsSuccessStatusCode)
+                        {
+                            throw new Exception("Error al consultar Groq.");
+                        }
+
+                        using (JsonDocument documento = JsonDocument.Parse(texto))
+                        {
+                            string contenido = documento.RootElement
+                                .GetProperty("choices")[0]
+                                .GetProperty("message")
+                                .GetProperty("content")
+                                .GetString();
+
+                            if (string.IsNullOrWhiteSpace(contenido))
+                            {
+                                throw new Exception("Nova no devolvió una respuesta válida.");
+                            }
+
+                            return contenido;
+                        }
+                    }
+                }
+            }
+        }
+
         public string InterpretarBusqueda(
             string busqueda,
             List<string> tematicas,
             List<string> emociones)
         {
-            string apiKey = Environment.GetEnvironmentVariable("GROQ_API_KEY");
-
-            if (string.IsNullOrWhiteSpace(apiKey))
-                throw new Exception("No se encontró GROQ_API_KEY.");
-
             string prompt = $@"
 Sos Nova, el recomendador de películas de Cineura.
 
@@ -60,76 +117,31 @@ Ejemplo:
 {{""tematica"":""Terror"",""emocion"":null,""duracionMaxima"":100}}
 ";
 
-            using (HttpClient cliente = new HttpClient())
-            {
-                cliente.Timeout = TimeSpan.FromSeconds(30);
-
-                using (HttpRequestMessage solicitud = new HttpRequestMessage(
-                    HttpMethod.Post,
-                    "https://api.groq.com/openai/v1/chat/completions"))
-                {
-                    solicitud.Headers.Authorization =
-                        new AuthenticationHeaderValue("Bearer", apiKey);
-
-                    solicitud.Content = JsonContent.Create(new
-                    {
-                        model = "openai/gpt-oss-120b",
-                        messages = new[]
-                        {
-                            new { role = "system", content = prompt },
-                            new { role = "user", content = busqueda }
-                        },
-                        temperature = 0,
-                        response_format = new
-                        {
-                            type = "json_object"
-                        }
-                    });
-
-                    using (HttpResponseMessage respuesta =
-                        cliente.Send(solicitud))
-                    {
-                        string texto = respuesta.Content
-                            .ReadAsStringAsync().GetAwaiter().GetResult();
-
-                        if (!respuesta.IsSuccessStatusCode)
-                            throw new Exception("Error al consultar Groq.");
-
-                        using (JsonDocument documento = JsonDocument.Parse(texto))
-                        {
-                            string contenido = documento.RootElement
-                                .GetProperty("choices")[0]
-                                .GetProperty("message")
-                                .GetProperty("content")
-                                .GetString();
-
-                            if (string.IsNullOrWhiteSpace(contenido))
-                                throw new Exception("Nova no devolvió una respuesta válida.");
-
-                            return contenido;
-                        }
-                    }
-                }
-            }
+            return ConsultarNova(prompt, busqueda);
         }
 
-        // Conserva compatibilidad con llamadas anteriores.
+        // Mantiene las llamadas anteriores que reciben solamente la búsqueda.
         public string InterpretarBusqueda(string busqueda)
         {
             BD bd = new BD();
+            List<EtiquetasPelicula> etiquetas = bd.ObtenerTodasLasEtiquetas();
+            List<string> tematicas = new List<string>();
+            List<string> emociones = new List<string>();
 
-          var etiquetas = bd.ObtenerTodasLasEtiquetas();
+            foreach (EtiquetasPelicula etiqueta in etiquetas)
+            {
+                if (etiqueta.Tipo == "Tematica")
+                {
+                    tematicas.Add(etiqueta.Nombre);
+                }
+                else if (etiqueta.Tipo == "Emocion")
+                {
+                    emociones.Add(etiqueta.Nombre);
+                }
+            }
 
-            return InterpretarBusqueda(
-                busqueda,
-                etiquetas.Where(e => e.Tipo == "Tematica")
-                         .Select(e => e.Nombre).ToList(),
-                etiquetas.Where(e => e.Tipo == "Emocion")
-                         .Select(e => e.Nombre).ToList()
-            );
+            return InterpretarBusqueda(busqueda, tematicas, emociones);
         }
-
-        // NUEVO: ANALIZAR LA EMOCIÓN DE UNA PELÍCULA
 
         public string ObtenerEmocionPelicula(
             string titulo,
@@ -140,13 +152,6 @@ Ejemplo:
             if (emociones.Count == 0)
             {
                 return "";
-            }
-
-            string apiKey = Environment.GetEnvironmentVariable("GROQ_API_KEY");
-
-            if (string.IsNullOrWhiteSpace(apiKey))
-            {
-                throw new Exception("No se encontró GROQ_API_KEY.");
             }
 
             string prompt = $@"
@@ -175,83 +180,31 @@ Formato:
                 "\nGénero: " + genero +
                 "\nSinopsis: " + sinopsis;
 
-            using (HttpClient cliente = new HttpClient())
+            string contenido = ConsultarNova(prompt, datosPelicula);
+
+            using (JsonDocument resultado = JsonDocument.Parse(contenido))
             {
-                cliente.Timeout = TimeSpan.FromSeconds(30);
+                string emocion = resultado.RootElement
+                    .GetProperty("emocion")
+                    .GetString();
 
-                using (HttpRequestMessage solicitud = new HttpRequestMessage(
-                    HttpMethod.Post,
-                    "https://api.groq.com/openai/v1/chat/completions"))
+                if (string.IsNullOrWhiteSpace(emocion))
                 {
-                    solicitud.Headers.Authorization =
-                        new AuthenticationHeaderValue("Bearer", apiKey);
+                    return "";
+                }
 
-                    solicitud.Content = JsonContent.Create(new
+                foreach (string disponible in emociones)
+                {
+                    if (string.Equals(
+                        disponible,
+                        emocion,
+                        StringComparison.OrdinalIgnoreCase))
                     {
-                        model = "openai/gpt-oss-120b",
-                        messages = new[]
-                        {
-                            new { role = "system", content = prompt },
-                            new { role = "user", content = datosPelicula }
-                        },
-                        temperature = 0,
-                        response_format = new
-                        {
-                            type = "json_object"
-                        }
-                    });
-
-                    using (HttpResponseMessage respuesta =
-                        cliente.Send(solicitud))
-                    {
-                        string texto = respuesta.Content
-                            .ReadAsStringAsync().GetAwaiter().GetResult();
-
-                        if (!respuesta.IsSuccessStatusCode)
-                        {
-                            throw new Exception("Error al consultar Groq.");
-                        }
-
-                        using (JsonDocument documento = JsonDocument.Parse(texto))
-                        {
-                            string contenido = documento.RootElement
-                                .GetProperty("choices")[0]
-                                .GetProperty("message")
-                                .GetProperty("content")
-                                .GetString();
-
-                            if (string.IsNullOrWhiteSpace(contenido))
-                            {
-                                return "";
-                            }
-
-                            using (JsonDocument resultado = JsonDocument.Parse(contenido))
-                            {
-                                string emocion = resultado.RootElement
-                                    .GetProperty("emocion")
-                                    .GetString();
-
-                                if (string.IsNullOrWhiteSpace(emocion))
-                                {
-                                    return "";
-                                }
-
-                                foreach (string disponible in emociones)
-                                {
-                                    if (string.Equals(
-                                        disponible,
-                                        emocion,
-                                        StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        return disponible;
-                                    }
-                                }
-
-                                return "";
-                            }
-                        }
+                        return disponible;
                     }
                 }
+
+                return "";
             }
         }
     }

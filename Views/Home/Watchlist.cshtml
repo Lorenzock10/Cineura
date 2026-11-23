@@ -2,86 +2,187 @@
 @model List<Cineura.Models.Peliculas>
 
 @{
+    Layout = null;
     ViewData["Title"] = "Mi Watchlist";
+
+    string usuarioSesion = Context.Session.GetString("usuario");
+    string nombreSesion = Context.Session.GetString("nombre");
 }
 
-@section Styles {
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Cineura</title>
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- ESTILOS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Listas.css" asp-append-version="true" />
-}
+    <link rel="stylesheet" href="~/Cineura.styles.css" asp-append-version="true" />
+</head>
 
-<div class="listas-pagina">
-    <div class="listas-encabezado">
-        <h1><span>＋</span> Mi Watchlist</h1>
-        <p>Películas que querés ver próximamente.</p>
-    </div>
+<body>
 
-    @if (TempData["Mensaje"] != null)
-    {
-        <div class="listas-mensaje">
-            @TempData["Mensaje"]
-        </div>
-    }
+    <!-- HEADER -->
+    <header class="cineura-header">
+        <div class="cineura-header-contenido">
 
-    @if (Model == null || Model.Count == 0)
-    {
-        <div class="listas-vacia">
-            <span class="listas-vacia-icono">＋</span>
-            <h2>Tu Watchlist está vacía</h2>
-            <p>Agregá películas para tenerlas listas cuando quieras verlas.</p>
-            <a asp-controller="Explorador" asp-action="Index" class="listas-explorar">
-                Explorar películas
-            </a>
-        </div>
-    }
-    else
-    {
-        <div class="listas-grid">
-            @foreach (Cineura.Models.Peliculas pelicula in Model)
+            <div class="cineura-logo">
+                <a href="@Url.Action("Index", "Home")">
+                    <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+                </a>
+            </div>
+
+            @if (!string.IsNullOrEmpty(usuarioSesion))
             {
-                <div class="listas-poster-tarjeta">
-                    <a asp-controller="Home"
-                       asp-action="Detalles"
-                       asp-route-id="@pelicula.IdPelicula"
-                       class="listas-poster-enlace"
-                       aria-label="Ver detalles de @pelicula.Titulo">
+                <nav class="cineura-nav-links" aria-label="Navegación principal">
+                    <a href="@Url.Action("Index", "Home")">Inicio</a>
+                    <a href="@Url.Action("Index", "Explorador")">Explorador</a>
+                    <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
+                    <a href="@Url.Action("Perfil", "Home")">Perfil</a>
+                </nav>
+            }
 
-                        @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
-                        {
-                            <img src="@pelicula.PosterUrl"
-                                 alt="Póster de @pelicula.Titulo"
-                                 class="listas-poster" />
-                        }
-                        else
-                        {
-                            <div class="listas-poster listas-poster-sin-imagen">
-                                <span>🎬</span>
-                                <p>Ver película</p>
-                            </div>
-                        }
+            <div class="cineura-sesion">
+                @if (!string.IsNullOrEmpty(usuarioSesion))
+                {
+                    <span class="cineura-saludo">
+                        <a href="@Url.Action("Perfil", "Home")"
+                           style="color: inherit; text-decoration: none;">
+                            Hola, @nombreSesion
+                        </a>
+                    </span>
+
+                    <a href="@Url.Action("CerrarSesion", "Home")"
+                       class="cineura-btn-cerrar-sesion">
+                        Cerrar sesión
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Home")"
+                       class="cineura-btn-header-login">
+                        Iniciar sesión
                     </a>
 
-                    <form asp-controller="Watchlist"
-                          asp-action="QuitarWatchlist"
-                          method="post"
-                          class="listas-form-quitar">
+                    <a href="@Url.Action("Registrarse", "Home")"
+                       class="cineura-btn-header-registro">
+                        Crear cuenta
+                    </a>
+                }
+            </div>
 
-                        <input type="hidden"
-                               name="idPelicula"
-                               value="@pelicula.IdPelicula" />
+        </div>
+    </header>
 
-                        <input type="hidden"
-                               name="returnUrl"
-                               value="/Home/Watchlist" />
+    <!-- CONTENIDO PRINCIPAL -->
+    <main role="main" class="cineura-contenido">
 
-                        <button type="submit"
-                                class="listas-quitar listas-quitar-watchlist"
-                                aria-label="Quitar de Watchlist"
-                                title="Quitar de Watchlist">
-                            ×
-                        </button>
-                    </form>
+        <div class="listas-pagina">
+
+            <div class="listas-encabezado">
+                <h1><span>＋</span> Mi Watchlist</h1>
+                <p>Películas que querés ver próximamente.</p>
+            </div>
+
+            @if (TempData["Mensaje"] != null)
+            {
+                <div class="listas-mensaje">
+                    @TempData["Mensaje"]
                 </div>
             }
+
+            @if (Model == null || Model.Count == 0)
+            {
+                <div class="listas-vacia">
+                    <span class="listas-vacia-icono">＋</span>
+                    <h2>Tu Watchlist está vacía</h2>
+                    <p>Agregá películas para tenerlas listas cuando quieras verlas.</p>
+
+                    <a asp-controller="Explorador"
+                       asp-action="Index"
+                       class="listas-explorar">
+                        Explorar películas
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="listas-grid">
+
+                    @foreach (Cineura.Models.Peliculas pelicula in Model)
+                    {
+                        <div class="listas-poster-tarjeta">
+
+                            <a asp-controller="Home"
+                               asp-action="Detalles"
+                               asp-route-id="@pelicula.IdPelicula"
+                               class="listas-poster-enlace"
+                               aria-label="Ver detalles de @pelicula.Titulo">
+
+                                @if (!string.IsNullOrWhiteSpace(pelicula.PosterUrl))
+                                {
+                                    <img src="@pelicula.PosterUrl"
+                                         alt="Póster de @pelicula.Titulo"
+                                         class="listas-poster" />
+                                }
+                                else
+                                {
+                                    <div class="listas-poster listas-poster-sin-imagen">
+                                        <span>🎬</span>
+                                        <p>Ver película</p>
+                                    </div>
+                                }
+                            </a>
+
+                            <form asp-controller="Watchlist"
+                                  asp-action="QuitarWatchlist"
+                                  method="post"
+                                  class="listas-form-quitar">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="idPelicula"
+                                       value="@pelicula.IdPelicula" />
+
+                                <input type="hidden"
+                                       name="returnUrl"
+                                       value="/Home/Watchlist" />
+
+                                <button type="submit"
+                                        class="listas-quitar listas-quitar-watchlist"
+                                        aria-label="Quitar de Watchlist"
+                                        title="Quitar de Watchlist">
+                                    ×
+                                </button>
+
+                            </form>
+
+                        </div>
+                    }
+
+                </div>
+            }
+
         </div>
-    }
-</div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="cineura-footer">
+        &copy; 2026 - Cineura
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>
+</html>

@@ -1,33 +1,47 @@
-
 @{
+    Layout = null;
     ViewData["Title"] = "Tu universo - Cineura";
 }
-
-<div class="cine-cuestionario">
-    <div class="cine-cuestionario-tarjeta cine-final">
-
-        <div class="cine-cuestionario-estrella">★</div>
-
-        <h2>¡Tu universo ya está tomando forma!</h2>
-
-        <p>
-            Ya conocemos un poco más de vos.
-            En Cineura, cada recomendación comienza
-            con tus gustos. Ahora dejá que Nova
-            encuentre tu próxima historia.
-        </p>
-
-        <a asp-controller="Home"
-           asp-action="Index"
-           class="cine-boton-continuar cine-final-enlace">
-            Descubrir mi universo
-        </a>
-
-        <a asp-controller="Home"
-           asp-action="Perfil"
-           class="cine-final-perfil">
-            Ver mi perfil
-        </a>
-
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cineura</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="cineura-header">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <a asp-controller="Home" asp-action="Index" class="cineura-logo-header" aria-label="Cineura - Inicio">
+                <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+            </a>
+        </div>
+    </header>
+    <main role="main" class="cineura-contenido">
+        <div class="cine-cuestionario">
+            <div class="cine-cuestionario-tarjeta cine-final">
+                <div class="cine-cuestionario-estrella">★</div>
+                <h2>¡Tu universo ya está tomando forma!</h2>
+                <p>
+                    Ya conocemos un poco más de vos.
+                    En Cineura, cada recomendación comienza
+                    con tus gustos. Ahora dejá que Nova
+                    encuentre tu próxima historia.
+                </p>
+                <a asp-controller="Home" asp-action="Index" class="cine-boton-continuar cine-final-enlace">
+                    Descubrir mi universo
+                </a>
+                <a asp-controller="Home" asp-action="Perfil" class="cine-final-perfil">
+                    Ver mi perfil
+                </a>
+            </div>
+        </div>
+    </main>
+    <footer class="cineura-footer">&copy; 2026 - Cineura</footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

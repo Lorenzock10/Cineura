@@ -1750,3 +1750,12 @@ INNER JOIN Etiquetas E
     ON E.IdEtiqueta = PE.IdEtiqueta
 ORDER BY P.Titulo, E.Tipo;
 GO
+USE Cineura;
+GO
+
+IF COL_LENGTH('dbo.Usuarios', 'GustosAdn') IS NULL
+BEGIN
+    ALTER TABLE dbo.Usuarios
+    ADD GustosAdn NVARCHAR(MAX) NULL;
+END
+GO

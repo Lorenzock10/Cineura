@@ -1,8 +1,6 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Cineura.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Cineura.Controllers
 {
@@ -17,8 +15,7 @@ namespace Cineura.Controllers
         {
             BD bd = new BD();
 
-            bool esFetch =
-                Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            bool esFetch = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
             List<Peliculas> peliculas = bd.ObtenerPeliculas();
             List<Peliculas> peliculasEncontradas = new List<Peliculas>();
@@ -67,11 +64,10 @@ namespace Cineura.Controllers
                 }
             }
 
-            // Buscar coincidencia exacta del título.
+            // Si se escribe un título exacto sin otros filtros, abrir sus detalles.
             if (busqueda != null && busqueda.Trim() != "" &&
                 (genero == null || genero == "") &&
-                !anio.HasValue &&
-                !duracionMaxima.HasValue)
+                !anio.HasValue && !duracionMaxima.HasValue)
             {
                 string tituloBuscado = busqueda.Trim().ToLower();
 
@@ -88,35 +84,49 @@ namespace Cineura.Controllers
                                 return Json(new
                                 {
                                     redirectUrl = Url.Action(
-                                        "Detalles",
-                                        "Home",
-                                        new { id = pelicula.IdPelicula }
-                                    )
+                                        "Detalles", "Home", new { id = pelicula.IdPelicula })
                                 });
                             }
 
                             return RedirectToAction(
-                                "Detalles",
-                                "Home",
-                                new { id = pelicula.IdPelicula }
-                            );
+                                "Detalles", "Home", new { id = pelicula.IdPelicula });
                         }
                     }
                 }
             }
 
-            // Ordenar las películas.
-            if (ordenar == "anio")
+            // Ordenar con ciclos for, sin LINQ.
+            for (int i = 0; i < peliculasEncontradas.Count - 1; i++)
             {
-                peliculasEncontradas = peliculasEncontradas
-                    .OrderByDescending(pelicula => pelicula.Anio)
-                    .ToList();
-            }
-            else
-            {
-                peliculasEncontradas = peliculasEncontradas
-                    .OrderBy(pelicula => pelicula.Titulo)
-                    .ToList();
+                for (int j = i + 1; j < peliculasEncontradas.Count; j++)
+                {
+                    bool intercambiar = false;
+
+                    if (ordenar == "anio")
+                    {
+                        if (peliculasEncontradas[i].Anio < peliculasEncontradas[j].Anio)
+                        {
+                            intercambiar = true;
+                        }
+                    }
+                    else
+                    {
+                        string titulo1 = peliculasEncontradas[i].Titulo ?? "";
+                        string titulo2 = peliculasEncontradas[j].Titulo ?? "";
+
+                        if (string.Compare(titulo1, titulo2, System.StringComparison.CurrentCulture) > 0)
+                        {
+                            intercambiar = true;
+                        }
+                    }
+
+                    if (intercambiar)
+                    {
+                        Peliculas auxiliar = peliculasEncontradas[i];
+                        peliculasEncontradas[i] = peliculasEncontradas[j];
+                        peliculasEncontradas[j] = auxiliar;
+                    }
+                }
             }
 
             ViewBag.Busqueda = busqueda;
@@ -125,7 +135,6 @@ namespace Cineura.Controllers
             ViewBag.DuracionMaxima = duracionMaxima;
             ViewBag.Ordenar = ordenar;
 
-            // Comprobar las películas guardadas del usuario.
             List<int> idsFavoritos = new List<int>();
             List<int> idsWatchlist = new List<int>();
 
@@ -155,13 +164,9 @@ namespace Cineura.Controllers
             ViewBag.IdsFavoritos = idsFavoritos;
             ViewBag.IdsWatchlist = idsWatchlist;
 
-            // Si viene de Fetch, devolver solamente los resultados.
             if (esFetch)
             {
-                return PartialView(
-                    "_ResultadosExplorador",
-                    peliculasEncontradas
-                );
+                return PartialView("_ResultadosExplorador", peliculasEncontradas);
             }
 
             return View("../Home/Explorador", peliculasEncontradas);

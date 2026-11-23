@@ -1247,7 +1247,6 @@
 
 .landing-cineura .landing-hero .landing-btn-outline {
     background: #FBBF24;
-    background-color: #FBBF24;
     color: #FFFFFF;
     -webkit-text-fill-color: #FFFFFF;
     border: 1px solid #FBBF24;
@@ -1312,27 +1311,8 @@
 }
 
 
-/* UNA ESCENA DIFERENTE CADA 7 SEGUNDOS */
 
-.landing-fondo-1 {
-    background-image: url("/imagenes/fondos/dune2.jpg");
-    animation-delay: 0s;
-}
 
-.landing-fondo-2 {
-    background-image: url("/imagenes/fondos/interstellar.jpg");
-    animation-delay: 7s;
-}
-
-.landing-fondo-3 {
-    background-image: url("/imagenes/fondos/bladerunner.jpg");
-    animation-delay: 14s;
-}
-
-.landing-fondo-4 {
-    background-image: url("/imagenes/fondos/lalaland.jpg");
-    animation-delay: 21s;
-}
 
 @keyframes cineuraCambiarFondo {
     0% {
@@ -1597,9 +1577,3 @@
     justify-content: center;
 }
 }
-
-
-
-
-
-

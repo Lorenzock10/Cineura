@@ -1,11 +1,49 @@
-
 @using Cineura.Models
-
 @{
+    Layout = null;
     ViewData["Title"] = "Inicio - Cineura";
+    string usuarioSesion = Context.Session.GetString("usuario");
+    string nombreSesion = Context.Session.GetString("nombre");
 }
-
-<div class="cineura-pagina">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home-index.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="cineura-header sticky-top">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <a href="@Url.Action("Index", "Home")" class="cineura-logo-header">
+                <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+            </a>
+            @if (!string.IsNullOrEmpty(usuarioSesion))
+            {
+                <nav class="d-flex align-items-center gap-2 flex-wrap" aria-label="Navegación principal">
+                    <a href="@Url.Action("Index", "Home")">Inicio</a>
+                    <a href="@Url.Action("Index", "Explorador")">Explorador</a>
+                    <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
+                    <a href="@Url.Action("Perfil", "Home")">Perfil</a>
+                </nav>
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <span class="cineura-saludo">Hola, @nombreSesion</span>
+                    <a class="btn cineura-btn-cerrar-sesion" href="@Url.Action("CerrarSesion", "Home")">Cerrar sesión</a>
+                </div>
+            }
+            else
+            {
+                <nav class="d-flex align-items-center gap-2 flex-wrap" aria-label="Acceso a Cineura">
+                    <a class="btn cineura-btn-header-login" href="@Url.Action("Login", "Home")">Iniciar sesión</a>
+                    <a class="btn cineura-btn-header-registro" href="@Url.Action("Registrarse", "Home")">Crear cuenta</a>
+                </nav>
+            }
+        </div>
+    </header>
+<main class="cineura-pagina">
     <div class="cineura-contenedor">
 
         <!-- BUSCADOR IA PARA USUARIOS CONECTADOS -->
@@ -294,14 +332,12 @@
         </section>
 
     </div>
-</div>
-
-@section Scripts {
+</main>
+    <footer class="cineura-footer text-center py-4">
+        &copy; 2026 - Cineura
+    </footer>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/home-index.js" asp-append-version="true"></script>
-}
-
-@section Styles {
-    <link rel="stylesheet"
-          href="~/css/home-index.css"
-          asp-append-version="true" />
-}
+</body>
+</html>

@@ -574,9 +574,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Interceptar únicamente los formularios indicados.
 
-    const formularios = document.querySelectorAll(
-        "#form-puntuacion, .cine-formulario-accion"
-    );
+   const formularios = document.querySelectorAll(
+    ".cine-formulario-accion"
+);
 
     formularios.forEach(function (formulario) {
 

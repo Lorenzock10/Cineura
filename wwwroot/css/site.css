@@ -336,10 +336,6 @@ body {
     letter-spacing: 2px;
 }
 
-.cineura-subtitulo {
-    color: #9ca3af;
-}
-
 .cineura-buscador {
     background: #1f2937;
     border: 1px solid #374151;
@@ -912,49 +908,7 @@ body {
         color: #FBBF24;
         text-decoration: none;
     }
-    .listas-pagina {
-        max-width: 1100px;
-        margin: 40px auto;
-        padding: 20px;
-        color: white;
-    }
 
-    .listas-pagina h1 {
-        color: #FBBF24;
-        margin-bottom: 25px;
-    }
-
-    .lista-pelicula {
-        background: #1b1b1b;
-        border: 1px solid #333;
-        border-radius: 10px;
-        padding: 18px;
-        margin-bottom: 15px;
-    }
-
-    .lista-pelicula h2 {
-        margin-top: 0;
-    }
-
-    .lista-pelicula a {
-        color: #FBBF24;
-        text-decoration: none;
-    }
-
-    .lista-boton {
-        display: inline-block;
-        background: #FBBF24;
-        color: #111827 !important;
-        padding: 9px 13px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .lista-vacia {
-        color: #cccccc;
-    }
 } 
 
 
@@ -1369,4 +1323,275 @@ body {
     color: #EF4444;
     text-decoration: none;
     font-size: 11px;
+}
+
+/* ENCABEZADO Y PIE DE PÁGINA PARA VISTAS SIN LAYOUT */
+.cineura-header {
+}
+.cineura-header .container-fluid {
+    max-width: 1500px;
+}
+.cineura-logo-header img {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
+}
+.cineura-header .cineura-btn-header-login {
+    background: #FBBF24;
+    border: 2px solid #FBBF24;
+    color: #111827;
+    font-weight: bold;
+    padding: 10px 18px;
+}
+.cineura-header .cineura-btn-header-login:hover {
+    background: transparent;
+    color: #FBBF24;
+}
+.cineura-header .cineura-btn-header-registro {
+    background: transparent;
+    border: 2px solid #EF4444;
+    color: #EF4444;
+    font-weight: bold;
+    padding: 10px 18px;
+}
+.cineura-header .cineura-btn-header-registro:hover {
+    background: #EF4444;
+    color: #FFFFFF;
+}
+.cineura-footer {
+    margin-top: 40px;
+    border-top: 1px solid #374151;
+    color: #9CA3AF;
+}
+@media (max-width: 768px) {
+    .cineura-header {
+        padding: 15px;
+    }
+    .cineura-logo-header img {
+        height: 75px;
+    }
+}
+/* =========================================
+   HEADER ORIGINAL DE CINEURA
+   ========================================= */
+
+.cineura-header {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    background-color: rgba(17, 24, 39, 0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #374151;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    padding: 15px 30px;
+    box-sizing: border-box;
+}
+
+.cineura-header-contenido {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.cineura-header .cineura-logo img {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
+}
+
+.cineura-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cineura-nav-links a {
+    display: inline-block;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.cineura-nav-links a:hover {
+    color: #FBBF24;
+    background-color: rgba(251, 191, 36, 0.08);
+}
+
+.cineura-sesion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.cineura-saludo {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.cineura-btn-cerrar-sesion {
+    display: inline-block;
+    padding: 10px 18px;
+    border: 2px solid #EF4444;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #EF4444 !important;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.cineura-btn-cerrar-sesion:hover {
+    background-color: #EF4444;
+    color: #FFFFFF !important;
+}
+
+/* Botones para usuarios sin sesión */
+
+.cineura-header .cineura-btn-header-login {
+    display: inline-block;
+    padding: 10px 18px;
+    border: 2px solid #FBBF24;
+    border-radius: 8px;
+    background-color: #FBBF24;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.cineura-header .cineura-btn-header-login:hover {
+    background-color: transparent;
+    color: #FFFFFF !important;
+}
+
+.cineura-header .cineura-btn-header-registro {
+    display: inline-block;
+    padding: 10px 18px;
+    border: 2px solid #EF4444;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #EF4444 !important;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.cineura-header .cineura-btn-header-registro:hover {
+    background-color: #EF4444;
+    color: #FFFFFF !important;
+}
+
+/* Contenido y footer */
+
+.cineura-contenido {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cineura-footer {
+    margin-top: 40px;
+    padding: 20px;
+    text-align: center;
+    color: #9CA3AF;
+    border-top: 1px solid #374151;
+}
+
+/* Adaptación a celulares */
+
+@media (max-width: 768px) {
+    .cineura-header {
+        padding: 15px;
+    }
+
+    .cineura-header-contenido {
+        justify-content: center;
+    }
+
+    .cineura-header .cineura-logo img {
+        height: 75px;
+    }
+
+    .cineura-nav-links {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .cineura-sesion {
+        flex: 1;
+        justify-content: flex-end;
+    }
+}
+/* NAVEGACIÓN DEL HEADER */
+
+.cineura-header .cineura-nav-links,
+.cineura-header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cineura-header .cineura-nav-links a,
+.cineura-header nav a {
+    display: inline-block;
+    color: #FFFFFF !important;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none !important;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: transparent;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.cineura-header .cineura-nav-links a:hover,
+.cineura-header nav a:hover {
+    color: #FBBF24 !important;
+    background-color: rgba(251, 191, 36, 0.08);
+}
+
+/* SALUDO DEL USUARIO */
+
+.cineura-header .cineura-saludo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #FFFFFF !important;
+    font-weight: 700;
+}
+
+.cineura-header .cineura-saludo a {
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+}
+
+/* BOTÓN CERRAR SESIÓN */
+
+.cineura-header a.cineura-btn-cerrar-sesion {
+    display: inline-block;
+    background-color: transparent !important;
+    border: 2px solid #EF4444 !important;
+    color: #EF4444 !important;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: 0.3s;
+}
+
+.cineura-header a.cineura-btn-cerrar-sesion:hover {
+    background-color: #EF4444 !important;
+    color: #FFFFFF !important;
 }

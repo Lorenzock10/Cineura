@@ -1,69 +1,99 @@
 @{
+    Layout = null;
     ViewData["Title"] = "Iniciar sesión | Cineura";
 }
 
-<div class="cineura-cuenta">
-    <div class="cuenta-contenedor">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
 
-        <div class="cuenta-logo text-center mb-3">
-            <img src="~/imagenes/logo_c.jpg" alt="Cineura" style="max-width: 180px; height: auto;" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="cineura-header">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <a asp-controller="Home" asp-action="Index" class="cineura-logo-header" aria-label="Cineura - Inicio">
+                <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+            </a>
+            <nav class="d-flex align-items-center gap-2" aria-label="Navegación principal">
+                <a asp-controller="Home" asp-action="Index" class="btn cineura-btn-header-login">Inicio</a>
+                <a asp-controller="Home" asp-action="Registrarse" class="btn cineura-btn-header-registro">Crear cuenta</a>
+            </nav>
         </div>
-        <p class="cuenta-subtitulo">Tu próxima película empieza acá.</p>
+    </header>
 
-        <div class="cuenta-panel">
-            <h1>¡Qué bueno verte!</h1>
-            <p class="cuenta-descripcion">
-                Iniciá sesión para seguir descubriendo películas.
-            </p>
+    <main class="cineura-cuenta">
+        <div class="cuenta-contenedor">
+            <div class="cuenta-logo text-center mb-3">
+                <img src="~/imagenes/logo_c.jpg" alt="Cineura" style="max-width: 180px; height: auto;" />
+            </div>
+            <p class="cuenta-subtitulo">Tu próxima película empieza acá.</p>
 
-            @if (ViewBag.Error != null)
-            {
-                <div class="cuenta-error">
-                    @ViewBag.Error
+            <div class="cuenta-panel">
+                <h1>¡Qué bueno verte!</h1>
+                <p class="cuenta-descripcion">
+                    Iniciá sesión para seguir descubriendo películas.
+                </p>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="cuenta-error" role="alert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form method="post" action="@Url.Action("Login", "Home")">
+                    <div class="mb-3">
+                        <label for="usuario" class="cuenta-label">
+                            Nombre de usuario
+                        </label>
+                        <input type="text"
+                               class="form-control cuenta-input"
+                               id="usuario"
+                               name="usuario"
+                               placeholder="Tu nombre de usuario"
+                               autocomplete="username"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="contrasena" class="cuenta-label">
+                            Contraseña
+                        </label>
+                        <input type="password"
+                               class="form-control cuenta-input"
+                               id="contrasena"
+                               name="contrasena"
+                               placeholder="Tu contraseña"
+                               autocomplete="current-password"
+                               required />
+                    </div>
+
+                    <button type="submit" class="cuenta-boton">
+                        Iniciar sesión
+                    </button>
+                </form>
+
+                <div class="cuenta-pie">
+                    ¿Todavía no tenés una cuenta?
+                    <a href="@Url.Action("Registrarse", "Home")" class="cuenta-enlace">
+                        Registrate
+                    </a>
                 </div>
-            }
-
-            <form method="post" action="@Url.Action("Login", "Home")">
-                <div class="mb-3">
-                    <label for="usuario" class="cuenta-label">
-                        Nombre de usuario
-                    </label>
-
-                    <input type="text"
-                           class="form-control cuenta-input"
-                           id="usuario"
-                           name="usuario"
-                           placeholder="Tu nombre de usuario"
-                           autocomplete="username"
-                           required />
-                </div>
-
-                <div class="mb-3">
-                    <label for="contrasena" class="cuenta-label">
-                        Contraseña
-                    </label>
-
-                    <input type="password"
-                           class="form-control cuenta-input"
-                           id="contrasena"
-                           name="contrasena"
-                           placeholder="Tu contraseña"
-                           autocomplete="current-password"
-                           required />
-                </div>
-
-                <button type="submit" class="cuenta-boton">
-                    Iniciar sesión
-                </button>
-            </form>
-
-            <div class="cuenta-pie">
-                ¿Todavía no tenés una cuenta?
-                <a href="@Url.Action("Registrarse", "Home")"
-                   class="cuenta-enlace">
-                    Registrate
-                </a>
             </div>
         </div>
-    </div>
-</div>
+    </main>
+
+    <footer class="cineura-footer">
+        &copy; 2026 - Cineura
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

@@ -877,10 +877,6 @@
     transition: color 0.2s, transform 0.2s;
 }
 
-.cine-estrella:hover {
-    transform: scale(1.15);
-}
-
 .cine-estrella.activa {
     color: #fbbf24;
 }
@@ -953,8 +949,6 @@
     padding: 25px;
     background: #111827;
     border: 1px solid rgba(251, 191, 36, 0.2);
-    border-radius: 18px;
-    color: white;
 }
 
 .cine-reviews-titulo {
@@ -991,21 +985,13 @@
 }
 
 .cine-review-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
     margin-top: 15px;
 }
 
 .cine-review-form textarea {
-    width: 100%;
     min-height: 100px;
-    padding: 14px;
     background: #1f2937;
-    color: white;
     border: 1px solid #374151;
-    border-radius: 10px;
-    resize: vertical;
 }
 
 /* LISTA DE REVIEWS */
@@ -1021,8 +1007,6 @@
 }
 
 .cine-review-encabezado {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 15px;
 }
@@ -1054,7 +1038,6 @@
 
 .cine-review-texto {
     margin: 15px 0 5px;
-    white-space: pre-wrap;
     overflow-wrap: anywhere;
     line-height: 1.6;
 }

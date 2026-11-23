@@ -1,81 +1,116 @@
 @{
+    Layout = null;
     ViewData["Title"] = "Registrarse | Cineura";
 }
 
-<div class="cineura-cuenta">
-    <div class="cuenta-contenedor">
-
-        <div class="cuenta-logo text-center mb-3">
-            <img src="~/imagenes/logo_c.jpg" alt="Cineura" style="max-width: 180px; height: auto;" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="cineura-header">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <a asp-controller="Home" asp-action="Index" class="cineura-logo-header">
+                <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+            </a>
+            <nav class="d-flex align-items-center gap-2" aria-label="Navegación principal">
+                <a asp-controller="Home" asp-action="Login" class="btn cineura-btn-header-login">Iniciar sesión</a>
+                <a asp-controller="Home" asp-action="Registrarse" class="btn cineura-btn-header-registro">Crear cuenta</a>
+            </nav>
         </div>
-        <p class="cuenta-subtitulo">Tu próxima película empieza acá.</p>
+    </header>
 
-        <div class="cuenta-panel">
-            <h1>Crear una cuenta</h1>
-            <p class="cuenta-descripcion">
-                Unite a Cineura y empezá a descubrir películas para vos.
-            </p>
+    <main role="main">
+        <div class="cineura-cuenta">
+            <div class="cuenta-contenedor">
 
-            @if (ViewBag.Error != null)
-            {
-                <div class="cuenta-error">@ViewBag.Error</div>
-            }
-
-            <form id="registroForm"
-                  method="post"
-                  action="@Url.Action("Registrarse", "Home")">
-
-                <div class="mb-3">
-                    <label for="nombre" class="cuenta-label">Nombre</label>
-                    <input type="text"
-                           class="form-control cuenta-input"
-                           id="nombre"
-                           name="nombre"
-                           placeholder="Tu nombre"
-                           required />
+                <div class="cuenta-logo text-center mb-3">
+                    <img src="~/imagenes/logo_c.jpg" alt="Cineura" style="max-width: 180px; height: auto;" />
                 </div>
+                <p class="cuenta-subtitulo">Tu próxima película empieza acá.</p>
 
-                <div class="mb-3">
-                    <label for="apellido" class="cuenta-label">Apellido</label>
-                    <input type="text"
-                           class="form-control cuenta-input"
-                           id="apellido"
-                           name="apellido"
-                           placeholder="Tu apellido"
-                           required />
+                <div class="cuenta-panel">
+                    <h1>Crear una cuenta</h1>
+                    <p class="cuenta-descripcion">
+                        Unite a Cineura y empezá a descubrir películas para vos.
+                    </p>
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="cuenta-error">@ViewBag.Error</div>
+                    }
+
+                    <form id="registroForm"
+                          method="post"
+                          action="@Url.Action("Registrarse", "Home")">
+
+                        <div class="mb-3">
+                            <label for="nombre" class="cuenta-label">Nombre</label>
+                            <input type="text"
+                                   class="form-control cuenta-input"
+                                   id="nombre"
+                                   name="nombre"
+                                   placeholder="Tu nombre"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="apellido" class="cuenta-label">Apellido</label>
+                            <input type="text"
+                                   class="form-control cuenta-input"
+                                   id="apellido"
+                                   name="apellido"
+                                   placeholder="Tu apellido"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="usuario" class="cuenta-label">Nombre de usuario</label>
+                            <input type="text"
+                                   class="form-control cuenta-input"
+                                   id="usuario"
+                                   name="usuario"
+                                   placeholder="Elegí un usuario"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contrasena" class="cuenta-label">Contraseña</label>
+                            <input type="password"
+                                   class="form-control cuenta-input"
+                                   id="contrasena"
+                                   name="contrasena"
+                                   placeholder="Mínimo 6 caracteres"
+                                   required />
+                        </div>
+
+                        <button type="submit" class="cuenta-boton">
+                            Crear mi cuenta
+                        </button>
+                    </form>
+
+                    <div class="cuenta-pie">
+                        ¿Ya tenés una cuenta?
+                        <a href="@Url.Action("Login", "Home")" class="cuenta-enlace">
+                            Iniciá sesión
+                        </a>
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <label for="usuario" class="cuenta-label">Nombre de usuario</label>
-                    <input type="text"
-                           class="form-control cuenta-input"
-                           id="usuario"
-                           name="usuario"
-                           placeholder="Elegí un usuario"
-                           required />
-                </div>
-
-                <div class="mb-3">
-                    <label for="contrasena" class="cuenta-label">Contraseña</label>
-                    <input type="password"
-                           class="form-control cuenta-input"
-                           id="contrasena"
-                           name="contrasena"
-                           placeholder="Mínimo 6 caracteres"
-                           required />
-                </div>
-
-                <button type="submit" class="cuenta-boton">
-                    Crear mi cuenta
-                </button>
-            </form>
-
-            <div class="cuenta-pie">
-                ¿Ya tenés una cuenta?
-                <a href="@Url.Action("Login", "Home")" class="cuenta-enlace">
-                    Iniciá sesión
-                </a>
             </div>
         </div>
-    </div>
-</div>
+    </main>
+
+    <footer class="cineura-footer">
+        &copy; 2026 - Cineura
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

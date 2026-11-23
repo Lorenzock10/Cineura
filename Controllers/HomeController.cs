@@ -436,7 +436,7 @@ public IActionResult BuscarPeliculas(string busqueda)
             ViewBag.ActoresFrecuentes = ObtenerCincoMasFrecuentes(conteoActores);
             ViewBag.DirectoresFrecuentes = ObtenerCincoMasFrecuentes(conteoDirectores);
 
-            string gustosGuardados = HttpContext.Session.GetString("gustosAdn") ?? "";
+            string gustosGuardados = bd.ObtenerGustosAdn(idUsuario);
             ViewBag.GustosAdn = gustosGuardados;
 
             return View();
@@ -467,13 +467,36 @@ public IActionResult BuscarPeliculas(string busqueda)
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult GuardarAdn(string gustosAdn)
         {
-            if (!string.IsNullOrWhiteSpace(gustosAdn))
+            string usuario = HttpContext.Session.GetString("usuario");
+            if (string.IsNullOrEmpty(usuario))
             {
-                HttpContext.Session.SetString("gustosAdn", gustosAdn.Trim());
-                TempData["Mensaje"] = "¡ADN cinematográfico actualizado!";
+                return RedirectToAction("Login");
             }
+
+            if (string.IsNullOrWhiteSpace(gustosAdn))
+            {
+                TempData["ErrorAdn"] = "Escribí tus gustos antes de guardarlos.";
+                return RedirectToAction("Perfil");
+            }
+
+            if (gustosAdn.Length > 2000)
+            {
+                TempData["ErrorAdn"] = "Las preferencias no pueden superar los 2000 caracteres.";
+                return RedirectToAction("Perfil");
+            }
+
+            BD bd = new BD();
+            int idUsuario = bd.ObtenerIdUsuario(usuario);
+            if (idUsuario == 0)
+            {
+                return RedirectToAction("Login");
+            }
+
+            bd.GuardarGustosAdn(idUsuario, gustosAdn.Trim());
+            TempData["Mensaje"] = "¡ADN cinematográfico actualizado!";
             return RedirectToAction("Perfil");
         }
 

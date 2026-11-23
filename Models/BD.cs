@@ -757,5 +757,23 @@ public void CompletarCuestionario(int idUsuario)
     }
 }
 
+
+        public string ObtenerGustosAdn(int idUsuario)
+        {
+            string query = "SELECT GustosAdn FROM Usuarios WHERE IdUsuario = @idUsuario";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                return connection.QueryFirstOrDefault<string>(query, new { idUsuario }) ?? "";
+            }
+        }
+
+        public void GuardarGustosAdn(int idUsuario, string gustosAdn)
+        {
+            string query = "UPDATE Usuarios SET GustosAdn = @gustosAdn WHERE IdUsuario = @idUsuario";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(query, new { idUsuario, gustosAdn });
+            }
+        }
     }
 }
