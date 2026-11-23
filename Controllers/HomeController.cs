@@ -32,16 +32,21 @@ List<Peliculas> peliculas;
 
 if (string.IsNullOrEmpty(usuarioActual))
 {
-    // LANDING: mantiene las tendencias originales
     peliculas = bd.ObtenerPeliculasTendencia();
 }
 else
 {
-    // HOME: elige 4 películas aleatorias de la base de datos
-    peliculas = bd.ObtenerPeliculas()
-        .OrderBy(p => Random.Shared.Next())
-        .Take(4)
-        .ToList();
+    List<Peliculas> todas = bd.ObtenerPeliculas();
+    Random aleatorio = new Random();
+    peliculas = new List<Peliculas>();
+
+    // Elegir hasta cuatro películas sin repetir.
+    while (peliculas.Count < 4 && todas.Count > 0)
+    {
+        int posicion = aleatorio.Next(todas.Count);
+        peliculas.Add(todas[posicion]);
+        todas.RemoveAt(posicion);
+    }
 }
 
 ViewBag.PeliculasTendencia = peliculas;
@@ -187,17 +192,17 @@ public IActionResult BuscarPeliculas(string busqueda)
     {
         BD bd = new BD();
 
-        var etiquetas = bd.ObtenerTodasLasEtiquetas();
+        List<EtiquetasPelicula> etiquetas = bd.ObtenerTodasLasEtiquetas();
+        List<string> tematicas = new List<string>();
+        List<string> emociones = new List<string>();
 
-        var tematicas = etiquetas
-            .Where(e => e.Tipo == "Tematica")
-            .Select(e => e.Nombre)
-            .ToList();
-
-        var emociones = etiquetas
-            .Where(e => e.Tipo == "Emocion")
-            .Select(e => e.Nombre)
-            .ToList();
+        foreach (EtiquetasPelicula etiqueta in etiquetas)
+        {
+            if (etiqueta.Tipo == "Tematica")
+                tematicas.Add(etiqueta.Nombre);
+            else if (etiqueta.Tipo == "Emocion")
+                emociones.Add(etiqueta.Nombre);
+        }
 
         string respuestaIA = _buscadorIA.InterpretarBusqueda(
             busqueda, tematicas, emociones);
@@ -224,26 +229,47 @@ public IActionResult BuscarPeliculas(string busqueda)
             duracionMaxima = minutos;
 
         // Aceptar solamente etiquetas que existan realmente en SQL.
-        tematica = tematicas.FirstOrDefault(x =>
-            string.Equals(x, tematica, StringComparison.OrdinalIgnoreCase));
+        // Comprobar que Nova devolvió etiquetas existentes.
+        string tematicaValida = null;
+        string emocionValida = null;
 
-        emocion = emociones.FirstOrDefault(x =>
-            string.Equals(x, emocion, StringComparison.OrdinalIgnoreCase));
+        foreach (string nombre in tematicas)
+        {
+            if (string.Equals(nombre, tematica, StringComparison.OrdinalIgnoreCase))
+            {
+                tematicaValida = nombre;
+                break;
+            }
+        }
+        foreach (string nombre in emociones)
+        {
+            if (string.Equals(nombre, emocion, StringComparison.OrdinalIgnoreCase))
+            {
+                emocionValida = nombre;
+                break;
+            }
+        }
+        tematica = tematicaValida;
+        emocion = emocionValida;
 
         List<Peliculas> peliculas = bd.BuscarPeliculasPorEtiquetas(
             tematica, emocion, duracionMaxima);
 
-        var resultados = peliculas.Select(p => new
+        List<object> resultados = new List<object>();
+        foreach (Peliculas pelicula in peliculas)
         {
-            p.IdPelicula,
-            p.Titulo,
-            p.Sinopsis,
-            p.Genero,
-            p.Animo,
-            p.DuracionMinutos,
-            p.Anio,
-            p.PosterUrl
-        }).ToList();
+            resultados.Add(new
+            {
+                pelicula.IdPelicula,
+                pelicula.Titulo,
+                pelicula.Sinopsis,
+                pelicula.Genero,
+                pelicula.Animo,
+                pelicula.DuracionMinutos,
+                pelicula.Anio,
+                pelicula.PosterUrl
+            });
+        }
 
         return Json(resultados);
     }
@@ -375,7 +401,7 @@ public IActionResult BuscarPeliculas(string busqueda)
             Dictionary<string, int> conteoActores = new Dictionary<string, int>();
             Dictionary<string, int> conteoDirectores = new Dictionary<string, int>();
 
-            foreach (var peli in misFavoritas)
+            foreach (Peliculas peli in misFavoritas)
             {
                 // Conteo de Directores
                 if (peli.IdDirector > 0)
@@ -407,13 +433,37 @@ public IActionResult BuscarPeliculas(string busqueda)
                 }
             }
 
-            ViewBag.ActoresFrecuentes = conteoActores.OrderByDescending(x => x.Value).Take(5).ToList();
-            ViewBag.DirectoresFrecuentes = conteoDirectores.OrderByDescending(x => x.Value).Take(5).ToList();
+            ViewBag.ActoresFrecuentes = ObtenerCincoMasFrecuentes(conteoActores);
+            ViewBag.DirectoresFrecuentes = ObtenerCincoMasFrecuentes(conteoDirectores);
 
             string gustosGuardados = HttpContext.Session.GetString("gustosAdn") ?? "";
             ViewBag.GustosAdn = gustosGuardados;
 
             return View();
+        }
+
+        // Devolver los cinco nombres con mayor cantidad, sin LINQ.
+        private List<KeyValuePair<string, int>> ObtenerCincoMasFrecuentes(Dictionary<string, int> conteos)
+        {
+            List<KeyValuePair<string, int>> resultado = new List<KeyValuePair<string, int>>();
+            Dictionary<string, int> pendientes = new Dictionary<string, int>(conteos);
+
+            while (resultado.Count < 5 && pendientes.Count > 0)
+            {
+                string nombreMayor = "";
+                int cantidadMayor = -1;
+                foreach (KeyValuePair<string, int> dato in pendientes)
+                {
+                    if (dato.Value > cantidadMayor)
+                    {
+                        nombreMayor = dato.Key;
+                        cantidadMayor = dato.Value;
+                    }
+                }
+                resultado.Add(new KeyValuePair<string, int>(nombreMayor, cantidadMayor));
+                pendientes.Remove(nombreMayor);
+            }
+            return resultado;
         }
 
         [HttpPost]
@@ -590,16 +640,16 @@ public IActionResult GuardarCuestionario(
         TempData["Error"] = "Respondé todas las preguntas.";
         return RedirectToAction("Cuestionario");
     }
-    foreach (string genero in generos.Distinct())
+    foreach (string genero in new HashSet<string>(generos))
     {
         bd.GuardarPreferencia(idUsuario, 1, genero);
     }
-    foreach (string historia in historias.Distinct())
+    foreach (string historia in new HashSet<string>(historias))
     {
         bd.GuardarPreferencia(idUsuario, 2, historia);
     }
     bd.GuardarPreferencia(idUsuario, 3, compania);
-    foreach (string emocion in emociones.Distinct())
+    foreach (string emocion in new HashSet<string>(emociones))
     {
         bd.GuardarPreferencia(idUsuario, 4, emocion);
     }
@@ -669,11 +719,14 @@ public IActionResult CuestionarioFinal()
                 bd.AgregarFavorito(idUsuario, idPelicula);
             }
             bool nuevoEstado = !estabaAgregado;
+            string mensaje = "Quitada de Favoritas.";
+            if (nuevoEstado)
+                mensaje = "Añadida a Favoritas.";
             return Json(new
             {
                 ok = true,
                 esFavorito = nuevoEstado,
-                message = nuevoEstado ? "Añadida a Favoritas." : "Quitada de Favoritas."
+                message = mensaje
             });
         }
 
@@ -711,11 +764,14 @@ public IActionResult CuestionarioFinal()
                 bd.AgregarWatchlist(idUsuario, idPelicula);
             }
             bool nuevoEstado = !estabaAgregado;
+            string mensaje = "Quitada de Watchlist.";
+            if (nuevoEstado)
+                mensaje = "Añadida a Watchlist.";
             return Json(new
             {
                 ok = true,
                 estaEnWatchlist = nuevoEstado,
-                message = nuevoEstado ? "Añadida a Watchlist." : "Quitada de Watchlist."
+                message = mensaje
             });
         }
 

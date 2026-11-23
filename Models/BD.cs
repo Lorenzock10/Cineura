@@ -1,4 +1,3 @@
-using BCrypt.Net;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -7,7 +6,7 @@ namespace Cineura.Models
     public class BD
     {
         private string _connectionString =
-            @"Server=localhost;Database=Cineura;Integrated Security=True;TrustServerCertificate=True;";
+            @"Server=localhost\SQLEXPRESS;Database=Cineura;Integrated Security=True;TrustServerCertificate=True;";
 
         public void AgregarUsuario(Usuarios usuario)
         {
@@ -21,25 +20,46 @@ namespace Cineura.Models
             }
         }
 
+        
+        // Busca un usuario y comprueba su contraseña.
+        // Si todavía tiene una contraseña antigua, la convierte a BCrypt.
         public Usuarios ObtenerUsuario(string nombreUsuario, string contrasena)
         {
-            string query = @"
-                SELECT TOP 1 *
-                FROM Usuarios
-                WHERE NombreUsuario = @nombreUsuario";
+            string query = @"SELECT TOP 1 * FROM Usuarios WHERE NombreUsuario = @nombreUsuario";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 Usuarios usuario = connection.QueryFirstOrDefault<Usuarios>(query, new { nombreUsuario });
 
-                if (usuario == null)
+                if (usuario == null || usuario.Contraseña == null)
+                {
                     return null;
+                }
 
-                if (BCrypt.Net.BCrypt.Verify(contrasena, usuario.Contraseña))
-                    return usuario;
+                bool estaEncriptada = usuario.Contraseña.StartsWith("$2a$") ||
+                                     usuario.Contraseña.StartsWith("$2b$") ||
+                                     usuario.Contraseña.StartsWith("$2y$");
 
-                if (string.Equals(usuario.Contraseña, contrasena, StringComparison.Ordinal))
-                    return usuario;
+                if (estaEncriptada)
+                {
+                    if (BCrypt.Net.BCrypt.Verify(contrasena, usuario.Contraseña))
+                    {
+                        return usuario;
+                    }
+                }
+                else
+                {
+                    if (usuario.Contraseña == contrasena)
+                    {
+                        string contraseñaEncriptada = BCrypt.Net.BCrypt.HashPassword(contrasena);
+                        string actualizar = @"UPDATE Usuarios
+                                              SET Contraseña = @contraseñaEncriptada
+                                              WHERE IdUsuario = @id";
+
+                        connection.Execute(actualizar, new { contraseñaEncriptada, id = usuario.IdUsuario });
+                        return usuario;
+                    }
+                }
 
                 return null;
             }

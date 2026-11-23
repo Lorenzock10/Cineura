@@ -1203,6 +1203,9 @@ body {
     color: #FBBF24;
     margin-bottom: 12px;
 }
+.cine-cuestionario-estrella img {
+    width: 55%;
+}
 
 .cine-cuestionario-tarjeta h2 {
     font-size: 22px;
