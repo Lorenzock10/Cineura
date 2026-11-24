@@ -1,51 +1,75 @@
-/* CINEURA - PERFIL | Estilos limitados a la pantalla de perfil */
+/* CINEURA - PERFIL */
 
+/* CONTENEDOR PRINCIPAL */
+body{
+    width: 96%;
+}
 .perfil-container {
-    --bg-dark: #0a0e17;
-    --card-bg: #121824;
-    --card-border: #1e293b;
-    --accent-yellow: #f59e0b;
-    --accent-blue: #00d2ff;
-    --text-white: #ffffff;
-    --text-gray: #94a3b8;
+    width: 100%;
     max-width: 1300px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 2%;
     display: flex;
     flex-direction: column;
     gap: 32px;
-    background-color: var(--bg-dark);
-    color: var(--text-white);
+    background-color: #0a0e17;
+    color: #ffffff;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+
+/* SECCION SUPERIOR */
+
 .perfil-container .profile-header-grid {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1.2fr;
-    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5%;
 }
 
 .perfil-container .user-card-main,
 .perfil-container .stats-card,
-.perfil-container .adn-card,
+.perfil-container .adn-card {
+    background-color: #121824;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 2%;
+    min-width: 0;
+}
+
 .perfil-container .user-card-main {
+    width: 38%;
     display: flex;
     gap: 16px;
     align-items: center;
 }
+
+.perfil-container .stats-card {
+    width: 27%;
+}
+
+.perfil-container .adn-card {
+    width: 32%;
+}
+
+
+/* INFORMACION DEL USUARIO */
 
 .perfil-container .avatar-circle {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 3px solid var(--accent-yellow);
+    border: 3px solid #f59e0b;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
     font-weight: bold;
-    color: var(--accent-yellow);
+    color: #f59e0b;
     flex-shrink: 0;
+}
+
+.perfil-container .user-info {
+    min-width: 0;
 }
 
 .perfil-container .user-info h2 {
@@ -55,13 +79,14 @@
 
 .perfil-container .user-handle {
     font-size: 13px;
-    color: var(--text-gray);
+    color: #94a3b8;
     display: block;
     margin-bottom: 8px;
 }
 
 .perfil-container .user-badges {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 8px;
 }
@@ -86,15 +111,19 @@
 
 .perfil-container .user-bio {
     font-size: 12px;
-    color: var(--text-gray);
+    color: #94a3b8;
     margin: 0;
 }
+
+
+/* ESTADISTICAS */
 
 .perfil-container .stats-card {
     display: flex;
     justify-content: space-around;
     align-items: center;
     text-align: center;
+    gap: 8px;
 }
 
 .perfil-container .stat-item {
@@ -104,14 +133,14 @@
 
 .perfil-container .stat-title {
     font-size: 11px;
-    color: var(--text-gray);
+    color: #94a3b8;
     letter-spacing: 1px;
 }
 
 .perfil-container .stat-number {
     font-size: 28px;
     font-weight: bold;
-    color: var(--text-white);
+    color: #ffffff;
     margin: 4px 0;
 }
 
@@ -123,19 +152,24 @@
 .perfil-container .stat-divider {
     width: 1px;
     height: 50px;
-    background-color: var(--card-border);
+    background-color: #1e293b;
 }
+
+
+/* ADN CINEMATOGRAFICO */
 
 .perfil-container .adn-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 8px;
 }
 
 .perfil-container .adn-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .perfil-container .adn-header h3 {
@@ -154,15 +188,15 @@
 
 .perfil-container .adn-desc {
     font-size: 11px;
-    color: var(--text-gray);
-    margin: 6px 0 12px;
+    color: #94a3b8;
+    margin: 2% 0 3%;
 }
 
 .perfil-container .adn-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 3%;
 }
 
 .perfil-container .tag {
@@ -173,39 +207,76 @@
     color: #cbd5e1;
 }
 
+.perfil-container .perfil-adn-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+}
+
+.perfil-container .perfil-adn-textarea {
+    width: 100%;
+    min-height: 90px;
+    background: #0f172a;
+    color: #ffffff;
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    padding: 3%;
+    font-size: 12px;
+    resize: none;
+}
+
+.perfil-container .perfil-adn-textarea:focus {
+    border-color: #f59e0b;
+    outline: 1px solid #f59e0b;
+}
+
 .perfil-container .btn-adjust {
-    background-color: var(--accent-yellow);
-    color: #000;
+    width: 100%;
+    background-color: #f59e0b;
+    color: #000000;
     border: none;
-    padding: 8px;
+    padding: 10px;
     border-radius: 6px;
     font-weight: bold;
     font-size: 12px;
     cursor: pointer;
 }
 
+.perfil-container .btn-adjust:hover {
+    background-color: #d97706;
+}
+
+
+/* SECCIONES GENERALES */
+
 .perfil-container .section-block {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
+    width: 100%;
+    background-color: #121824;
+    border: 1px solid #1e293b;
     border-radius: 12px;
     padding: 20px;
 }
 
 .perfil-container .section-title {
     font-size: 13px;
-    color: var(--text-white);
+    color: #ffffff;
     letter-spacing: 0.5px;
     margin-top: 0;
     margin-bottom: 16px;
 }
 
+
+/* PELICULAS FAVORITAS */
+
 .perfil-container .movies-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 1.5%;
 }
 
 .perfil-container .movie-card {
+    width: 18.8%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -213,6 +284,7 @@
 }
 
 .perfil-container .poster-wrapper {
+    width: 100%;
     border-radius: 8px;
     overflow: hidden;
     height: 220px;
@@ -227,26 +299,50 @@
 
 .perfil-container .movie-card h4 {
     font-size: 13px;
-    margin: 0;
+    margin: 6px 0 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .perfil-container .stars {
-    color: var(--accent-yellow);
+    color: #f59e0b;
     font-size: 12px;
 }
 
+.perfil-container .perfil-pelicula-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.perfil-container .perfil-poster-sin-imagen {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 11px;
+    padding: 6px;
+}
+
+.perfil-container .perfil-pelicula-titulo {
+    margin-top: 6px;
+}
+
+
+/* ACTORES Y DIRECTORES FRECUENTES */
+
 .perfil-container .people-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 1%;
 }
 
 .perfil-container .person-chip {
+    width: 19.2%;
     background-color: #0f172a;
-    border: 1px solid var(--card-border);
+    border: 1px solid #1e293b;
     border-radius: 8px;
     padding: 8px;
     display: flex;
@@ -275,18 +371,22 @@
 
 .perfil-container .chip-info span {
     font-size: 10px;
-    color: var(--text-gray);
+    color: #94a3b8;
 }
 
+
+/* SECCIONES INFERIORES */
+
 .perfil-container .bottom-three-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5%;
 }
 
 .perfil-container .sub-block {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
+    width: 32.33%;
+    background-color: #121824;
+    border: 1px solid #1e293b;
     border-radius: 12px;
     padding: 16px;
     min-width: 0;
@@ -300,15 +400,20 @@
 
 .perfil-container .link-see-all {
     font-size: 10px;
-    color: var(--accent-yellow);
+    color: #f59e0b;
     text-decoration: none;
 }
 
-.perfil-container .mini-movie-item, .perfil-container .friend-item, .perfil-container .activity-item {
+
+/* RECOMENDACIONES, AMIGOS Y ACTIVIDAD */
+
+.perfil-container .mini-movie-item,
+.perfil-container .friend-item,
+.perfil-container .activity-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 12px;
+    margin-top: 3%;
     padding: 8px;
     background-color: #0f172a;
     border-radius: 6px;
@@ -327,14 +432,16 @@
     flex-shrink: 0;
 }
 
-.perfil-container .mini-details strong, .perfil-container .friend-info strong {
+.perfil-container .mini-details strong,
+.perfil-container .friend-info strong {
     display: block;
     font-size: 12px;
 }
 
-.perfil-container .mini-details span, .perfil-container .friend-info span {
+.perfil-container .mini-details span,
+.perfil-container .friend-info span {
     font-size: 10px;
-    color: var(--text-gray);
+    color: #94a3b8;
 }
 
 .perfil-container .match-text {
@@ -363,81 +470,8 @@
     margin-left: auto;
 }
 
-@media (max-width: 1050px) {
-    .perfil-container .profile-header-grid {
-        grid-template-columns: 1fr 1fr;
-    }
 
-    .perfil-container .adn-card {
-        grid-column: 1 / -1;
-    }
-
-    .perfil-container .movies-grid, .perfil-container .people-row {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 700px) {
-    .perfil-container {
-        padding: 16px;
-        gap: 20px;
-    }
-
-    .perfil-container .profile-header-grid, .perfil-container .bottom-three-columns {
-        grid-template-columns: 1fr;
-    }
-
-    .perfil-container .adn-card {
-        grid-column: auto;
-    }
-
-    .perfil-container .movies-grid, .perfil-container .people-row {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .perfil-container .poster-wrapper {
-        height: auto;
-        aspect-ratio: 2 / 3;
-    }
-}
-
-/* Estilos trasladados desde Perfil.cshtml */
-
-.perfil-container .perfil-adn-form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.perfil-container .perfil-adn-textarea {
-    width: 100%;
-    background: #0f172a;
-    color: #fff;
-    border: 1px solid #1e293b;
-    border-radius: 6px;
-    padding: 8px;
-    font-size: 12px;
-    resize: none;
-}
-
-.perfil-container .perfil-pelicula-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-.perfil-container .perfil-poster-sin-imagen {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 11px;
-    padding: 6px;
-}
-
-.perfil-container .perfil-pelicula-titulo {
-    margin-top: 6px;
-}
+/* TEXTOS INFORMATIVOS */
 
 .perfil-container .perfil-texto-vacio {
     color: #94a3b8;
@@ -453,4 +487,87 @@
 
 .perfil-container .perfil-margen-superior {
     margin-top: 10px;
+}
+
+
+/* ADAPTACION A TABLETS */
+
+@media (max-width: 1050px) {
+
+    .perfil-container .profile-header-grid {
+        gap: 16px 2%;
+    }
+
+    .perfil-container .user-card-main {
+        width: 49%;
+    }
+
+    .perfil-container .stats-card {
+        width: 49%;
+    }
+
+    .perfil-container .adn-card {
+        width: 100%;
+    }
+
+    .perfil-container .movie-card {
+        width: 32%;
+    }
+
+    .perfil-container .person-chip {
+        width: 32%;
+    }
+}
+
+
+/* ADAPTACION A CELULARES */
+
+@media (max-width: 700px) {
+
+    .perfil-container {
+        padding: 4%;
+        gap: 20px;
+    }
+
+    .perfil-container .profile-header-grid {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .perfil-container .user-card-main,
+    .perfil-container .stats-card,
+    .perfil-container .adn-card {
+        width: 100%;
+        padding: 4%;
+    }
+
+    .perfil-container .stats-card {
+        min-height: 110px;
+    }
+
+    .perfil-container .bottom-three-columns {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .perfil-container .sub-block {
+        width: 100%;
+    }
+
+    .perfil-container .movie-card {
+        width: 49%;
+    }
+
+    .perfil-container .person-chip {
+        width: 49%;
+    }
+
+    .perfil-container .poster-wrapper {
+        height: auto;
+        aspect-ratio: 2 / 3;
+    }
+
+    .perfil-container .section-block {
+        padding: 4%;
+    }
 }
