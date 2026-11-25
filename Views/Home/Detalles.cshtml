@@ -101,9 +101,11 @@
 
     <div class="cine-detalle-contenedor">
 
-    <a href="/Explorador/Index" class="cine-volver">
-        <span aria-hidden="true">←</span>
-        Volver
+    <a href="/Explorador/Index"
+        class="cine-volver"
+        onclick="return volverPantallaAnterior();">
+            <span aria-hidden="true">←</span>
+            Volver
     </a>
 
         @if (TempData["Mensaje"] != null)

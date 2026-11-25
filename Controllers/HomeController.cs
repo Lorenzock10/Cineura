@@ -439,6 +439,9 @@ public IActionResult BuscarPeliculas(string busqueda)
             string gustosGuardados = bd.ObtenerGustosAdn(idUsuario);
             ViewBag.GustosAdn = gustosGuardados;
 
+            List<Peliculas> recomendadas = bd.ObtenerRecomendacionesPerfil(idUsuario);
+            ViewBag.Recomendadas = recomendadas;
+
             return View();
         }
 

@@ -848,3 +848,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
+
+// CARRUSELES DEL PERFIL
+ document.addEventListener("DOMContentLoaded", function () {
+    const carruseles = document.querySelectorAll(".perfil-carrusel");
+
+    carruseles.forEach(function (carrusel) {
+        const peliculas = carrusel.querySelector(".movies-grid");
+        const anterior = carrusel.querySelector(".perfil-anterior");
+        const siguiente = carrusel.querySelector(".perfil-siguiente");
+
+        function actualizarFlechas() {
+            anterior.disabled = peliculas.scrollLeft <= 1;
+            siguiente.disabled = peliculas.scrollLeft + peliculas.clientWidth >= peliculas.scrollWidth - 1;
+        }
+
+        function mover(direccion) {
+            const tarjetas = peliculas.querySelectorAll(".movie-card");
+            if (tarjetas.length < 2) return;
+            const distancia = tarjetas[1].offsetLeft - tarjetas[0].offsetLeft;
+            peliculas.scrollBy({ left: distancia * direccion, behavior: "smooth" });
+        }
+
+        anterior.addEventListener("click", function () { mover(-1); });
+        siguiente.addEventListener("click", function () { mover(1); });
+        peliculas.addEventListener("scroll", actualizarFlechas);
+        window.addEventListener("resize", actualizarFlechas);
+        actualizarFlechas();
+    });
+});
+// VOLVER A LA PANTALLA ANTERIOR DESDE DETALLES
+
+function volverPantallaAnterior() {
+
+    if (document.referrer &&
+        new URL(document.referrer).origin === window.location.origin &&
+        !new URL(document.referrer).pathname.toLowerCase().includes("/home/detalles")) {
+
+        window.history.back();
+        return false;
+    }
+
+    return true;
+}

@@ -775,5 +775,100 @@ public void CompletarCuestionario(int idUsuario)
                 connection.Execute(query, new { idUsuario, gustosAdn });
             }
         }
+        public List<Peliculas> ObtenerRecomendacionesPerfil(int idUsuario)
+{
+    List<string> generos = ObtenerPreferencias(idUsuario, 1);
+    List<string> historias = ObtenerPreferencias(idUsuario, 2);
+    List<string> emociones = ObtenerPreferencias(idUsuario, 4);
+
+    List<Peliculas> peliculas = ObtenerPeliculas();
+    List<Peliculas> recomendadas = new List<Peliculas>();
+
+    Dictionary<Peliculas, int> puntuaciones =
+        new Dictionary<Peliculas, int>();
+
+    foreach (Peliculas pelicula in peliculas)
+    {
+        int puntos = 0;
+
+        string genero = pelicula.Genero ?? "";
+        string animo = pelicula.Animo ?? "";
+
+        foreach (string preferencia in generos)
+        {
+            if (genero.ToLower().Contains(preferencia.ToLower()))
+            {
+                puntos += 3;
+            }
+        }
+
+        foreach (string historia in historias)
+        {
+            if (historia == "Que me hagan pensar" && animo == "Reflexivo")
+                puntos += 2;
+
+            if (historia == "Que me emocionen" && animo == "Emotivo")
+                puntos += 2;
+
+            if (historia == "Que me hagan reír" && animo == "Divertido")
+                puntos += 2;
+
+            if (historia == "Con misterio" && animo == "Intrigante")
+                puntos += 2;
+
+            if (historia == "Que me sorprendan" && animo == "Emocionante")
+                puntos += 2;
+
+            if (historia == "Con mucha tensión" && animo == "Intenso")
+                puntos += 2;
+        }
+
+        foreach (string emocion in emociones)
+        {
+            if (emocion == "Adrenalina" && animo == "Intenso")
+                puntos += 2;
+
+            if (emocion == "Tranquilidad" && animo == "Reflexivo")
+                puntos += 2;
+
+            if (emocion == "Emoción" && animo == "Emotivo")
+                puntos += 2;
+
+            if (emocion == "Intriga" && animo == "Intrigante")
+                puntos += 2;
+
+            if (emocion == "Inspiración" && animo == "Inspirador")
+                puntos += 2;
+
+            if (emocion == "Desconectar" && animo == "Divertido")
+                puntos += 2;
+        }
+
+        if (puntos > 0)
+        {
+            puntuaciones.Add(pelicula, puntos);
+        }
+    }
+
+    while (recomendadas.Count < 5 && puntuaciones.Count > 0)
+    {
+        Peliculas mejorPelicula = null;
+        int mayorPuntuacion = -1;
+
+        foreach (KeyValuePair<Peliculas, int> dato in puntuaciones)
+        {
+            if (dato.Value > mayorPuntuacion)
+            {
+                mejorPelicula = dato.Key;
+                mayorPuntuacion = dato.Value;
+            }
+        }
+
+        recomendadas.Add(mejorPelicula);
+        puntuaciones.Remove(mejorPelicula);
+    }
+
+    return recomendadas;
+}
     }
 }

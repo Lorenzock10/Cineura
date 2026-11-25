@@ -13,6 +13,7 @@
     if (string.IsNullOrEmpty(iniciales)) iniciales = "U";
 
     List<Peliculas> misFavoritas = ViewBag.MisFavoritas as List<Peliculas> ?? new List<Peliculas>();
+    List<Peliculas> recomendadas = ViewBag.Recomendadas as List<Peliculas> ?? new List<Peliculas>();
     int cantidadFavoritas = ViewBag.CantidadFavoritas ?? 0;
     string gustosAdn = ViewBag.GustosAdn ?? "";
 
@@ -108,31 +109,77 @@
                     </form>
                 </div>
             </section>
+                <!-- PELÍCULAS RECOMENDADAS -->
+            <section class="section-block">
+                <h3 class="section-title">✦ RECOMENDADAS PARA VOS</h3>
 
+                <p class="perfil-texto-informativo">
+                    Películas seleccionadas según tus gustos cinematográficos.
+                </p>
+
+                @if (recomendadas.Count > 0)
+                {
+                    <div class="perfil-carrusel">
+                        <button type="button" class="perfil-flecha perfil-anterior" aria-label="Anterior" aria-controls="carrusel-recomendadas" disabled>‹</button>
+                        <div class="movies-grid" id="carrusel-recomendadas" tabindex="0" aria-label="Películas recomendadas">
+                            @foreach (Peliculas peli in recomendadas)
+                            {
+                                <div class="movie-card">
+                                    <a href="@Url.Action("Detalles", "Home", new { id = peli.IdPelicula })" class="perfil-pelicula-link">
+    
+                                        <div class="poster-wrapper">
+                                            @if (!string.IsNullOrEmpty(peli.PosterUrl))
+                                            {
+                                                <img src="@peli.PosterUrl" alt="@peli.Titulo" />
+                                            }
+                                            else
+                                            {
+                                                <div class="perfil-poster-sin-imagen">
+                                                    @peli.Titulo
+                                                </div>
+                                            }
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <button type="button" class="perfil-flecha perfil-siguiente" aria-label="Siguiente" aria-controls="carrusel-recomendadas">›</button>
+                    </div>
+                }
+                else
+                {
+                    <p class="perfil-texto-vacio">
+                        Todavía no encontramos películas que coincidan con tus preferencias.
+                    </p>
+                }
+            </section>
             <!-- 2. MIS PELÍCULAS FAVORITAS -->
             <section class="section-block">
                 <h3 class="section-title"><span class="icon-heart">❤️</span> MIS PELÍCULAS FAVORITAS</h3>
                 @if (misFavoritas.Count > 0)
                 {
-                    <div class="movies-grid">
-                        @foreach (Peliculas peli in misFavoritas)
-                        {
-                            <div class="movie-card">
-                                <a href="@Url.Action("Detalles", "Home", new { id = peli.IdPelicula })" class="perfil-pelicula-link">
-                                    <div class="poster-wrapper">
-                                        @if (!string.IsNullOrEmpty(peli.PosterUrl))
-                                        {
-                                            <img src="@peli.PosterUrl" alt="@peli.Titulo" />
-                                        }
-                                        else
-                                        {
-                                            <div class="perfil-poster-sin-imagen">@peli.Titulo</div>
-                                        }
-                                    </div>
-                                    <h4 class="perfil-pelicula-titulo">@peli.Titulo</h4>
-                                </a>
-                            </div>
-                        }
+                    <div class="perfil-carrusel">
+                        <button type="button" class="perfil-flecha perfil-anterior" aria-label="Anterior" aria-controls="carrusel-favoritas" disabled>‹</button>
+                        <div class="movies-grid" id="carrusel-favoritas" tabindex="0" aria-label="Películas favoritas">
+                            @foreach (Peliculas peli in misFavoritas)
+                            {
+                                <div class="movie-card">
+                                    <a href="@Url.Action("Detalles", "Home", new { id = peli.IdPelicula })" class="perfil-pelicula-link">
+                                        <div class="poster-wrapper">
+                                            @if (!string.IsNullOrEmpty(peli.PosterUrl))
+                                            {
+                                                <img src="@peli.PosterUrl" alt="@peli.Titulo" />
+                                            }
+                                            else
+                                            {
+                                                <div class="perfil-poster-sin-imagen">@peli.Titulo</div>
+                                            }
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <button type="button" class="perfil-flecha perfil-siguiente" aria-label="Siguiente" aria-controls="carrusel-favoritas">›</button>
                     </div>
                 }
                 else
@@ -187,22 +234,6 @@
                     <p class="perfil-texto-vacio">Agregá películas a tus favoritas para calcular tus directores más frecuentes.</p>
                 }
             </section>
-
-            <!-- 4. BLOQUE INFERIOR -->
-            <div class="bottom-three-columns">
-                <div class="sub-block">
-                    <h3 class="section-title">✦ Recomendaciones del día</h3>
-                    <p class="perfil-texto-informativo">Completá tu ADN cinematográfico para recibir recomendaciones personalizadas.</p>
-                </div>
-                <div class="sub-block">
-                    <div class="sub-header"><h3 class="section-title">👥 Tus amigos</h3></div>
-                    <p class="perfil-texto-informativo perfil-margen-superior">No hay amigos agregados todavía.</p>
-                </div>
-                <div class="sub-block">
-                    <h3 class="section-title">📑 Actividad reciente</h3>
-                    <p class="perfil-texto-informativo perfil-margen-superior">No hay actividad reciente.</p>
-                </div>
-            </div>
         </div>
     </main>
 
