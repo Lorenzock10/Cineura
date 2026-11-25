@@ -29,56 +29,39 @@
 <body>
 
     <!-- HEADER -->
-    <header class="cineura-header">
-        <div class="cineura-header-contenido">
+        <header class="cineura-header sticky-top">
+            <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-3">
 
-            <div class="cineura-logo">
-                <a href="@Url.Action("Index", "Home")">
+                <a href="@Url.Action("Index", "Home")"
+                class="cineura-logo-header">
                     <img src="~/imagenes/cineura.jpg" alt="Cineura" />
                 </a>
-            </div>
 
-            @if (!string.IsNullOrEmpty(usuarioSesion))
-            {
-                <nav class="cineura-nav-links" aria-label="Navegación principal">
+                <nav class="d-flex align-items-center gap-2 flex-wrap"
+                    aria-label="Navegación principal">
+
                     <a href="@Url.Action("Index", "Home")">Inicio</a>
                     <a href="@Url.Action("Index", "Explorador")">Explorador</a>
                     <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
                     <a href="@Url.Action("Perfil", "Home")">Perfil</a>
-                </nav>
-            }
 
-            <div class="cineura-sesion">
-                @if (!string.IsNullOrEmpty(usuarioSesion))
-                {
+                </nav>
+
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+
                     <span class="cineura-saludo">
-                        <a href="@Url.Action("Perfil", "Home")"
-                           style="color: inherit; text-decoration: none;">
-                            Hola, @nombreSesion
-                        </a>
+                        Hola, @Context.Session.GetString("nombre")
                     </span>
 
-                    <a href="@Url.Action("CerrarSesion", "Home")"
-                       class="cineura-btn-cerrar-sesion">
+                    <a class="btn cineura-btn-cerrar-sesion"
+                    href="@Url.Action("CerrarSesion", "Home")">
                         Cerrar sesión
                     </a>
-                }
-                else
-                {
-                    <a href="@Url.Action("Login", "Home")"
-                       class="cineura-btn-header-login">
-                        Iniciar sesión
-                    </a>
 
-                    <a href="@Url.Action("Registrarse", "Home")"
-                       class="cineura-btn-header-registro">
-                        Crear cuenta
-                    </a>
-                }
+                </div>
+
             </div>
-
-        </div>
-    </header>
+        </header>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main role="main" class="cineura-contenido">

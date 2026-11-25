@@ -1,7 +1,8 @@
+
 /* PAGINA PRINCIPAL */
 
 .cineura-pagina {
-    background: #111827;
+    background-color: #111827;
     color: #ffffff;
     min-height: 85vh;
     padding: 4% 0 6%;
@@ -13,7 +14,6 @@
     margin: 0 auto;
     padding: 0 2%;
 }
-
 
 /* PRESENTACION */
 
@@ -46,7 +46,6 @@
     color: #9ca3af;
 }
 
-
 /* BUSCADOR DE INTELIGENCIA ARTIFICIAL */
 
 .cineura-buscador-box {
@@ -54,7 +53,7 @@
     max-width: 820px;
     margin: 3% auto 0;
     padding: 2%;
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 16px;
     box-shadow: 0 10px 25px #0d1320;
@@ -63,15 +62,16 @@
 .buscador-input-group {
     display: flex;
     align-items: stretch;
-    gap: 12px;
+    gap: 1.5%;
 }
 
 .cineura-input-hero {
     flex: 1;
+    min-width: 0;
     min-height: 90px;
     padding: 2%;
     resize: vertical;
-    background: #111827;
+    background-color: #111827;
     color: #ffffff;
     border: 1px solid #4b5563;
     border-radius: 10px;
@@ -80,34 +80,29 @@
 }
 
 .cineura-input-hero:focus {
-    background: #111827;
-    color: #ffffff;
     border-color: #fbbf24;
     outline: 1px solid #fbbf24;
 }
 
-.cineura-input-hero::placeholder {
-    color: #9ca3af;
-}
-
 .cineura-boton-ia {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 14px 22px;
-    background: #dc2626;
+    gap: 5%;
+    padding: 2% 3%;
+    background-color: #dc2626;
     color: #ffffff;
     border: none;
     border-radius: 10px;
     font-size: 13px;
     font-weight: 800;
     text-align: center;
+    white-space: nowrap;
     cursor: pointer;
 }
 
 .cineura-boton-ia:hover {
-    background: #b91c1c;
+    background-color: #b91c1c;
     color: #ffffff;
 }
 
@@ -115,7 +110,6 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
-
 
 /* FILTROS RAPIDOS */
 
@@ -128,7 +122,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 7px;
+    gap: 1%;
 }
 
 .tag-label {
@@ -136,23 +130,25 @@
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 1px;
-    margin-right: 8px;
+    margin-right: 1%;
 }
 
 .btn-tag {
     display: inline-block;
-    padding: 7px 12px;
-    background: #111827;
+    padding: 0.9% 1.5%;
+    margin-bottom: 1%;
+    background-color: #111827;
     color: #d1d5db;
     border: 1px solid #374151;
     border-radius: 20px;
     font-size: 12px;
     cursor: pointer;
     text-align: center;
+    white-space: nowrap;
 }
 
 .btn-tag:hover {
-    background: #263244;
+    background-color: #263244;
     color: #fbbf24;
     border-color: #fbbf24;
 }
@@ -168,21 +164,20 @@
     margin: 2% auto;
 }
 
-
 /* RECOMENDACION DE NOVA */
 
 .cineura-recomendacion {
     display: none;
     margin-top: 3%;
     overflow: hidden;
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 18px;
     box-shadow: 0 10px 25px #0d1320;
 }
 
 #zonaPoster {
-    background: #111827;
+    background-color: #111827;
 }
 
 .cineura-poster {
@@ -192,7 +187,7 @@
     min-height: 420px;
     max-height: 580px;
     object-fit: cover;
-    background: #111827;
+    background-color: #111827;
 }
 
 .cineura-poster-vacio {
@@ -203,7 +198,7 @@
     min-height: 420px;
     height: 100%;
     padding: 8%;
-    background: #321c28;
+    background-color: #321c28;
     text-align: center;
 }
 
@@ -213,7 +208,6 @@
     font-weight: 900;
     letter-spacing: 2px;
 }
-
 
 /* INFORMACION DE LA PELICULA */
 
@@ -246,23 +240,23 @@
 
 .cineura-etiqueta {
     display: inline-block;
-    margin: 0 6px 8px 0;
-    padding: 6px 12px;
-    background: #382c39;
+    margin: 0 1% 1.5% 0;
+    padding: 1% 2%;
+    background-color: #382c39;
     color: #fca5a5;
     border: 1px solid #53303a;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 700;
+    white-space: nowrap;
 }
-
 
 /* MOTIVO DE LA RECOMENDACION */
 
 .cineura-motivo {
     margin-top: 4%;
     padding: 3%;
-    background: #263244;
+    background-color: #263244;
     border-left: 4px solid #fbbf24;
     border-radius: 8px;
 }
@@ -281,13 +275,13 @@
     margin-bottom: 0;
 }
 
-
 /* BOTONES SECUNDARIOS */
 
 .cineura-boton-secundario {
     display: inline-block;
-    padding: 12px 18px;
-    background: transparent;
+    min-height: 44px;
+    padding: 2% 3%;
+    background-color: transparent;
     color: #ffffff;
     border: 1px solid #6b7280;
     border-radius: 10px;
@@ -295,14 +289,14 @@
     font-weight: 700;
     cursor: pointer;
     text-align: center;
+    white-space: nowrap;
 }
 
 .cineura-boton-secundario:hover {
     color: #fbbf24;
     border-color: #fbbf24;
-    background: #303037;
+    background-color: #303037;
 }
-
 
 /* SECCION DE TENDENCIAS */
 
@@ -314,21 +308,21 @@
 
 .cineura-badge-neural {
     display: inline-block;
-    padding: 6px 13px;
-    background: #1f2937;
+    padding: 0.5% 1%;
+    background-color: #1f2937;
     color: #fbbf24;
     border: 1px solid #374151;
     border-radius: 20px;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 1px;
+    white-space: nowrap;
 }
 
 .seccion-tendencias h2 {
     color: #ffffff;
     font-weight: 800;
 }
-
 
 /* TARJETAS DE PELICULAS */
 
@@ -337,7 +331,7 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 14px;
 }
@@ -351,7 +345,7 @@
     width: 100%;
     height: 310px;
     overflow: hidden;
-    background: #111827;
+    background-color: #111827;
 }
 
 .card-poster-img {
@@ -385,19 +379,21 @@
 .card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 3%;
     margin-bottom: 5%;
 }
 
 .mini-tag {
     display: inline-block;
-    padding: 5px 8px;
-    background: #111827;
+    padding: 2.5% 4%;
+    margin-bottom: 3%;
+    background-color: #111827;
     color: #fbbf24;
     border: 1px solid #374151;
     border-radius: 5px;
     font-size: 10px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .card-sinopsis {
@@ -409,15 +405,14 @@
     margin-bottom: 7%;
 }
 
-
 /* BOTON VER DETALLE */
 
 .card-info .explorador-detalle {
     display: block;
     width: 100%;
     margin-top: auto;
-    padding: 12px 15px;
-    background: #ef4444;
+    padding: 6% 7%;
+    background-color: #ef4444;
     color: #ffffff !important;
     border: 1px solid #ef4444;
     border-radius: 7px;
@@ -426,16 +421,16 @@
     letter-spacing: 1px;
     text-decoration: none;
     text-align: center;
+    white-space: nowrap;
 }
 
 .card-info .explorador-detalle:hover {
-    background: #b91c1c;
+    background-color: #b91c1c;
     border-color: #b91c1c;
     color: #ffffff !important;
 }
 
-
-/* ADAPTACION A TABLETS */
+/* TABLETS */
 
 @media (max-width: 991px) {
 
@@ -460,8 +455,7 @@
     }
 }
 
-
-/* ADAPTACION A CELULARES */
+/* CELULARES */
 
 @media (max-width: 767px) {
 
@@ -497,6 +491,8 @@
 
     .cineura-boton-ia {
         width: 100%;
+        margin-top: 2%;
+        padding: 4%;
     }
 
     .cineura-detalle {
@@ -515,10 +511,13 @@
     .card-poster-wrap {
         height: 340px;
     }
+
+    .cineura-boton-secundario {
+        padding: 3% 4%;
+    }
 }
 
-
-/* ADAPTACION A CELULARES PEQUENOS */
+/* CELULARES PEQUENOS */
 
 @media (max-width: 480px) {
 
@@ -528,12 +527,12 @@
     }
 
     .grupo-tags {
-        gap: 6px;
+        gap: 1.5%;
     }
 
     .btn-tag {
         font-size: 11px;
-        padding: 6px 10px;
+        padding: 1.5% 2.5%;
     }
 
     .card-poster-wrap {

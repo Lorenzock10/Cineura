@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 html {
@@ -20,7 +19,7 @@ html {
 
 body {
     margin: 0;
-    background: #111827;
+    background-color: #111827;
     color: #f9fafb;
     font-family: "Manrope", "Segoe UI", sans-serif;
 }
@@ -74,10 +73,10 @@ body {
 /* INICIAR SESIÓN Y CREAR CUENTA */
 
 .cineura-cuenta {
-    background: #111827;
+    background-color: #111827;
     color: #f9fafb;
     min-height: 85vh;
-    padding: 45px 3%;
+    padding: 3.52% 3%;
 }
 
 .cuenta-contenedor {
@@ -98,54 +97,50 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 8px;
-}
-
-.cuenta-logo img {
-    width: 86px;
+    margin-bottom: 1.9%;
 }
 
 .cuenta-subtitulo {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 6.67%;
 }
 
 .cuenta-panel {
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 15px;
-    padding: 28px;
+    padding: 6.67%;
 }
 
 .cuenta-panel h1 {
     font-size: 27px;
-    margin-bottom: 8px;
+    margin-bottom: 1.9%;
     color: #ffffff;
 }
 
 .cuenta-descripcion {
-    margin-bottom: 25px;
+    margin-bottom: 5.95%;
 }
 
 .cuenta-label {
     display: block;
-    margin-bottom: 7px;
+    margin-bottom: 1.67%;
     font-weight: 600;
     color: #f3f4f6;
 }
 
 .cuenta-input,
 .cineura-input {
-    background: #111827;
+    background-color: #111827;
     color: #ffffff;
     border: 1px solid #4b5563;
     border-radius: 8px;
-    padding: 11px 12px;
+    padding: 2.62% 2.86%;
 }
 
 .cuenta-input:focus,
 .cineura-input:focus {
-    background: #111827;
+    background-color: #111827;
     color: #ffffff;
     border-color: #fbbf24;
     box-shadow: none;
@@ -159,13 +154,13 @@ body {
 .cuenta-boton {
     display: block;
     width: 100%;
-    background: #ef4444;
+    background-color: #ef4444;
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 12px;
+    padding: 2.86%;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 4.76%;
     text-decoration: none;
     text-align: center;
 
@@ -173,7 +168,7 @@ body {
 }
 
 .cuenta-boton:hover {
-    background: #dc2626;
+    background-color: #dc2626;
     color: #ffffff;
 }
 
@@ -190,16 +185,16 @@ body {
 .cuenta-pie {
     text-align: center;
     color: #9ca3af;
-    margin-top: 22px;
+    margin-top: 5.24%;
 }
 
 .cuenta-error {
-    background: #451a1a;
+    background-color: #451a1a;
     color: #fecaca;
     border: 1px solid #7f1d1d;
     border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 20px;
+    padding: 2.86%;
+    margin-bottom: 4.76%;
 }
 
 /* PÁGINA DE INICIO */
@@ -209,7 +204,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 30px 3%;
+    padding: 2.34% 3%;
     background-color: #111827;
     border-radius: 16px;
 }
@@ -217,7 +212,7 @@ body {
 .cineura-tarjeta {
     width: 100%;
     max-width: 440px;
-    padding: 45px 35px;
+    padding: 10.23% 7.95%;
     text-align: center;
     background-color: #1f2937;
     border: 1px solid #374151;
@@ -228,29 +223,25 @@ body {
 .cineura-logo-mark {
     width: 90px;
     height: 90px;
-    margin: 0 auto 24px;
+    margin: 0 auto 5.45%;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: #2d2c27;
+    background-color: #2d2c27;
     border: 1px solid #5c4d26;
-}
-
-.cineura-logo-mark img {
-    width: 68px;
 }
 
 .cineura-titulo {
     font-size: 32px;
     font-weight: bold;
     color: #fbbf24;
-    margin-bottom: 12px;
+    margin-bottom: 2.73%;
 }
 
 .cineura-descripcion {
     font-size: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 2.61%;
     line-height: 1.7;
 }
 
@@ -259,8 +250,8 @@ body {
 .cineura-boton {
     display: block;
     width: 100%;
-    padding: 13px;
-    margin-top: 14px;
+    padding: 1.13%;
+    margin-top: 1.22%;
     border-radius: 10px;
     font-size: 16px;
     font-weight: bold;
@@ -294,7 +285,7 @@ body {
 }
 
 .cineura-pie {
-    margin-top: 28px;
+    margin-top: 6.36%;
     font-size: 12px;
     color: #6b7280;
 }
@@ -302,23 +293,23 @@ body {
 /* PÁGINA DEL BUSCADOR */
 
 .cineura-pagina {
-    background: #111827;
+    background-color: #111827;
     color: #ffffff;
     min-height: 85vh;
-    padding: 35px 0 60px;
+    padding: 3.04% 0 5.22%;
 }
 
 .cineura-contenedor {
     width: 100%;
     max-width: 1150px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 1.74%;
 }
 
 .cineura-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 2.4%;
 }
 
 .cineura-brand-logo {
@@ -339,32 +330,32 @@ body {
 }
 
 .cineura-buscador {
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 16px;
-    padding: 22px;
+    padding: 2.93%;
 }
 
 .cineura-input {
-    background: #111827;
+    background-color: #111827;
     color: #ffffff;
     border: 1px solid #4b5563;
     border-radius: 10px;
-    padding: 14px;
+    padding: 3.33%;
 }
 
 .cineura-buscador .cineura-boton {
-    background: #ef4444;
+    background-color: #ef4444;
     color: #ffffff;
     border: 1px solid #ef4444;
     border-radius: 10px;
-    padding: 13px 22px;
+    padding: 1.73% 2.93%;
     font-weight: bold;
     cursor: pointer;
 }
 
 .cineura-buscador .cineura-boton:hover {
-    background: #dc2626;
+    background-color: #dc2626;
     border-color: #dc2626;
 }
 
@@ -372,11 +363,11 @@ body {
 
 .cineura-recomendacion {
     display: none;
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 18px;
     overflow: hidden;
-    margin-top: 30px;
+    margin-top: 2.61%;
 }
 
 .cineura-poster {
@@ -385,17 +376,17 @@ body {
     height: 100%;
     max-height: 540px;
     object-fit: cover;
-    background: #273244;
+    background-color: #273244;
 }
 
 .cineura-poster-vacio {
     min-height: 400px;
     height: 100%;
-    background: #34202a;
+    background-color: #34202a;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 25px;
+    padding: 7.14%;
     text-align: center;
 }
 
@@ -406,18 +397,18 @@ body {
 }
 
 .cineura-detalle {
-    padding: 30px;
+    padding: 5%;
 }
 
 .cineura-etiqueta {
     display: inline-block;
-    background: #3b2630;
+    background-color: #3b2630;
     color: #fca5a5;
-    padding: 6px 12px;
+    padding: 1% 2%;
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
-    margin: 0 5px 8px 0;
+    margin: 0 0.83% 1.33% 0;
 }
 
 .cineura-datos,
@@ -431,11 +422,11 @@ body {
 }
 
 .cineura-motivo {
-    background: #26303e;
+    background-color: #26303e;
     border-left: 3px solid #fbbf24;
-    padding: 15px;
+    padding: 2.5%;
     border-radius: 7px;
-    margin-top: 20px;
+    margin-top: 3.33%;
 }
 
 .cineura-motivo h3 {
@@ -449,17 +440,17 @@ body {
 }
 
 .cineura-boton-secundario {
-    background: transparent;
+    background-color: transparent;
     color: #ffffff;
     border: 1px solid #6b7280;
     border-radius: 10px;
-    padding: 12px 18px;
+    padding: 2% 3%;
     cursor: pointer;
 }
 
 .cineura-estado {
     color: #fbbf24;
-    margin-top: 20px;
+    margin-top: 1.74%;
 }
 
 /* BOTONES DEL ENCABEZADO */
@@ -467,7 +458,7 @@ body {
 .cineura-btn-header-login {
     color: #fbbf24;
     border: 1px solid #fbbf24;
-    padding: 7px 16px;
+    padding: 1.4% 3.2%;
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
@@ -476,14 +467,14 @@ body {
 }
 
 .cineura-btn-header-login:hover {
-    background: #fbbf24;
+    background-color: #fbbf24;
     color: #111827;
 }
 
 .cineura-btn-header-registro {
-    background: #ef4444;
+    background-color: #ef4444;
     color: #ffffff;
-    padding: 7px 16px;
+    padding: 1.4% 3.2%;
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
@@ -492,7 +483,7 @@ body {
 }
 
 .cineura-btn-header-registro:hover {
-    background: #dc2626;
+    background-color: #dc2626;
     color: #ffffff;
 }
 
@@ -503,9 +494,9 @@ body {
     letter-spacing: 1.5px;
     font-weight: 700;
     color: #9ca3af;
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
-    padding: 5px 14px;
+    padding: 0.43% 1.22%;
     border-radius: 20px;
     display: inline-block;
 }
@@ -514,7 +505,7 @@ body {
     font-size: 2.5rem;
     font-weight: 800;
     color: #ffffff;
-    margin-top: 10px;
+    margin-top: 0.87%;
 }
 
 .hero-subtitulo {
@@ -527,17 +518,17 @@ body {
 
 .cineura-buscador-box {
     max-width: 780px;
-    margin: 25px auto 0;
-    background: #1f2937;
+    margin: 3.33% auto 0;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 16px;
-    padding: 18px;
+    padding: 2.4%;
 }
 
 .buscador-input-group {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 1.6%;
 }
 
 @media (min-width: 768px) {
@@ -548,7 +539,7 @@ body {
 }
 
 .cineura-input-hero {
-    background: #111827;
+    background-color: #111827;
     border: 1px solid #4b5563;
     color: #ffffff;
     border-radius: 10px;
@@ -556,12 +547,12 @@ body {
 }
 
 .cineura-boton-ia {
-    background: #ef4444;
+    background-color: #ef4444;
     color: #ffffff;
     font-weight: 700;
     border: none;
     border-radius: 10px;
-    padding: 14px 22px;
+    padding: 1.87% 2.93%;
     white-space: nowrap;
     cursor: pointer;
 
@@ -582,19 +573,19 @@ body {
 .tag-label {
     color: #6b7280;
     font-weight: 700;
-    margin-right: 6px;
+    margin-right: 0.8%;
     letter-spacing: 0.5px;
 }
 
 .btn-tag {
-    background: #111827;
+    background-color: #111827;
     color: #d1d5db;
     border: 1px solid #374151;
     border-radius: 20px;
-    padding: 3px 12px;
+    padding: 0.4% 1.6%;
     font-size: 12px;
-    margin-right: 5px;
-    margin-bottom: 4px;
+    margin-right: 0.67%;
+    margin-bottom: 0.53%;
     cursor: pointer;
 
 }
@@ -612,7 +603,7 @@ body {
 /* TARJETAS DE PELÍCULAS */
 
 .card-pelicula {
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 14px;
     overflow: hidden;
@@ -630,7 +621,7 @@ body {
 .card-poster-wrap {
     position: relative;
     height: 260px;
-    background: #111827;
+    background-color: #111827;
 }
 
 .card-poster-img {
@@ -645,42 +636,42 @@ body {
     left: 10px;
     font-size: 10px;
     font-weight: 800;
-    padding: 4px 8px;
+    padding: 1.9% 3.81%;
     border-radius: 6px;
     color: #ffffff;
 }
 
 .badge-ranking-purple {
-    background: #7c3aed;
+    background-color: #7c3aed;
 }
 
 .badge-ranking-cyan {
-    background: #0891b2;
+    background-color: #0891b2;
 }
 
 .badge-ranking-gold {
-    background: #d97706;
+    background-color: #d97706;
 }
 
 .badge-ranking-dark {
-    background: #374151;
+    background-color: #374151;
 }
 
 .card-score {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background: #111827;
+    background-color: #111827;
     color: #fbbf24;
     font-weight: 800;
     font-size: 12px;
-    padding: 3px 8px;
+    padding: 1.43% 3.81%;
     border-radius: 6px;
 
 }
 
 .card-info {
-    padding: 15px;
+    padding: 7.14%;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -689,28 +680,28 @@ body {
 .card-meta {
     font-size: 11px;
     color: #9ca3af;
-    margin-bottom: 4px;
+    margin-bottom: 1.9%;
 }
 
 .card-titulo {
     font-size: 16px;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 8px;
+    margin-bottom: 3.81%;
 }
 
 .card-tags {
     display: flex;
-    gap: 4px;
+    gap: 1.9%;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 4.76%;
 }
 
 .mini-tag {
-    background: #111827;
+    background-color: #111827;
     color: #9ca3af;
     font-size: 10px;
-    padding: 2px 6px;
+    padding: 0.95% 2.86%;
     border-radius: 4px;
     border: 1px solid #374151;
 }
@@ -757,19 +748,19 @@ body {
 /* Adaptación a celulares */
 @media (max-width: 767px) {
     .cineura-detalle {
-        padding: 20px;
+        padding: 5.26%;
     }
 
     .cineura-tarjeta {
-        padding: 35px 22px;
+        padding: 9.21% 5.79%;
     }
 
     .cuenta-panel {
-        padding: 22px;
+        padding: 5.79%;
     }
 
     .cineura-contenedor {
-        padding: 0 15px;
+        padding: 0 3.95%;
     }
 
     .cineura-brand img {
@@ -785,22 +776,22 @@ body {
     }
         .listas-pagina {
         max-width: 1100px;
-        margin: 40px auto;
-        padding: 20px;
+        margin: 10.53% auto;
+        padding: 5.26%;
         color: white;
     }
 
     .listas-pagina h1 {
         color: #FBBF24;
-        margin-bottom: 25px;
+        margin-bottom: 6.58%;
     }
 
     .lista-pelicula {
-        background: #1b1b1b;
+        background-color: #1b1b1b;
         border: 1px solid #333;
         border-radius: 10px;
-        padding: 18px;
-        margin-bottom: 15px;
+        padding: 4.74%;
+        margin-bottom: 3.95%;
     }
 
     .lista-pelicula h2 {
@@ -814,9 +805,9 @@ body {
 
     .lista-boton {
         display: inline-block;
-        background: #FBBF24;
+        background-color: #FBBF24;
         color: #111827 !important;
-        padding: 9px 13px;
+        padding: 2.37% 3.42%;
         border: none;
         border-radius: 6px;
         cursor: pointer;
@@ -828,14 +819,14 @@ body {
     }
      .detalles-pagina {
         max-width: 1100px;
-        margin: 40px auto;
-        padding: 25px;
+        margin: 10.53% auto;
+        padding: 6.58%;
         color: white;
     }
 
     .detalles-contenido {
         display: flex;
-        gap: 35px;
+        gap: 9.21%;
         align-items: flex-start;
         flex-wrap: wrap;
     }
@@ -854,30 +845,30 @@ body {
 
     .detalles-info h1 {
         color: #FBBF24;
-        margin-bottom: 15px;
+        margin-bottom: 3.95%;
     }
 
     .detalles-etiquetas {
         display: flex;
-        gap: 10px;
+        gap: 2.63%;
         flex-wrap: wrap;
-        margin: 18px 0;
+        margin: 4.74% 0;
     }
 
     .detalles-etiquetas span {
-        background: #252525;
+        background-color: #252525;
         border: 1px solid #444;
         border-radius: 20px;
-        padding: 7px 12px;
+        padding: 1.84% 3.16%;
     }
 
     .detalles-boton {
         display: inline-block;
-        padding: 11px 16px;
-        margin: 6px 6px 6px 0;
+        padding: 2.89% 4.21%;
+        margin: 1.58% 1.58% 1.58% 0;
         border-radius: 7px;
         border: 1px solid #FBBF24;
-        background: #FBBF24;
+        background-color: #FBBF24;
         color: #111827;
         font-weight: bold;
         text-decoration: none;
@@ -885,12 +876,12 @@ body {
     }
 
     .detalles-boton-secundario {
-        background: transparent;
+        background-color: transparent;
         color: #FBBF24;
     }
 
     .detalles-mensaje {
-        margin: 15px 0;
+        margin: 3.95% 0;
         color: #FBBF24;
     }
 
@@ -901,7 +892,7 @@ body {
 
     .detalles-volver {
         display: inline-block;
-        margin-bottom: 25px;
+        margin-bottom: 6.58%;
         color: #FBBF24;
         text-decoration: none;
     }
@@ -913,25 +904,25 @@ body {
 .listas-pagina {
     width: 94%;
     max-width: 1400px;
-    margin: 45px auto 70px;
+    margin: 3.75% auto 5.83%;
     color: #ffffff;
     min-height: 60vh;
 }
 
 .listas-encabezado {
-    margin-bottom: 32px;
+    margin-bottom: 2.67%;
 }
 
 .listas-encabezado h1 {
     color: #ffffff;
     font-size: 36px;
     font-weight: 800;
-    margin: 0 0 10px;
+    margin: 0 0 0.83%;
 }
 
 .listas-encabezado h1 span {
     color: #FBBF24;
-    margin-right: 8px;
+    margin-right: 0.67%;
 }
 
 .listas-encabezado > p {
@@ -941,9 +932,9 @@ body {
 }
 
 .listas-mensaje {
-    padding: 13px 17px;
-    margin-bottom: 24px;
-    background: #18251f;
+    padding: 1.08% 1.42%;
+    margin-bottom: 2%;
+    background-color: #18251f;
     border: 1px solid #315b43;
     color: #b7f7cd;
     border-radius: 10px;
@@ -954,7 +945,7 @@ body {
 .listas-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 28px 2%;
+    gap: 2.33% 2%;
 }
 
 .listas-poster-tarjeta {
@@ -970,7 +961,7 @@ body {
     aspect-ratio: 2 / 3;
     overflow: hidden;
     border-radius: 12px;
-    background: #1F2937;
+    background-color: #1F2937;
     outline-offset: 4px;
 }
 
@@ -988,7 +979,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 6.32%;
     color: #FBBF24;
 }
 
@@ -1029,17 +1020,17 @@ body {
 }
 
 .listas-quitar-favorita {
-    background: #EF4444;
+    background-color: #EF4444;
 }
 
 .listas-quitar-watchlist {
-    background: #111827;
+    background-color: #111827;
     font-size: 28px;
 }
 
 .listas-quitar:hover {
 
-    background: #B91C1C;
+    background-color: #B91C1C;
 }
 
 /* Estado vacío */
@@ -1049,8 +1040,8 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 65px 20px;
-    background: #151b27;
+    padding: 5.42% 1.67%;
+    background-color: #151b27;
     border: 1px solid #293244;
     border-radius: 16px;
 }
@@ -1061,9 +1052,9 @@ body {
     align-items: center;
     width: 66px;
     height: 66px;
-    margin-bottom: 18px;
+    margin-bottom: 1.5%;
     border-radius: 50%;
-    background: #29251a;
+    background-color: #29251a;
     color: #FBBF24;
     font-size: 32px;
 }
@@ -1072,19 +1063,19 @@ body {
     color: #ffffff;
     font-size: 23px;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 0.83%;
 }
 
 .listas-vacia p {
     color: #9CA3AF;
-    margin-bottom: 22px;
+    margin-bottom: 1.83%;
 }
 
 .listas-explorar {
     display: inline-block;
-    padding: 11px 22px;
+    padding: 0.92% 1.83%;
     border-radius: 8px;
-    background: #FBBF24;
+    background-color: #FBBF24;
     color: #111827;
     font-weight: 700;
     text-decoration: none;
@@ -1092,7 +1083,7 @@ body {
 }
 
 .listas-explorar:hover {
-    background: #F59E0B;
+    background-color: #F59E0B;
     color: #111827;
 
 }
@@ -1102,11 +1093,11 @@ body {
 @media (max-width: 600px) {
     .listas-pagina {
         width: 92%;
-        margin-top: 30px;
+        margin-top: 7.89%;
     }
 
     .listas-grid {
-        gap: 16px 2%;
+        gap: 4.21% 2%;
     }
 
     .listas-form-quitar {
@@ -1125,21 +1116,21 @@ body {
 
 .cine-cuestionario {
     min-height: 85vh;
-    background: #111827;
+    background-color: #111827;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 50px 4%;
+    padding: 3.91% 4%;
     font-family: 'Manrope', sans-serif;
 }
 
 .cine-cuestionario-tarjeta {
     width: 100%;
     max-width: 480px;
-    background: #141e2e;
+    background-color: #141e2e;
     border: 1px solid #253247;
     border-radius: 9px;
-    padding: 35px 26px;
+    padding: 8.33% 6.19%;
     text-align: center;
     color: white;
 }
@@ -1147,7 +1138,7 @@ body {
 .cine-cuestionario-estrella {
     font-size: 38px;
     color: #FBBF24;
-    margin-bottom: 12px;
+    margin-bottom: 2.86%;
 }
 .cine-cuestionario-estrella img {
     width: 55%;
@@ -1156,7 +1147,7 @@ body {
 .cine-cuestionario-tarjeta h2 {
     font-size: 22px;
     font-weight: 800;
-    margin-bottom: 6px;
+    margin-bottom: 1.43%;
 }
 
 .cine-cuestionario-tarjeta > p {
@@ -1167,19 +1158,19 @@ body {
 .cine-cuestionario-progreso {
     display: flex;
     justify-content: center;
-    gap: 6px;
-    margin: 24px 0 18px;
+    gap: 1.43%;
+    margin: 5.71% 0 4.29%;
 }
 
 .cine-cuestionario-progreso span {
     width: 42px;
     height: 3px;
-    background: #334155;
+    background-color: #334155;
     border-radius: 5px;
 }
 
 .cine-cuestionario-progreso span.activo {
-    background: #FBBF24;
+    background-color: #FBBF24;
 }
 
 .cine-pregunta {
@@ -1193,19 +1184,19 @@ body {
 .cine-pregunta h3 {
     font-size: 15px;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 0.95%;
 }
 
 .cine-pregunta p {
     font-size: 11px;
     color: #94a3b8;
-    margin-bottom: 17px;
+    margin-bottom: 4.05%;
 }
 
 .cine-opciones {
     display: flex;
     flex-wrap: wrap;
-    gap: 9px 2%;
+    gap: 2.14% 2%;
     text-align: left;
 }
 
@@ -1213,9 +1204,9 @@ body {
     width: 49%;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px;
-    background: #0d1625;
+    gap: 1.9%;
+    padding: 2.38%;
+    background-color: #0d1625;
     border: 1px solid #29374e;
     border-radius: 5px;
     font-size: 11px;
@@ -1230,7 +1221,7 @@ body {
 
 .cine-opcion:has(input:checked) {
     border-color: #FBBF24;
-    background: #2b2c22;
+    background-color: #2b2c22;
 }
 
 .cine-opcion input {
@@ -1242,36 +1233,36 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 25px;
+    margin-top: 5.95%;
 }
 
 .cine-boton-volver {
     border: none;
-    background: transparent;
+    background-color: transparent;
     color: #94a3b8;
     font-size: 12px;
     cursor: pointer;
 }
 
 .cine-boton-continuar {
-    background: #FBBF24;
+    background-color: #FBBF24;
     color: #111827;
     border: none;
     border-radius: 5px;
-    padding: 11px 30px;
+    padding: 2.62% 7.14%;
     font-size: 12px;
     font-weight: 800;
     cursor: pointer;
 }
 
 .cine-boton-continuar:hover {
-    background: #f59e0b;
+    background-color: #f59e0b;
 }
 
 .cine-cuestionario-error {
     color: #EF4444;
     font-size: 12px;
-    margin-top: 12px;
+    margin-top: 2.86%;
 }
 
 @media (max-width: 480px) {
@@ -1280,7 +1271,7 @@ body {
     }
 
     .cine-cuestionario-tarjeta {
-        padding: 25px 18px;
+        padding: 6.58% 4.74%;
     }
 }
 
@@ -1295,7 +1286,7 @@ body {
 }
 
 .cine-final h2 {
-    margin-bottom: 15px;
+    margin-bottom: 3.57%;
 }
 
 .cine-final p {
@@ -1303,13 +1294,13 @@ body {
     color: #94a3b8;
     font-size: 12px;
     line-height: 1.8;
-    margin-bottom: 22px;
+    margin-bottom: 5.24%;
 }
 
 .cine-final-enlace {
     display: inline-block;
     text-decoration: none;
-    margin-bottom: 15px;
+    margin-bottom: 3.57%;
 }
 
 .cine-final-perfil {
@@ -1329,35 +1320,35 @@ body {
     object-fit: contain;
 }
 .cineura-header .cineura-btn-header-login {
-    background: #FBBF24;
+    background-color: #FBBF24;
     border: 2px solid #FBBF24;
     color: #111827;
     font-weight: bold;
-    padding: 10px 18px;
+    padding: 2% 3.6%;
 }
 .cineura-header .cineura-btn-header-login:hover {
-    background: transparent;
+    background-color: transparent;
     color: #FBBF24;
 }
 .cineura-header .cineura-btn-header-registro {
-    background: transparent;
+    background-color: transparent;
     border: 2px solid #EF4444;
     color: #EF4444;
     font-weight: bold;
-    padding: 10px 18px;
+    padding: 2% 3.6%;
 }
 .cineura-header .cineura-btn-header-registro:hover {
-    background: #EF4444;
+    background-color: #EF4444;
     color: #FFFFFF;
 }
 .cineura-footer {
-    margin-top: 40px;
+    margin-top: 3.48%;
     border-top: 1px solid #374151;
     color: #9CA3AF;
 }
 @media (max-width: 768px) {
     .cineura-header {
-        padding: 15px;
+        padding: 3.95%;
     }
     .cineura-logo-header img {
         height: 75px;
@@ -1376,7 +1367,7 @@ body {
 
     border-bottom: 1px solid #374151;
     box-shadow: 0 2px 10px #171717;
-    padding: 15px 30px;
+    padding: 1.17% 2.34%;
     box-sizing: border-box;
 }
 
@@ -1384,7 +1375,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 4%;
     flex-wrap: wrap;
     max-width: 1500px;
     margin: 0 auto;
@@ -1399,7 +1390,7 @@ body {
 .cineura-nav-links {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 2%;
     flex-wrap: wrap;
 }
 
@@ -1408,7 +1399,7 @@ body {
     color: #FFFFFF;
     text-decoration: none;
     font-weight: bold;
-    padding: 10px 14px;
+    padding: 2% 2.8%;
     border-radius: 8px;
 
 }
@@ -1422,7 +1413,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 2.4%;
     flex-wrap: wrap;
 }
 
@@ -1433,7 +1424,7 @@ body {
 
 .cineura-btn-cerrar-sesion {
     display: inline-block;
-    padding: 10px 18px;
+    padding: 2% 3.6%;
     border: 2px solid #EF4444;
     border-radius: 8px;
     background-color: transparent;
@@ -1452,7 +1443,7 @@ body {
 
 .cineura-header .cineura-btn-header-login {
     display: inline-block;
-    padding: 10px 18px;
+    padding: 2% 3.6%;
     border: 2px solid #FBBF24;
     border-radius: 8px;
     background-color: #FBBF24;
@@ -1469,7 +1460,7 @@ body {
 
 .cineura-header .cineura-btn-header-registro {
     display: inline-block;
-    padding: 10px 18px;
+    padding: 2% 3.6%;
     border: 2px solid #EF4444;
     border-radius: 8px;
     background-color: transparent;
@@ -1492,8 +1483,8 @@ body {
 }
 
 .cineura-footer {
-    margin-top: 40px;
-    padding: 20px;
+    margin-top: 3.48%;
+    padding: 1.74%;
     text-align: center;
     color: #9CA3AF;
     border-top: 1px solid #374151;
@@ -1503,7 +1494,7 @@ body {
 
 @media (max-width: 768px) {
     .cineura-header {
-        padding: 15px;
+        padding: 3.95%;
     }
 
     .cineura-header-contenido {
@@ -1531,7 +1522,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 2%;
     flex-wrap: wrap;
 }
 
@@ -1542,9 +1533,9 @@ body {
     font-size: 15px;
     font-weight: 700;
     text-decoration: none !important;
-    padding: 10px 14px;
+    padding: 2% 2.8%;
     border-radius: 8px;
-    background: transparent;
+    background-color: transparent;
 
 }
 
@@ -1559,7 +1550,7 @@ body {
 .cineura-header .cineura-saludo {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 1.2%;
     color: #FFFFFF !important;
     font-weight: 700;
 }
@@ -1576,7 +1567,7 @@ body {
     background-color: transparent !important;
     border: 2px solid #EF4444 !important;
     color: #EF4444 !important;
-    padding: 10px 18px;
+    padding: 2% 3.6%;
     border-radius: 8px;
     font-weight: 700;
     text-decoration: none !important;
@@ -1600,4 +1591,109 @@ body {
 @media (max-width: 650px) {
     .listas-poster-tarjeta { width: 49%; }
     .listas-encabezado h1 { font-size: 26px; }
+}
+
+/* AJUSTES DE BOTONES Y ETIQUETAS */
+.cineura-header .cineura-btn-header-login,
+.cineura-header .cineura-btn-header-registro,
+.cineura-header a.cineura-btn-cerrar-sesion {
+    min-height: 42px;
+    min-width: 130px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.cineura-header .cineura-nav-links a,
+.cineura-header nav a {
+    white-space: nowrap;
+}
+
+.cineura-etiqueta,
+.btn-tag,
+.mini-tag {
+    white-space: nowrap;
+}
+
+.cine-boton-continuar {
+    min-height: 38px;
+    min-width: 110px;
+    white-space: nowrap;
+}
+
+/* Separacion vertical del buscador en celulares */
+@media (max-width: 767px) {
+    .buscador-input-group {
+        gap: 0;
+    }
+    .buscador-input-group .cineura-boton-ia {
+        margin-top: 2%;
+    }
+}
+/* CORRECCION DEL HEADER */
+
+.cineura-header-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 2%;
+}
+
+.cineura-header .cineura-nav-links,
+.cineura-header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    width: 45%;
+    gap: 2%;
+}
+
+.cineura-header .cineura-nav-links a,
+.cineura-header nav a {
+    padding: 2% 3%;
+    white-space: nowrap;
+}
+
+.cineura-header .cineura-sesion {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    width: 30%;
+    gap: 4%;
+}
+
+.cineura-header .cineura-saludo {
+    white-space: nowrap;
+}
+
+.cineura-header a.cineura-btn-cerrar-sesion {
+    padding: 2.5% 4%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* ADAPTACION A CELULARES */
+
+@media (max-width: 768px) {
+
+    .cineura-header-contenido {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .cineura-header .cineura-nav-links,
+    .cineura-header nav {
+        width: 100%;
+        flex-wrap: wrap;
+        margin: 2% 0;
+    }
+
+    .cineura-header .cineura-sesion {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 2%;
+    }
 }

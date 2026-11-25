@@ -31,26 +31,39 @@
     <link rel="stylesheet" href="~/css/perfil.css" asp-append-version="true" />
 </head>
 <body>
-    <header class="cineura-header">
-        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <a asp-controller="Home" asp-action="Index" class="cineura-logo-header">
-                <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+<header class="cineura-header sticky-top">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-3">
+
+        <a href="@Url.Action("Index", "Home")"
+           class="cineura-logo-header">
+            <img src="~/imagenes/cineura.jpg" alt="Cineura" />
+        </a>
+
+        <nav class="d-flex align-items-center gap-2 flex-wrap"
+             aria-label="Navegación principal">
+
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+            <a href="@Url.Action("Index", "Explorador")">Explorador</a>
+            <a href="@Url.Action("Index", "Watchlist")">Watchlist</a>
+            <a href="@Url.Action("Perfil", "Home")">Perfil</a>
+
+        </nav>
+
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+
+            <span class="cineura-saludo">
+                Hola, @Context.Session.GetString("nombre")
+            </span>
+
+            <a class="btn cineura-btn-cerrar-sesion"
+               href="@Url.Action("CerrarSesion", "Home")">
+                Cerrar sesión
             </a>
-            <nav class="d-flex align-items-center flex-wrap gap-3" aria-label="Navegación principal">
-                <a asp-controller="Home" asp-action="Index">Inicio</a>
-                <a asp-controller="Explorador" asp-action="Index">Explorador</a>
-                <a asp-controller="Watchlist" asp-action="Index">Watchlist</a>
-                <a asp-controller="Home" asp-action="Perfil">Perfil</a>
-            </nav>
-            <div class="d-flex align-items-center flex-wrap gap-2">
-                <span>Hola, @nombreUsuario</span>
-                <a href="@Url.Action("CerrarSesion", "Home")"
-   class="cineura-btn-cerrar-sesion">
-    Cerrar sesión
-</a>
-            </div>
+
         </div>
-    </header>
+
+    </div>
+</header>
 
     <main role="main" class="cineura-contenido">
         <div class="perfil-container">

@@ -1,12 +1,7 @@
-
 /* CINEURA - LANDING PUBLICA */
 .landing-cineura {
-
-
-
-
     color: #fff;
-    background: #0b0e16;
+    background-color: #0b0e16;
     overflow: hidden;
     width: 100%;
 }
@@ -26,16 +21,16 @@
     font-weight: 800;
     letter-spacing: 2px;
     color: #fbbf24;
-    margin-bottom: 20px;
+    margin-bottom: 2%;
 }
 
 .landing-punto {
     display: inline-block;
     width: 8px;
     height: 8px;
-    background: #ef4444;
+    background-color: #ef4444;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: 0.8%;
 }
 
 .landing-cineura h1,
@@ -60,25 +55,25 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 25px;
+    padding: 1.88% 2.94%;
+    min-height: 48px;
+    white-space: nowrap;
     border-radius: 5px;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 1px;
     text-decoration: none;
-
 }
 
 .landing-btn-rojo {
     color: white;
-    background: #ef4444;
+    background-color: #ef4444;
     border: 1px solid #ef4444;
 }
 
 .landing-btn-rojo:hover {
     color: white;
-    background: #b91c1c;
-
+    background-color: #b91c1c;
 }
 
 .landing-btn-outline {
@@ -97,9 +92,9 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 25px;
-    padding: 25px 30px;
-    background: #ef4444;
+    gap: 1.74%;
+    padding: 1.74% 2.08%;
+    background-color: #ef4444;
     color: white;
     font-size: 13px;
     font-weight: 900;
@@ -117,15 +112,15 @@
 
 .landing-tendencias {
     padding: 8% 0;
-    background: #111827;
+    background-color: #111827;
 }
 
 .landing-seccion-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 35px;
-    margin-bottom: 45px;
+    gap: 2.92%;
+    margin-bottom: 3.75%;
 }
 
 .landing-seccion-header h2 {
@@ -147,19 +142,15 @@
 
 .landing-movie-track {
     display: flex;
-    gap: 22px;
+    gap: 1.83%;
     overflow-x: auto;
-    padding: 15px 0 25px;
-
-
-
+    padding: 1.25% 0 2.08%;
 }
 
 .landing-movie-card {
     width: 18%;
     min-width: 210px;
     flex-shrink: 0;
-
 }
 
 .landing-movie-poster {
@@ -168,14 +159,13 @@
     height: 310px;
     overflow: hidden;
     border-radius: 5px;
-    background: #1f2937;
+    background-color: #1f2937;
 }
 
 .landing-movie-poster img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
 }
 
 .landing-movie-overlay {
@@ -188,11 +178,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 4.55%;
     color: white;
-    background: #000000bf;
+    background-color: #000000bf;
     opacity: 0;
-
 }
 
 .landing-movie-overlay span {
@@ -208,10 +197,8 @@
     opacity: 1;
 }
 
-
-
 .landing-movie-info {
-    padding: 16px 2px;
+    padding: 7.27% 0.91%;
 }
 
 .landing-movie-meta {
@@ -220,23 +207,23 @@
 }
 
 .landing-movie-meta span {
-    margin: 0 5px;
+    margin: 0 2.27%;
     color: #ef4444;
 }
 
 .landing-movie-info h3 {
     font-size: 17px;
-    margin: 9px 0;
+    margin: 4.09% 0;
 }
 
 .landing-movie-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 2.78%;
 }
 
 .landing-movie-tags span {
-    padding: 5px 7px;
+    padding: 2.31% 3.24%;
     border: 1px solid #fbbf2459;
     color: #fbbf24;
     font-size: 9px;
@@ -245,10 +232,10 @@
 
 .landing-movie-link {
     display: block;
-    margin-top: 15px;
-    padding: 12px;
+    margin-top: 6.94%;
+    padding: 5.56%;
     text-align: center;
-    background: #ef4444;
+    background-color: #ef4444;
     color: white !important;
     border-radius: 5px;
     font-size: 11px;
@@ -257,7 +244,7 @@
 }
 
 .landing-movie-link:hover {
-    background: #b91c1c;
+    background-color: #b91c1c;
     color: white !important;
 }
 
@@ -266,14 +253,14 @@
     color: #a1a1aa;
     font-size: 10px;
     letter-spacing: 1px;
-    margin-top: 15px;
+    margin-top: 1.25%;
 }
 
 /* PROBLEMA */
 
 .landing-problema {
     padding: 9% 0;
-    background: #f1eee7;
+    background-color: #f1eee7;
     color: #111827;
 }
 
@@ -305,9 +292,9 @@
 
 .landing-problema-frase {
     display: inline-block;
-    margin-top: 20px;
-    padding: 15px 20px;
-    background: #111827;
+    margin-top: 3.64%;
+    padding: 2.73% 3.64%;
+    background-color: #111827;
     color: #fbbf24;
     font-size: 12px;
     font-weight: 900;
@@ -315,12 +302,11 @@
 }
 
 .landing-buscando-card {
-    padding: 30px;
-    background: #111827;
+    padding: 5.45%;
+    background-color: #111827;
     border: 1px solid #374151;
     border-radius: 12px;
     box-shadow: 0 30px 60px #00000033;
-
 }
 
 .landing-buscando-top {
@@ -328,7 +314,7 @@
     justify-content: space-between;
     color: #aaa;
     font-size: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 6.12%;
 }
 
 .landing-loading {
@@ -337,8 +323,8 @@
 
 .landing-buscando-linea {
     height: 10px;
-    margin: 15px 0;
-    background: #374151;
+    margin: 3.06% 0;
+    background-color: #374151;
     border-radius: 10px;
 }
 
@@ -347,16 +333,16 @@
 }
 
 .landing-buscando-error {
-    margin-top: 25px;
-    padding: 15px;
-    background: #ef444421;
+    margin-top: 5.1%;
+    padding: 3.06%;
+    background-color: #ef444421;
     color: #f87171;
     font-weight: 800;
     font-size: 12px;
 }
 
 .landing-buscando-solucion {
-    margin-top: 30px;
+    margin-top: 6.12%;
     text-align: center;
     color: #b91c1c;
     font-size: 12px;
@@ -367,7 +353,7 @@
 
 .landing-ia {
     padding: 10% 0;
-    background: #090b10;
+    background-color: #090b10;
 }
 
 .landing-ia-grid {
@@ -388,14 +374,14 @@
 
 .landing-ia-texto p {
     font-size: 16px;
-    margin-bottom: 30px;
+    margin-bottom: 5.45%;
 }
 
 .landing-ia-window {
     overflow: hidden;
     border: 1px solid #fbbf2466;
     border-radius: 12px;
-    background: #151923;
+    background-color: #151923;
     box-shadow: 0 30px 70px #00000080;
 }
 
@@ -403,31 +389,33 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    padding: 17px 20px;
-    background: #1f2937;
+    gap: 1.82%;
+    padding: 3.09% 3.64%;
+    background-color: #1f2937;
     color: #a1a1aa;
     font-size: 10px;
 }
 
 .landing-window-dots {
     display: flex;
-    gap: 5px;
+    width: 34px;
+    justify-content: space-between;
+    gap: 0;
 }
 
 .landing-window-dots span {
     width: 8px;
     height: 8px;
-    background: #ef4444;
+    background-color: #fbbf24;
     border-radius: 50%;
 }
 
-.landing-window-dots span:nth-child(2) {
-    background: #fbbf24;
+.landing-window-dots span:first-child {
+    background-color: #ef4444;
 }
 
-.landing-window-dots span:nth-child(3) {
-    background: #6b7280;
+.landing-window-dots span:last-child {
+    background-color: #6b7280;
 }
 
 .landing-ia-status {
@@ -435,7 +423,7 @@
 }
 
 .landing-ia-window-content {
-    padding: 30px;
+    padding: 5.45%;
 }
 
 .landing-ia-label {
@@ -445,9 +433,9 @@
 }
 
 .landing-ia-prompt {
-    margin-top: 15px;
-    padding: 20px;
-    background: #090b10;
+    margin-top: 3.06%;
+    padding: 4.08%;
+    background-color: #090b10;
     border: 1px solid #374151;
     border-radius: 7px;
     color: white;
@@ -461,21 +449,21 @@
 .landing-ia-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 15px;
+    gap: 1.63%;
+    margin-top: 3.06%;
 }
 
 .landing-ia-tags span {
-    padding: 7px 9px;
+    padding: 1.43% 1.84%;
     color: #fbbf24;
-    background: #fbbf241a;
+    background-color: #fbbf241a;
     font-size: 10px;
 }
 
 .landing-ia-response {
-    margin-top: 25px;
-    padding: 20px;
-    background: #211b21;
+    margin-top: 5.1%;
+    padding: 4.08%;
+    background-color: #211b21;
     border: 1px solid #ef44444c;
     border-radius: 7px;
 }
@@ -488,8 +476,8 @@
 
 .landing-ia-response-line {
     height: 7px;
-    margin-top: 13px;
-    background: #40343b;
+    margin-top: 2.89%;
+    background-color: #40343b;
     border-radius: 5px;
 }
 
@@ -500,15 +488,15 @@
 .landing-ia-result {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 20px;
-    padding-top: 20px;
+    gap: 2.67%;
+    margin-top: 4.44%;
+    padding-top: 4.44%;
     border-top: 1px solid #493a42;
 }
 
 .landing-ia-result-icon {
-    padding: 12px;
-    background: #ef4444;
+    padding: 2.67%;
+    background-color: #ef4444;
     color: white;
     border-radius: 7px;
 }
@@ -520,7 +508,7 @@
 
 .landing-ia-result small {
     display: block;
-    margin-top: 5px;
+    margin-top: 1.79%;
     color: #a1a1aa;
 }
 
@@ -528,24 +516,25 @@
 
 .landing-experiencia {
     padding: 9% 0;
-    background: #151b29;
+    background-color: #151b29;
 }
 
 .landing-experiencia-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 18px 1.5%;
+    gap: 0 1.5%;
 }
 
 .landing-feature {
     width: 32.33%;
+    margin-bottom: 1.5%;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 280px;
-    padding: 30px;
-    background: #202a3a;
+    padding: 2.5%;
+    background-color: #202a3a;
     border: 1px solid #374151;
     overflow: hidden;
 }
@@ -553,20 +542,20 @@
 .landing-feature.feature-grande {
     width: 66.16%;
     min-height: 360px;
-    background: #ef4444;
+    background-color: #ef4444;
 }
 
 .landing-feature.feature-roja {
-    background: #3b1d2b;
+    background-color: #3b1d2b;
 }
 
 .landing-feature.feature-watchlist {
-    background: #202a3a;
+    background-color: #202a3a;
 }
 
 .landing-feature.feature-comunidad {
     width: 66.16%;
-    background: #29251d;
+    background-color: #29251d;
 }
 
 .landing-feature-numero {
@@ -614,7 +603,7 @@
 
 .landing-pasos {
     padding: 9% 0;
-    background: #fbbf24;
+    background-color: #fbbf24;
     color: #111827;
 }
 
@@ -636,12 +625,12 @@
     display: flex;
     flex-wrap: wrap;
     gap: 3%;
-    margin-top: 70px;
+    margin-top: 5.83%;
 }
 
 .landing-paso {
     width: 31.33%;
-    padding-top: 25px;
+    padding-top: 2.08%;
     border-top: 3px solid #111827;
 }
 
@@ -654,8 +643,8 @@
 .landing-paso-linea {
     width: 50px;
     height: 5px;
-    margin: 20px 0;
-    background: #ef4444;
+    margin: 5.26% 0;
+    background-color: #ef4444;
 }
 
 .landing-paso h3 {
@@ -673,7 +662,7 @@
     position: relative;
     padding: 10% 6% 3%;
     text-align: center;
-    background: #090b10;
+    background-color: #090b10;
     overflow: hidden;
 }
 
@@ -697,12 +686,12 @@
 
 .landing-final p {
     max-width: 580px;
-    margin: 30px auto;
+    margin: 3.33% auto;
     font-size: 17px;
 }
 
 .landing-final-marca {
-    margin-top: 110px;
+    margin-top: 9.17%;
     font-size: 220px;
     font-weight: 900;
     letter-spacing: -10px;
@@ -726,8 +715,8 @@
     position: relative;
     width: 100%;
     min-height: 760px;
-    padding: 0 2% 90px;
-    background: #111827;
+    padding: 0 2% 6.25%;
+    background-color: #111827;
     overflow: hidden;
     display: flex;
     align-items: flex-end;
@@ -804,7 +793,7 @@
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
-    padding-top: 260px;
+    padding-top: 18.84%;
     text-align: center;
 }
 .landing-cineura .landing-hero-content {
@@ -816,7 +805,7 @@
     font-size: 65px;
     line-height: 1.12;
     letter-spacing: -2px;
-    margin: 0 auto 22px;
+    margin: 0 auto 2.59%;
     text-shadow: 0 3px 18px #00000059;
 }
 .landing-cineura .landing-hero h1 span {
@@ -828,9 +817,9 @@
     font-size: 19px;
     line-height: 1.7;
     max-width: 620px;
-    margin: 25px auto 35px;
+    margin: 2.94% auto 4.12%;
     text-align: center;
-    background: none;
+    background-color: none;
     text-shadow: 0 2px 10px #000000b3;
 }
 .landing-cineura .landing-hero-botones {
@@ -838,15 +827,15 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 1.76%;
 }
 .landing-cineura .landing-hero .landing-btn-outline {
-    background: #fbbf24;
+    background-color: #fbbf24;
     color: #ffffff;
     border: 2px solid #fbbf24;
 }
 .landing-cineura .landing-hero .landing-btn-outline:hover {
-    background: #f59e0b;
+    background-color: #f59e0b;
     color: #ffffff;
     border-color: #f59e0b;
 }
@@ -865,78 +854,87 @@
 @media (max-width: 1000px) {
     .landing-problema-grid, .landing-ia-grid {
         flex-direction: column;
-        gap: 40px;
+        gap: 4.71%;
     }
     .landing-problema-grid > *, .landing-ia-grid > * {
         width: 100%;
     }
-    .landing-feature { 
-        width: 49.25%; 
+    .landing-feature {
+        width: 49.25%;
     }
-    .landing-feature.feature-grande, .landing-feature.feature-comunidad { 
-        width: 100%; 
+    .landing-feature.feature-grande, .landing-feature.feature-comunidad {
+        width: 100%;
     }
-    .landing-cineura .landing-hero h1 { 
-        font-size: 48px; 
+    .landing-cineura .landing-hero h1 {
+        font-size: 48px;
     }
-    .landing-seccion-header h2, .landing-problema h2, .landing-ia-texto h2, .landing-pasos h2 { 
-        font-size: 45px; 
+    .landing-seccion-header h2, .landing-problema h2, .landing-ia-texto h2, .landing-pasos h2 {
+        font-size: 45px;
     }
-    .landing-final h2 { 
-        font-size: 60px; 
+    .landing-final h2 {
+        font-size: 60px;
     }
-    .landing-final-marca { 
-        font-size: 130px; 
+    .landing-final-marca {
+        font-size: 130px;
     }
 }
 @media (max-width: 768px) {
-    .landing-cineura .landing-hero { 
-        min-height: 700px; padding: 0 5% 75px; 
+    .landing-cineura .landing-hero {
+        min-height: 700px; padding: 0 5% 10.71%;
     }
-    .landing-cineura .landing-hero-fondos { 
-        width: 100%; height: 490px; 
+    .landing-cineura .landing-hero-fondos {
+        width: 100%; height: 490px;
     }
-    .landing-cineura .landing-hero h1 { 
-        font-size: 40px; letter-spacing: -1px; 
+    .landing-cineura .landing-hero h1 {
+        font-size: 40px; letter-spacing: -1px;
     }
-    .landing-cineura .landing-hero .landing-hero-description { 
-        font-size: 17px; 
+    .landing-cineura .landing-hero .landing-hero-description {
+        font-size: 17px;
     }
 }
 @media (max-width: 650px) {
-    .landing-seccion-numero { 
-        display: none; 
+    .landing-seccion-numero {
+        display: none;
     }
-    .landing-franja { 
-        font-size: 10px; 
+    .landing-franja {
+        font-size: 10px;
     }
-    .landing-tendencias, .landing-problema, .landing-ia, .landing-experiencia, .landing-pasos { 
-        padding: 75px 0; 
+    .landing-tendencias, .landing-problema, .landing-ia, .landing-experiencia, .landing-pasos {
+        padding: 12.5% 0;
     }
-    .landing-feature, .landing-feature.feature-grande, .landing-feature.feature-comunidad, .landing-paso { 
-        width: 100%; 
+    .landing-feature, .landing-feature.feature-grande, .landing-feature.feature-comunidad, .landing-paso {
+        width: 100%;
     }
-    .landing-pasos-grid { 
-        gap: 25px; 
+    .landing-pasos-grid {
+        gap: 0;
     }
-    .landing-final { 
-        padding-top: 90px; 
+    .landing-paso {
+        margin-bottom: 4.39%;
     }
-    .landing-final-marca { 
-        font-size: 70px; letter-spacing: -4px; 
+    .landing-feature {
+        margin-bottom: 3%;
     }
-    .landing-final h2 { 
-        font-size: 50px; 
+    .landing-btn-rojo, .landing-btn-outline {
+        padding: 3% 5%;
     }
-    .landing-seccion-header h2, .landing-problema h2, .landing-ia-texto h2, .landing-pasos h2 { 
-        font-size: 38px; 
+    .landing-final {
+        padding-top: 15%;
+    }
+    .landing-final-marca {
+        font-size: 70px; letter-spacing: -4px;
+    }
+    .landing-final h2 {
+        font-size: 50px;
+    }
+    .landing-seccion-header h2, .landing-problema h2, .landing-ia-texto h2, .landing-pasos h2 {
+        font-size: 38px;
     }
 }
 @media (prefers-reduced-motion: reduce) {
-    .landing-cineura .landing-fondo { 
-        animation: none; 
+    .landing-cineura .landing-fondo {
+        animation: none;
     }
-    .landing-cineura .landing-fondo-1 { 
-        opacity: 1; 
+    .landing-cineura .landing-fondo-1 {
+        opacity: 1;
     }
 }

@@ -1,25 +1,15 @@
-/* =========================================
-   CINEURA - DETALLE DE PELICULA
-   ========================================= */
-
 .cine-detalle {
 
     position: relative;
-    isolation: isolate;
+    z-index: 0;
     min-height: 100vh;
-    padding: 28px 24px 70px;
+    padding: 2.19% 1.88% 5.47%;
     overflow: hidden;
     color: #f8fafc;
     background:
-        radial-gradient(ellipse at 85% 35%, rgba(127, 29, 29, 0.12), transparent 40rem),
+        radial-gradient(ellipse at 85% 35%, rgba(127, 29, 29, 0.12), transparent 55%),
         #0b0d14;
     font-family: "Manrope", "Segoe UI", sans-serif;
-}
-
-.cine-detalle *,
-.cine-detalle *::before,
-.cine-detalle *::after {
-    box-sizing: border-box;
 }
 
 .cine-detalle-fondo {
@@ -32,7 +22,6 @@
     background-position: center 25%;
     background-size: cover;
     opacity: 0.3;
-
     pointer-events: none;
 }
 
@@ -64,17 +53,16 @@
 .cine-volver {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin: 0 0 32px;
-    padding: 10px 15px;
+    gap: 0.81%;
+    margin: 0 0 2.58%;
+    padding: 0.81% 1.21%;
     color: #e5e7eb;
-    background: #11151f;
+    background-color: #11151f;
     border: 1px solid #313540;
     border-radius: 999px;
     font-size: 13px;
     font-weight: 800;
     text-decoration: none;
-
 }
 
 .cine-volver span {
@@ -85,18 +73,17 @@
 
 .cine-volver:hover {
     color: #fff;
-    background: #3c222b;
-
+    background-color: #3c222b;
 }
 
 .cine-mensaje {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin: 0 0 24px;
-    padding: 15px 18px;
+    gap: 0.97%;
+    margin: 0 0 1.94%;
+    padding: 1.21% 1.45%;
     color: #d1fae5;
-    background: #0e3430;
+    background-color: #0e3430;
     border: 1px solid #1e5248;
     border-radius: 12px;
     font-size: 14px;
@@ -107,11 +94,11 @@
     display: flex;
     width: 27px;
     height: 27px;
-    flex: 0 0 27px;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     color: #052e24;
-    background: #34d399;
+    background-color: #34d399;
     border-radius: 50%;
     font-weight: 900;
 }
@@ -123,7 +110,7 @@
     
     align-items: start;
     gap: 5%;
-    padding: 30px 0 65px;
+    padding: 2.42% 0 5.24%;
 }
 
 .cine-poster-columna {
@@ -135,31 +122,16 @@
 .cine-poster-marco {
     position: relative;
     width: 100%;
-    aspect-ratio: 2 / 3;
     overflow: hidden;
-    background: #151a26;
+    background-color: #151a26;
     border: 1px solid #3d414b;
     border-radius: 16px;
-
-}
-
-.cine-poster-marco::after {
-    position: absolute;
-    top: 55%;
-    left: 0;
-    width: 100%;
-    height: 45%;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.24));
-    content: "";
-    pointer-events: none;
 }
 
 .cine-poster {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-
+    height: auto;
 }
 
 .cine-poster-sin-imagen {
@@ -167,7 +139,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 1.5%;
     color: #a6afc0;
     text-align: center;
 }
@@ -186,8 +158,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    padding: 18px 8px 0;
+    gap: 2.69%;
+    padding: 5.37% 2.39% 0;
     color: #9ca3af;
     font-size: 10px;
     font-weight: 900;
@@ -197,24 +169,23 @@
 .cine-punto {
     width: 7px;
     height: 7px;
-    background: #ef4444;
+    background-color: #ef4444;
     border-radius: 50%;
-
 }
 
 /* PUNTUACION CINEURA */
 
 .cine-calificacion {
-    margin-top: 20px;
-    padding: 16px 10px;
+    margin-top: 5.97%;
+    padding: 4.78% 2.99%;
     text-align: center;
-    background: #151a26;
+    background-color: #151a26;
     border: 1px solid #3e3826;
     border-radius: 12px;
 }
 
 .cine-calificacion-titulo {
-    margin: 0 0 10px;
+    margin: 0 0 3.19%;
     color: #a6afc0;
     font-size: 10px;
     font-weight: 900;
@@ -224,51 +195,43 @@
 .cine-estrellas {
     display: flex;
     justify-content: center;
-    gap: 7px;
+    gap: 2.24%;
 }
 
 .cine-estrella {
-    padding: 2px;
+    padding: 0.64%;
     color: #4b5563;
-    background: transparent;
+    background-color: transparent;
     border: 0;
     font-family: inherit;
     font-size: 29px;
     line-height: 1.2;
     cursor: pointer;
-
 }
 
 .cine-estrella:hover,
 .cine-estrella.activa {
     color: #fbbf24;
-
-}
-
-.cine-estrella:focus-visible {
-    outline: 2px solid #ef4444;
-    outline-offset: 3px;
-    border-radius: 5px;
 }
 
 .cine-calificacion-texto {
-    margin: 10px 0 0;
+    margin: 3.19% 0 0;
     color: #9ca3af;
     font-size: 11px;
 }
 
 .cine-informacion {
-    flex: 1;
+    width: 67%;
     min-width: 0;
-    padding-top: 7px;
+    padding-top: 0.88%;
 }
 
 .cine-etiqueta-superior {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 9px;
-    margin-bottom: 21px;
+    gap: 1.12%;
+    margin-bottom: 2.62%;
     color: #cbd5e1;
     font-size: 10px;
     font-weight: 900;
@@ -281,21 +244,20 @@
 }
 
 .cine-titulo {
-    margin: 0 0 24px;
+    margin: 0 0 3%;
     color: #fff;
     font-size: 60px;
     font-weight: 900;
     letter-spacing: -2.3px;
     line-height: 1.03;
     overflow-wrap: anywhere;
-
 }
 
 .cine-datos-principales {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 9px;
+    gap: 1.12%;
 }
 
 .cine-dato,
@@ -303,11 +265,14 @@
 .cine-animo {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    min-height: 36px;
-    padding: 8px 12px;
+    justify-content: center;
+    gap: 0;
+    height: 36px;
+    padding: 0 1.5%;
+    white-space: nowrap;
+    flex-shrink: 0;
     color: #e5e7eb;
-    background: #1d2634;
+    background-color: #1d2634;
     border: 1px solid #2a2f3a;
     border-radius: 999px;
     font-size: 12px;
@@ -315,25 +280,26 @@
 }
 
 .cine-dato span {
+    margin-right: 5%;
     color: #9ca3af;
 }
 
 .cine-genero {
     color: #fecaca;
-    background: #331b23;
+    background-color: #331b23;
     border-color: #612930;
 }
 
 .cine-animo {
     color: #fde68a;
-    background: #292521;
+    background-color: #292521;
     border-color: #4e4326;
 }
 
 .cine-linea-decorativa {
     width: 100%;
     height: 1px;
-    margin: 28px 0;
+    margin: 3.5% 0;
     background: linear-gradient(to right, rgba(239, 68, 68, 0.7), rgba(255, 255, 255, 0.07), transparent);
 }
 
@@ -341,14 +307,14 @@
     display: block;
     width: 58px;
     height: 2px;
-    background: #ef4444;
+    background-color: #ef4444;
 }
 
 /* SINOPSIS */
 
 .cine-seccion-mini {
     display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 1.25%;
     color: #fbbf24;
     font-size: 10px;
     font-weight: 900;
@@ -356,7 +322,7 @@
 }
 
 .cine-sinopsis-bloque h2 {
-    margin: 0 0 13px;
+    margin: 0 0 1.62%;
     color: #fff;
     font-size: 22px;
     font-weight: 900;
@@ -378,8 +344,8 @@
     flex-direction: column;
     display: flex;
     gap: 0;
-    margin-top: 27px;
-    padding: 5px 0;
+    margin-top: 3.38%;
+    padding: 0.62% 0;
     border-top: 1px solid #2a2f3a;
     border-bottom: 1px solid #2a2f3a;
 }
@@ -388,11 +354,11 @@
     display: flex;
     
     align-items: start;
-    gap: 13px;
-    padding: 17px 0;
+    gap: 1.62%;
+    padding: 2.12% 0;
 }
 
-.cine-credito + .cine-credito {
+.cine-credito:last-child {
     border-top: 1px solid #222732;
 }
 
@@ -404,7 +370,7 @@
     align-items: center;
     justify-content: center;
     color: #fbbf24;
-    background: #2a2926;
+    background-color: #2a2926;
     border: 1px solid #332f26;
     border-radius: 10px;
     font-size: 16px;
@@ -412,7 +378,7 @@
 
 .cine-credito-titulo {
     display: block;
-    margin: 0 0 6px;
+    margin: 0 0 0.81%;
     color: #9ca3af;
     font-size: 10px;
     font-weight: 900;
@@ -437,22 +403,25 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
-    margin-top: 28px;
+    gap: 1.5%;
+    margin-top: 3.5%;
 }
 
 .cine-formulario-accion {
-    display: inline-flex;
+    display: block;
+    width: 180px;
     margin: 0;
 }
 
 .cine-detalle .cine-boton {
     display: inline-flex;
+    width: 100%;
     min-height: 48px;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    padding: 12px 17px;
+    gap: 5%;
+    padding: 3% 5%;
+    white-space: nowrap;
     color: #fff;
     border: 1px solid transparent;
     border-radius: 10px;
@@ -463,46 +432,41 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-
 }
 
 .cine-boton-principal {
-    background: #ef4444;
-
+    background-color: #ef4444;
 }
 
 .cine-boton-principal:hover {
     color: #fff;
-    background: #e52e40;
-
+    background-color: #e52e40;
 }
 
 .cine-boton-secundario {
-    background: #1d2634;
+    background-color: #1d2634;
     border-color: #383c47 !important;
 }
 
 .cine-boton-secundario:hover {
     color: #fff;
-    background: #293447;
+    background-color: #293447;
     border-color: #886c25 !important;
-
 }
 
 .cine-boton-favorito-activo {
     color: #fecaca !important;
-    background: #351b23;
+    background-color: #351b23;
     border-color: #772d34 !important;
 }
 
 .cine-boton-favorito-activo:hover {
     color: #fff !important;
-    background: #5e1b20;
-
+    background-color: #5e1b20;
 }
 
 .cine-nota-acciones {
-    margin: 13px 0 0;
+    margin: 1.62% 0 0;
     color: #8993a5;
     font-size: 11px;
     line-height: 1.7;
@@ -511,24 +475,23 @@
 /* PANEL INFERIOR */
 
 .cine-panel-extra {
-    margin-top: 14px;
+    margin-top: 1.13%;
     padding: 3%;
-    background: #151a26;
+    background-color: #151a26;
     border: 1px solid #2a2f3a;
     border-radius: 20px;
-
 }
 
 .cine-panel-encabezado {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 28px;
+    gap: 1.72%;
+    margin-bottom: 2.41%;
 }
 
 .cine-panel-encabezado .cine-seccion-mini {
-    margin-bottom: 8px;
+    margin-bottom: 0.69%;
 }
 
 .cine-panel-encabezado h2 {
@@ -544,11 +507,11 @@
     display: flex;
     width: 47px;
     height: 47px;
-    flex: 0 0 47px;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     color: #fbbf24;
-    background: #272726;
+    background-color: #272726;
     border: 1px solid #433b26;
     border-radius: 14px;
     font-size: 23px;
@@ -557,27 +520,25 @@
 .cine-panel-tarjetas {
     display: flex;
     
-    gap: 16px;
+    gap: 1.38%;
 }
 
 .cine-tarjeta-extra {
-    flex: 1;
+    width: 32%;
     display: flex;
     
     align-items: start;
-    gap: 13px;
+    gap: 3.47%;
     min-width: 0;
-    padding: 21px 17px;
-    background: #1a212e;
+    padding: 5.6% 4.53%;
+    background-color: #1a212e;
     border: 1px solid #252a35;
     border-radius: 14px;
-
 }
 
 .cine-tarjeta-extra:hover {
-    background: #1e2734;
+    background-color: #1e2734;
     border-color: #433b26;
-
 }
 
 .cine-tarjeta-icono {
@@ -594,28 +555,28 @@
 
 .cine-icono-rojo {
     color: #fca5a5;
-    background: #311f2a;
+    background-color: #311f2a;
 }
 
 .cine-icono-oro {
     color: #fcd34d;
-    background: #312e26;
+    background-color: #312e26;
 }
 
 .cine-icono-azul {
     color: #93c5fd;
-    background: #1f2c42;
+    background-color: #1f2c42;
 }
 
 .cine-tarjeta-extra h3 {
-    margin: 2px 0 9px;
+    margin: 0.53% 0 2.4%;
     color: #f9fafb;
     font-size: 14px;
     font-weight: 900;
 }
 
 .cine-tarjeta-extra p {
-    margin: 0 0 15px;
+    margin: 0 0 4%;
     color: #9ca3af;
     font-size: 12px;
     line-height: 1.8;
@@ -625,13 +586,12 @@
     display: inline-flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 7px;
+    gap: 1.87%;
     color: #fbbf24;
     font-size: 11px;
     font-weight: 900;
     line-height: 1.6;
     text-decoration: none;
-
 }
 
 .cine-tarjeta-extra a:hover {
@@ -640,16 +600,15 @@
 
 .cine-tarjeta-extra a span {
     font-size: 16px;
-
 }
 
 .cine-frase-final {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-top: 30px;
-    padding-top: 24px;
+    gap: 1.03%;
+    margin-top: 2.59%;
+    padding-top: 2.07%;
     color: #9ca3af;
     border-top: 1px solid #252a35;
     font-size: 12px;
@@ -669,7 +628,7 @@
 
 @media (max-width: 900px) {
     .cine-portada {
-        gap: 32px;
+        gap: 4%;
     }
 
     .cine-titulo {
@@ -680,14 +639,13 @@
     .cine-panel-tarjetas {
         flex-direction: column;
     }
-
 }
 
 /* CELULARES */
 
 @media (max-width: 620px) {
     .cine-detalle {
-        padding: 20px 15px 42px;
+        padding: 5.56% 4.17% 11.67%;
     }
 
     .cine-detalle-fondo {
@@ -702,14 +660,14 @@
     }
 
     .cine-volver {
-        margin-bottom: 20px;
+        margin-bottom: 5.56%;
         font-size: 12px;
     }
 
     .cine-portada {
         flex-direction: column;
-        gap: 28px;
-        padding: 16px 0 38px;
+        gap: 7.78%;
+        padding: 4.44% 0 10.56%;
     }
 
     .cine-poster-columna {
@@ -723,7 +681,7 @@
     }
 
     .cine-poster-pie {
-        padding-top: 13px;
+        padding-top: 3.88%;
         font-size: 9px;
     }
 
@@ -732,32 +690,32 @@
     }
 
     .cine-etiqueta-superior {
-        gap: 7px;
-        margin-bottom: 15px;
+        gap: 1.94%;
+        margin-bottom: 4.17%;
         font-size: 9px;
         letter-spacing: 1.1px;
     }
 
     .cine-titulo {
-        margin-bottom: 18px;
+        margin-bottom: 5%;
         font-size: 38px;
         letter-spacing: -1.5px;
     }
 
     .cine-datos-principales {
-        gap: 7px;
+        gap: 1.94%;
     }
 
     .cine-dato,
     .cine-genero,
     .cine-animo {
-        min-height: 32px;
-        padding: 7px 10px;
+        height: 32px;
+        padding: 0 2.8%;
         font-size: 11px;
     }
 
     .cine-linea-decorativa {
-        margin: 23px 0;
+        margin: 6.39% 0;
     }
 
     .cine-sinopsis-bloque h2 {
@@ -771,7 +729,7 @@
 
     .cine-credito {
         
-        gap: 11px;
+        gap: 3.06%;
     }
 
     .cine-credito-icono {
@@ -786,12 +744,13 @@
     .cine-acciones {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 0;
     }
 
     .cine-formulario-accion {
-        display: flex;
+        display: block;
         width: 100%;
+        margin-bottom: 2.5%;
     }
 
     .cine-detalle .cine-boton {
@@ -800,14 +759,14 @@
     }
 
     .cine-panel-extra {
-        padding: 22px 17px;
+        padding: 6.11% 4.72%;
         border-radius: 16px;
     }
 
     .cine-panel-encabezado {
         align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 20px;
+        gap: 3.33%;
+        margin-bottom: 5.56%;
     }
 
     .cine-panel-encabezado h2 {
@@ -817,12 +776,11 @@
     .cine-panel-simbolo {
         width: 39px;
         height: 39px;
-        flex-basis: 39px;
         font-size: 19px;
     }
 
     .cine-tarjeta-extra {
-        padding: 17px 14px;
+        padding: 4.72% 3.89%;
     }
 
     .cine-frase-final {
@@ -837,11 +795,10 @@
 /* Puntuación */
 .cine-estrella {
     color: #6b7280;
-    background: transparent;
+    background-color: transparent;
     border: none;
     cursor: pointer;
     font-size: 1.8rem;
-
 }
 
 .cine-estrella.activa {
@@ -850,35 +807,34 @@
 
 /* Reviews */
 .cine-reviews {
-    margin: 50px 0;
-    padding: 30px;
+    margin: 4.03% 0;
+    padding: 2.42%;
     border: 1px solid #4e4326;
     border-radius: 18px;
-    background: #121827;
+    background-color: #121827;
     color: white;
 }
 
 .cine-review-form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin: 20px 0;
+    gap: 1.01%;
+    margin: 1.68% 0;
 }
 
 .cine-review-form textarea {
     width: 100%;
     min-height: 110px;
-    padding: 14px;
+    padding: 1.18%;
     border: 1px solid #6b7280;
     border-radius: 10px;
-    background: #111827;
+    background-color: #111827;
     color: white;
-    resize: vertical;
 }
 
 .cine-review {
-    margin-top: 20px;
-    padding: 20px;
+    margin-top: 1.68%;
+    padding: 1.68%;
     border: 1px solid #313540;
     border-radius: 12px;
     overflow-wrap: anywhere;
@@ -888,7 +844,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 0.84%;
     color: #fbbf24;
 }
 
@@ -898,22 +854,22 @@
 }
 
 .cine-review-texto {
-    margin-top: 15px;
+    margin-top: 1.26%;
     white-space: pre-wrap;
 }
 
 .cine-review summary {
     cursor: pointer;
     color: #fbbf24;
-    margin: 12px 0;
+    margin: 1.01% 0;
 }
 
 /* SECCIÓN DE REVIEWS */
 
 .cine-reviews {
-    margin: 45px 0;
-    padding: 25px;
-    background: #111827;
+    margin: 3.63% 0;
+    padding: 2.02%;
+    background-color: #111827;
     border: 1px solid #433b26;
 }
 
@@ -921,12 +877,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 1.26%;
+    margin-bottom: 1.68%;
 }
 
 .cine-reviews-titulo h2 {
-    margin: 5px 0 0;
+    margin: 0.42% 0 0;
 }
 
 .cine-reviews-total {
@@ -937,13 +893,13 @@
 /* NUEVA REVIEW */
 
 .cine-review-nueva {
-    margin-bottom: 25px;
+    margin-bottom: 2.1%;
 }
 
-.cine-review-nueva > summary {
+.cine-review-nueva summary {
     display: inline-block;
-    padding: 10px 16px;
-    background: #fbbf24;
+    padding: 0.84% 1.34%;
+    background-color: #fbbf24;
     color: #111827;
     border-radius: 8px;
     cursor: pointer;
@@ -951,12 +907,12 @@
 }
 
 .cine-review-form {
-    margin-top: 15px;
+    margin-top: 1.26%;
 }
 
 .cine-review-form textarea {
     min-height: 100px;
-    background: #1f2937;
+    background-color: #1f2937;
     border: 1px solid #374151;
 }
 
@@ -968,26 +924,26 @@
 }
 
 .cine-review {
-    padding: 20px 0;
+    padding: 1.68% 0;
     border-top: 1px solid #374151;
 }
 
 .cine-review-encabezado {
     align-items: center;
-    gap: 15px;
+    gap: 1.26%;
 }
 
 .cine-review-usuario {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 4%;
 }
 
 .cine-review-avatar {
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background: #fbbf24;
+    background-color: #fbbf24;
     color: #111827;
     display: flex;
     align-items: center;
@@ -997,13 +953,13 @@
 
 .cine-review-fecha {
     display: block;
-    margin-top: 3px;
+    margin-top: 2%;
     color: #9ca3af;
     font-size: 0.8rem;
 }
 
 .cine-review-texto {
-    margin: 15px 0 5px;
+    margin: 1.26% 0 0.42%;
     overflow-wrap: anywhere;
     line-height: 1.6;
 }
@@ -1023,7 +979,7 @@
 .cine-review-leer-mas {
     padding: 0;
     border: none;
-    background: none;
+    background-color: transparent;
     color: #fbbf24;
     cursor: pointer;
     font-weight: bold;
@@ -1035,7 +991,7 @@
     position: relative;
 }
 
-.cine-review-menu > summary {
+.cine-review-menu summary {
     cursor: pointer;
     font-size: 1.5rem;
     color: #9ca3af;
@@ -1048,8 +1004,8 @@
     top: 25px;
     z-index: 10;
     min-width: 150px;
-    padding: 10px;
-    background: #1f2937;
+    padding: 6.67%;
+    background-color: #1f2937;
     border: 1px solid #374151;
     border-radius: 10px;
 }
@@ -1058,9 +1014,9 @@
 .cine-review-menu-contenido button {
     display: block;
     width: 100%;
-    padding: 8px;
+    padding: 5.33%;
     color: white;
-    background: none;
+    background-color: transparent;
     border: none;
     text-align: left;
     cursor: pointer;
@@ -1073,10 +1029,28 @@
 
 @media (max-width: 600px) {
     .cine-reviews {
-        padding: 16px;
+        padding: 4.44%;
     }
 
     .cine-review {
-        padding: 16px 0;
+        padding: 4.44% 0;
+    }
+}
+
+/* Ajustes de tamaños */
+.cine-poster-sin-imagen {
+    height: 450px;
+}
+@media (max-width: 900px) {
+    .cine-tarjeta-extra {
+        width: 100%;
+    }
+}
+@media (max-width: 620px) {
+    .cine-informacion {
+        width: 100%;
+    }
+    .cine-poster-sin-imagen {
+        height: 350px;
     }
 }

@@ -1,7 +1,3 @@
-body {
-    width: 96%;
-}
-
 .perfil-container {
     width: 100%;
     max-width: 1300px;
@@ -9,7 +5,6 @@ body {
     padding: 2%;
     display: flex;
     flex-direction: column;
-    gap: 32px;
     background-color: #0a0e17;
     color: #ffffff;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -34,7 +29,7 @@ body {
 .perfil-container .user-card-main {
     width: 38%;
     display: flex;
-    gap: 16px;
+    gap: 3.5%;
     align-items: center;
 }
 
@@ -45,7 +40,6 @@ body {
 .perfil-container .adn-card {
     width: 32%;
 }
-
 
 /* INFORMACION DEL USUARIO */
 
@@ -76,30 +70,30 @@ body {
     font-size: 13px;
     color: #94a3b8;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 3%;
 }
 
 .perfil-container .user-badges {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: 2.5%;
+    margin-bottom: 3%;
 }
 
 .perfil-container .badge {
     font-size: 11px;
-    padding: 3px 8px;
+    padding: 1.5% 4%;
     border-radius: 12px;
 }
 
 .perfil-container .badge-primary {
-    background: #3b2000;
+    background-color: #3b2000;
     color: #facc15;
     border: 1px solid #854d0e;
 }
 
 .perfil-container .badge-secondary {
-    background: #1e1b4b;
+    background-color: #1e1b4b;
     color: #a78bfa;
     border: 1px solid #4338ca;
 }
@@ -110,7 +104,6 @@ body {
     margin: 0;
 }
 
-
 /* ESTADISTICAS */
 
 .perfil-container .stats-card {
@@ -118,7 +111,7 @@ body {
     justify-content: space-around;
     align-items: center;
     text-align: center;
-    gap: 8px;
+    gap: 2.5%;
 }
 
 .perfil-container .stat-item {
@@ -136,7 +129,7 @@ body {
     font-size: 28px;
     font-weight: bold;
     color: #ffffff;
-    margin: 4px 0;
+    margin: 4% 0;
 }
 
 .perfil-container .stat-sub {
@@ -150,14 +143,13 @@ body {
     background-color: #1e293b;
 }
 
-
 /* ADN CINEMATOGRAFICO */
 
 .perfil-container .adn-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 8px;
+    gap: 2.5%;
 }
 
 .perfil-container .adn-header {
@@ -176,7 +168,7 @@ body {
     background-color: #064e3b;
     color: #34d399;
     font-size: 10px;
-    padding: 2px 6px;
+    padding: 0.6% 2%;
     border-radius: 4px;
     font-weight: bold;
 }
@@ -190,14 +182,14 @@ body {
 .perfil-container .adn-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 2%;
     margin-bottom: 3%;
 }
 
 .perfil-container .tag {
     background-color: #1e293b;
     font-size: 11px;
-    padding: 4px 10px;
+    padding: 1.2% 3%;
     border-radius: 16px;
     color: #cbd5e1;
 }
@@ -206,13 +198,13 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 8px;
+    gap: 2.5%;
 }
 
 .perfil-container .perfil-adn-textarea {
     width: 100%;
     min-height: 90px;
-    background: #0f172a;
+    background-color: #0f172a;
     color: #ffffff;
     border: 1px solid #1e293b;
     border-radius: 6px;
@@ -231,7 +223,7 @@ body {
     background-color: #f59e0b;
     color: #000000;
     border: none;
-    padding: 10px;
+    padding: 3%;
     border-radius: 6px;
     font-weight: bold;
     font-size: 12px;
@@ -242,7 +234,6 @@ body {
     background-color: #d97706;
 }
 
-
 /* SECCIONES GENERALES */
 
 .perfil-container .section-block {
@@ -250,7 +241,7 @@ body {
     background-color: #121824;
     border: 1px solid #1e293b;
     border-radius: 12px;
-    padding: 20px;
+    padding: 1.6%;
 }
 
 .perfil-container .section-title {
@@ -258,23 +249,22 @@ body {
     color: #ffffff;
     letter-spacing: 0.5px;
     margin-top: 0;
-    margin-bottom: 16px;
+    margin-bottom: 1.3%;
 }
-
 
 /* PELICULAS FAVORITAS Y RECOMENDADAS */
 
 .perfil-container .movies-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px 1.5%;
+    gap: 1.5%;
 }
 
 .perfil-container .movie-card {
     width: 18.8%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2.5%;
     min-width: 0;
 }
 
@@ -295,7 +285,7 @@ body {
 
 .perfil-container .movie-card h4 {
     font-size: 13px;
-    margin: 6px 0 0;
+    margin: 3% 0 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -319,20 +309,19 @@ body {
     justify-content: center;
     text-align: center;
     font-size: 11px;
-    padding: 6px;
+    padding: 3%;
 }
 
 .perfil-container .perfil-pelicula-titulo {
-    margin-top: 6px;
+    margin-top: 3%;
 }
-
 
 /* ACTORES Y DIRECTORES FRECUENTES */
 
 .perfil-container .people-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px 1%;
+    gap: 1%;
 }
 
 .perfil-container .person-chip {
@@ -340,10 +329,10 @@ body {
     background-color: #0f172a;
     border: 1px solid #1e293b;
     border-radius: 8px;
-    padding: 8px;
+    padding: 0.7%;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4%;
     min-width: 0;
 }
 
@@ -370,7 +359,6 @@ body {
     color: #94a3b8;
 }
 
-
 /* SECCIONES INFERIORES */
 
 .perfil-container .bottom-three-columns {
@@ -384,7 +372,7 @@ body {
     background-color: #121824;
     border: 1px solid #1e293b;
     border-radius: 12px;
-    padding: 16px;
+    padding: 1.3%;
     min-width: 0;
 }
 
@@ -400,7 +388,6 @@ body {
     text-decoration: none;
 }
 
-
 /* RECOMENDACIONES, AMIGOS Y ACTIVIDAD */
 
 .perfil-container .mini-movie-item,
@@ -408,9 +395,9 @@ body {
 .perfil-container .activity-item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 3.5%;
     margin-top: 3%;
-    padding: 8px;
+    padding: 2.5%;
     background-color: #0f172a;
     border-radius: 6px;
 }
@@ -466,7 +453,6 @@ body {
     margin-left: auto;
 }
 
-
 /* TEXTOS INFORMATIVOS */
 
 .perfil-container .perfil-texto-vacio {
@@ -482,17 +468,16 @@ body {
 }
 
 .perfil-container .perfil-margen-superior {
-    margin-top: 10px;
+    margin-top: 1%;
 }
-
 
 /* CARRUSELES DEL PERFIL */
 
 .perfil-container .perfil-carrusel {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 0.8%;
+    margin-top: 1%;
     width: 100%;
 }
 
@@ -528,13 +513,45 @@ body {
     cursor: default;
 }
 
+/* ESPACIADO VERTICAL Y ETIQUETAS */
+
+.perfil-container > * {
+    margin-bottom: 2.6%;
+}
+
+.perfil-container > :last-child {
+    margin-bottom: 0;
+}
+
+.perfil-container .badge,
+.perfil-container .match-badge,
+.perfil-container .tag {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.perfil-container .movies-grid .movie-card {
+    margin-bottom: 1.3%;
+}
+
+.perfil-container .people-row .person-chip {
+    margin-bottom: 1%;
+}
+
+.perfil-container .perfil-carrusel .movie-card {
+    margin-bottom: 0;
+}
+
+.perfil-container .perfil-adn-textarea {
+    margin-bottom: 2%;
+}
 
 /* ADAPTACION A TABLETS */
 
 @media (max-width: 1050px) {
 
     .perfil-container .profile-header-grid {
-        gap: 16px 2%;
+        gap: 2%;
     }
 
     .perfil-container .user-card-main {
@@ -562,19 +579,18 @@ body {
     }
 }
 
-
 /* ADAPTACION A CELULARES */
 
 @media (max-width: 700px) {
 
     .perfil-container {
         padding: 4%;
-        gap: 20px;
+        gap: 0;
     }
 
     .perfil-container .profile-header-grid {
         flex-direction: column;
-        gap: 16px;
+        gap: 0;
     }
 
     .perfil-container .user-card-main,
@@ -590,7 +606,7 @@ body {
 
     .perfil-container .bottom-three-columns {
         flex-direction: column;
-        gap: 16px;
+        gap: 0;
     }
 
     .perfil-container .sub-block {
@@ -620,5 +636,30 @@ body {
 
     .perfil-container .perfil-flecha {
         width: 26px;
+    }
+}
+@media (max-width: 1050px) {
+    .perfil-container .profile-header-grid > * {
+        margin-bottom: 1.6%;
+    }
+}
+
+@media (max-width: 700px) {
+    .perfil-container > * {
+        margin-bottom: 5%;
+    }
+
+    .perfil-container > :last-child {
+        margin-bottom: 0;
+    }
+
+    .perfil-container .profile-header-grid > *,
+    .perfil-container .bottom-three-columns > * {
+        margin-bottom: 4%;
+    }
+
+    .perfil-container .profile-header-grid > :last-child,
+    .perfil-container .bottom-three-columns > :last-child {
+        margin-bottom: 0;
     }
 }
