@@ -1,5 +1,3 @@
-Debe tener:
-
 Integrantes: Matías Fraiman, Jonathan Glitman y Lorenzo Creo Kocher
 
 Descripción del proyecto:Cineura es una plataforma cinematográfica que combina inteligencia artificial y comunidad para transformar la manera en que las personas descubren, eligen y disfrutan películas.
@@ -17,7 +15,12 @@ Funcionalidades:
 - Cuestionario inicial: identifica las preferencias del usuario para personalizar su experiencia desde el registro.
 - Detalles de películas: proporciona información sobre cada película, incluyendo sinopsis, reparto, director, género, duración y valoraciones de la comunidad.
 
-Cómo ejecutar el proyecto
+Cómo ejecutar el proyecto:
+1. Abrir proyecto en vs code.
+2. Copiar el código del archivo Cineura.sql y ejecutarlo en SQL managment studio community 2022.
+3. Copiar y pegar en la terminal el comando para la key de grok que se encuentra en el archivo ComandoKeyGrok-txt.
+4. Correr el proyecto en la terminal con el comando dotnet watch run.
+
 Enlaces a Miro, Trello, Figma:
 - Trello: https://trello.com/b/8vKEHxvn/cineura
 - Figma: https://www.figma.com/design/x6OcGDLJ7nIlYA8dEn27Sc/UI-KIT--2025---Community-?node-id=5646-131&t=esj0FUvqdsVYmcrl-1
