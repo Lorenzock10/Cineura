@@ -18,7 +18,7 @@ Funcionalidades:
 Cómo ejecutar el proyecto:
 1. Abrir proyecto en vs code.
 2. Copiar el código del archivo Cineura.sql y ejecutarlo en SQL managment studio community 2022.
-3. Copiar y pegar en la terminal el comando para la key de grok que se encuentra en el archivo ComandoKeyGrok-txt.
+3. Copiar y pegar en la terminal el comando para la key de groq que se encuentra en el archivo ComandoKeyGrok-txt.
 4. Correr el proyecto en la terminal con el comando dotnet watch run.
 
 Enlaces a Miro, Trello, Figma:
