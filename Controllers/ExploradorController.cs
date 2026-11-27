@@ -14,9 +14,7 @@ namespace Cineura.Controllers
             string ordenar = "")
         {
             BD bd = new BD();
-
             bool esFetch = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
-
             List<Peliculas> peliculas = bd.ObtenerPeliculas();
             List<Peliculas> peliculasEncontradas = new List<Peliculas>();
 

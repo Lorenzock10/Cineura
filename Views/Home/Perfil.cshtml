@@ -3,22 +3,11 @@
     Layout = null;
     ViewData["Title"] = "Perfil";
 
-    string nombreUsuario = Context.Session.GetString("nombre") ?? "Usuario";
-    string apellidoUsuario = Context.Session.GetString("apellido") ?? "";
-    string handleUsuario = Context.Session.GetString("usuario") ?? "usuario";
-
     string iniciales = "";
-    if (!string.IsNullOrEmpty(nombreUsuario)) iniciales += nombreUsuario[0];
-    if (!string.IsNullOrEmpty(apellidoUsuario)) iniciales += apellidoUsuario[0];
+    if (!string.IsNullOrEmpty(Context.Session.GetString("nombre") ?? "Usuario")) iniciales += (Context.Session.GetString("nombre") ?? "Usuario")[0];
+    if (!string.IsNullOrEmpty(Context.Session.GetString("apellido"))) iniciales += Context.Session.GetString("apellido")[0];
     if (string.IsNullOrEmpty(iniciales)) iniciales = "U";
 
-    List<Peliculas> misFavoritas = ViewBag.MisFavoritas as List<Peliculas> ?? new List<Peliculas>();
-    List<Peliculas> recomendadas = ViewBag.Recomendadas as List<Peliculas> ?? new List<Peliculas>();
-    int cantidadFavoritas = ViewBag.CantidadFavoritas ?? 0;
-    string gustosAdn = ViewBag.GustosAdn ?? "";
-
-    List<KeyValuePair<string, int>> actoresFrecuentes = ViewBag.ActoresFrecuentes as List<KeyValuePair<string, int>> ?? new List<KeyValuePair<string, int>>();
-    List<KeyValuePair<string, int>> directoresFrecuentes = ViewBag.DirectoresFrecuentes as List<KeyValuePair<string, int>> ?? new List<KeyValuePair<string, int>>();
 }
 <!DOCTYPE html>
 <html lang="es">
@@ -74,8 +63,8 @@
                         <span>@iniciales.ToUpper()</span>
                     </div>
                     <div class="user-info">
-                        <h2>@nombreUsuario @apellidoUsuario</h2>
-                        <span class="user-handle">@@@handleUsuario</span>
+                        <h2>@(Context.Session.GetString("nombre") ?? "Usuario") @(Context.Session.GetString("apellido") ?? "")</h2>
+                        <span class="user-handle">@@@(Context.Session.GetString("usuario") ?? "usuario")</span>
                         <div class="user-badges">
                             <span class="badge badge-primary">✦ Miembro activo</span>
                             <span class="badge badge-secondary">Perfil privado</span>
@@ -87,7 +76,7 @@
                 <div class="stats-card">
                     <div class="stat-item">
                         <span class="stat-title">FAVORITAS</span>
-                        <span class="stat-number">@cantidadFavoritas</span>
+                        <span class="stat-number">@(ViewBag.CantidadFavoritas ?? 0)</span>
                         <span class="stat-sub">Guardadas</span>
                     </div>
                     <div class="stat-divider"></div>
@@ -117,7 +106,7 @@
                     }
                     <form action="@Url.Action("GuardarAdn", "Home")" method="post" class="perfil-adn-form">
                         @Html.AntiForgeryToken()
-                        <textarea name="gustosAdn" rows="3" required maxlength="2000" placeholder="Ej: Me gusta la ciencia ficción, thrillers psicológicos, dramas con finales abiertos..." class="perfil-adn-textarea">@gustosAdn</textarea>
+                        <textarea name="gustosAdn" rows="3" required maxlength="2000" placeholder="Ej: Me gusta la ciencia ficción, thrillers psicológicos, dramas con finales abiertos..." class="perfil-adn-textarea">@(ViewBag.GustosAdn ?? "")</textarea>
                         <button type="submit" class="btn-adjust">Guardar preferencias</button>
                     </form>
                 </div>
@@ -130,12 +119,12 @@
                     Películas seleccionadas según tus gustos cinematográficos.
                 </p>
 
-                @if (recomendadas.Count > 0)
+                @if (ViewBag.Recomendadas != null && ViewBag.Recomendadas.Count > 0)
                 {
                     <div class="perfil-carrusel">
                         <button type="button" class="perfil-flecha perfil-anterior" aria-label="Anterior" aria-controls="carrusel-recomendadas" disabled>‹</button>
                         <div class="movies-grid" id="carrusel-recomendadas" tabindex="0" aria-label="Películas recomendadas">
-                            @foreach (Peliculas peli in recomendadas)
+                            @foreach (Peliculas peli in ViewBag.Recomendadas)
                             {
                                 <div class="movie-card">
                                     <a href="@Url.Action("Detalles", "Home", new { id = peli.IdPelicula })" class="perfil-pelicula-link">
@@ -169,12 +158,12 @@
             <!-- 2. MIS PELÍCULAS FAVORITAS -->
             <section class="section-block">
                 <h3 class="section-title"><span class="icon-heart">❤️</span> MIS PELÍCULAS FAVORITAS</h3>
-                @if (misFavoritas.Count > 0)
+                @if (ViewBag.MisFavoritas != null && ViewBag.MisFavoritas.Count > 0)
                 {
                     <div class="perfil-carrusel">
                         <button type="button" class="perfil-flecha perfil-anterior" aria-label="Anterior" aria-controls="carrusel-favoritas" disabled>‹</button>
                         <div class="movies-grid" id="carrusel-favoritas" tabindex="0" aria-label="Películas favoritas">
-                            @foreach (Peliculas peli in misFavoritas)
+                            @foreach (Peliculas peli in ViewBag.MisFavoritas)
                             {
                                 <div class="movie-card">
                                     <a href="@Url.Action("Detalles", "Home", new { id = peli.IdPelicula })" class="perfil-pelicula-link">
@@ -204,10 +193,10 @@
             <!-- 3. ACTORES Y DIRECTORES FRECUENTES -->
             <section class="section-block">
                 <h3 class="section-title">🟡 ACTORES FRECUENTES</h3>
-                @if (actoresFrecuentes.Count > 0)
+                @if (ViewBag.ActoresFrecuentes != null && ViewBag.ActoresFrecuentes.Count > 0)
                 {
                     <div class="people-row">
-                        @foreach (KeyValuePair<string, int> actor in actoresFrecuentes)
+                        @foreach (KeyValuePair<string, int> actor in ViewBag.ActoresFrecuentes)
                         {
                             <div class="person-chip">
                                 <div class="chip-avatar"></div>
@@ -227,10 +216,10 @@
 
             <section class="section-block">
                 <h3 class="section-title">🎬 DIRECTORES FRECUENTES</h3>
-                @if (directoresFrecuentes.Count > 0)
+                @if (ViewBag.DirectoresFrecuentes != null && ViewBag.DirectoresFrecuentes.Count > 0)
                 {
                     <div class="people-row">
-                        @foreach (KeyValuePair<string, int> director in directoresFrecuentes)
+                        @foreach (KeyValuePair<string, int> director in ViewBag.DirectoresFrecuentes)
                         {
                             <div class="person-chip">
                                 <div class="chip-avatar"></div>

@@ -1,49 +1,6 @@
 @{
     Layout = null;
     ViewData["Title"] = Model.Titulo;
-    string usuarioSesion = Context.Session.GetString("usuario");
-    string nombreSesion = Context.Session.GetString("nombre");
-
-    string poster = Model.PosterUrl;
-    string titulo = Model.Titulo;
-    string sinopsis = Model.Sinopsis;
-    string director = "";
-
-    if (ViewBag.Director != null)
-    {
-        director = ViewBag.Director.ToString();
-    }
-
-    if (string.IsNullOrWhiteSpace(poster))
-    {
-        poster = "";
-    }
-
-    if (string.IsNullOrWhiteSpace(titulo))
-    {
-        titulo = "Película sin título";
-    }
-
-    if (string.IsNullOrWhiteSpace(sinopsis))
-    {
-        sinopsis = "Todavía no hay una sinopsis disponible para esta película.";
-    }
-
-    if (string.IsNullOrWhiteSpace(director))
-    {
-        director = "No disponible";
-    }
-
-    bool usuarioConectado = ViewBag.UsuarioConectado == true;
-    bool esFavorito = ViewBag.EsFavorito == true;
-    bool estaEnWatchlist = ViewBag.EstaEnWatchlist == true;
-
-    int cantidadComentarios = 0;
-
-    if (ViewBag.Comentarios != null)
-    {
-        cantidadComentarios = ViewBag.Comentarios.Count;
-    }
 }
 
 <!DOCTYPE html>
@@ -62,7 +19,7 @@
             <a href="@Url.Action("Index", "Home")" class="cineura-logo-header">
                 <img src="~/imagenes/cineura.jpg" alt="Cineura" />
             </a>
-            @if (!string.IsNullOrEmpty(usuarioSesion))
+            @if (!string.IsNullOrEmpty(Context.Session.GetString("usuario")))
             {
                 <nav class="d-flex align-items-center gap-2 flex-wrap" aria-label="Navegación principal">
                     <a href="@Url.Action("Index", "Home")">Inicio</a>
@@ -71,7 +28,7 @@
                     <a href="@Url.Action("Perfil", "Home")">Perfil</a>
                 </nav>
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <span class="cineura-saludo">Hola, @nombreSesion</span>
+                    <span class="cineura-saludo">Hola, @(Context.Session.GetString("nombre"))</span>
                     <a class="btn cineura-btn-cerrar-sesion" href="@Url.Action("CerrarSesion", "Home")">Cerrar sesión</a>
                 </div>
             }
@@ -86,10 +43,10 @@
     </header>
 <main class="cine-detalle">
 
-    @if (!string.IsNullOrWhiteSpace(poster))
+    @if (!string.IsNullOrWhiteSpace(Model.PosterUrl))
     {
         <div class="cine-detalle-fondo"
-             style="background-image: url('@poster');">
+             style="background-image: url('@Model.PosterUrl');">
         </div>
     }
     else
@@ -120,11 +77,11 @@
 
             <div class="cine-poster-columna">
 
-                @if (!string.IsNullOrWhiteSpace(poster))
+                @if (!string.IsNullOrWhiteSpace(Model.PosterUrl))
                 {
                     <div class="cine-poster-marco">
-                        <img src="@poster"
-                             alt="Póster de @titulo"
+                        <img src="@Model.PosterUrl"
+                             alt="Póster de @(string.IsNullOrWhiteSpace(Model.Titulo) ? "Película sin título" : Model.Titulo)"
                              class="cine-poster" />
                     </div>
                 }
@@ -181,7 +138,7 @@
                         Promedio de usuarios: @ViewBag.PromedioPuntuacion / 5
                     </p>
 
-                    @if (!usuarioConectado)
+                    @if (ViewBag.UsuarioConectado != true)
                     {
                         <p>
                             <a asp-controller="Home" asp-action="Login">
@@ -202,7 +159,7 @@
                     DETALLES DE LA PELÍCULA
                 </div>
 
-                <h1 class="cine-titulo">@titulo</h1>
+                <h1 class="cine-titulo">@(string.IsNullOrWhiteSpace(Model.Titulo) ? "Película sin título" : Model.Titulo)</h1>
 
                 <div class="cine-datos-principales">
 
@@ -245,7 +202,7 @@
                 <div class="cine-sinopsis-bloque">
                     <span class="cine-seccion-mini">LA HISTORIA</span>
                     <h2>¿De qué trata?</h2>
-                    <p>@sinopsis</p>
+                    <p>@(string.IsNullOrWhiteSpace(Model.Sinopsis) ? "Todavía no hay una sinopsis disponible para esta película." : Model.Sinopsis)</p>
                 </div>
 
                 <div class="cine-creditos">
@@ -254,7 +211,7 @@
                         <div class="cine-credito-icono">✦</div>
                         <div>
                             <span class="cine-credito-titulo">DIRECCIÓN</span>
-                            <p>@director</p>
+                            <p>@(string.IsNullOrWhiteSpace((string)ViewBag.Director?.ToString()) ? "No disponible" : ViewBag.Director.ToString())</p>
                         </div>
                     </div>
 
@@ -280,9 +237,9 @@
 
                 <div class="cine-acciones">
 
-                    @if (usuarioConectado)
+                    @if (ViewBag.UsuarioConectado == true)
                     {
-                        @if (esFavorito)
+                        @if (ViewBag.EsFavorito == true)
                         {
                             <form asp-controller="Home"
                                   asp-action="QuitarFavorito"
@@ -326,7 +283,7 @@
                             </form>
                         }
 
-                        @if (estaEnWatchlist)
+                        @if (ViewBag.EstaEnWatchlist == true)
                         {
                             <form asp-controller="Watchlist"
                                   asp-action="QuitarWatchlist"
@@ -400,13 +357,13 @@
                 </div>
 
                 <span class="cine-reviews-total">
-                    @cantidadComentarios opiniones
+                    @(ViewBag.Comentarios?.Count ?? 0) opiniones
                 </span>
 
             </div>
 
             <!-- BOTÓN PARA ESCRIBIR REVIEW -->
-            @if (usuarioConectado)
+            @if (ViewBag.UsuarioConectado == true)
             {
                 <details class="cine-review-nueva">
 
@@ -445,12 +402,12 @@
             }
 
             <!-- BOTÓN PARA MOSTRAR Y OCULTAR REVIEWS -->
-            @if (cantidadComentarios > 0)
+            @if (ViewBag.Comentarios != null && ViewBag.Comentarios.Count > 0)
             {
                 <details class="cine-reviews-desplegable">
 
                     <summary>
-                        Reviews (@cantidadComentarios)
+                        Reviews (@(ViewBag.Comentarios?.Count ?? 0))
                     </summary>
 
                     <div class="cine-reviews-lista">
@@ -485,7 +442,7 @@
                                     </div>
 
                                     <!-- MENÚ DE OPCIONES DEL USUARIO -->
-                                    @if (usuarioConectado &&
+                                    @if (ViewBag.UsuarioConectado == true &&
                                          comentario.IdUsuario == (int)ViewBag.IdUsuario)
                                     {
                                         <details class="cine-review-menu">
@@ -605,7 +562,7 @@
                         <h3>Tus favoritas</h3>
                         <p>Guardá las películas que más te gustan para encontrarlas fácilmente.</p>
 
-                        @if (usuarioConectado)
+                        @if (ViewBag.UsuarioConectado == true)
                         {
                             <a asp-controller="Home" asp-action="Perfil">
                                 Ver mis favoritas <span aria-hidden="true">→</span>
@@ -626,7 +583,7 @@
                         <h3>Tu Watchlist</h3>
                         <p>Creá tu lista de películas pendientes para tu próxima noche de cine.</p>
 
-                        @if (usuarioConectado)
+                        @if (ViewBag.UsuarioConectado == true)
                         {
                             <a asp-controller="Watchlist" asp-action="Index">
                                 Ver mi Watchlist <span aria-hidden="true">→</span>
